@@ -52,7 +52,9 @@ Chart showing distances to nearest substance abuse facility for each county
 
 
 ## Timeline
-* Week of 11/11: Initial data importation, cleaning, and exploration prior to our meeting. Specify and discuss what 
+* Week of 11/11: Initial data importation, cleaning, and exploration prior to our meeting. 
+
+    Specify and discuss what types of graphs/tables/etc. we want to have
 
 * types of graphs/tables/etc. we want to have
 
