@@ -3,6 +3,7 @@ title: "Final Project Proposal"
 author: "Hana Akbarnejad"
 date: "11/6/2019"
 output: github_document
+
 ---
 
 ```{r setup, include=FALSE}
@@ -38,16 +39,16 @@ The opioid epidemic is a national crisis. Every day, more than 130 people die fr
 ## Data Sources
 Most data from: https://opioid.amfar.org/about/sources, https://health.data.ny.gov, and https://catalog.data.gov.
 
-## Challenges
+## Challenges & Planned Analyses
 Working with different datasets that contain data from different duration of time.
 
-Projects requires working with multiple maps, and might need to show the overlaps between these maps.
+Project requires working with multiple maps, and might need to show the overlaps between these maps.
 
-Heat map showing opioid overdoses by location in NYC
+Create a heat map showing opioid overdoses by location in NYC.
 
-Interactive map showing where medication collection boxes are located
+Create an interactive map showing where medication collection boxes are located.
 
-Chart showing distances to nearest substance abuse facility for each county
+Additionally, we will have a chart showing distances to nearest substance abuse facility for each county.
 
 
 
@@ -55,8 +56,6 @@ Chart showing distances to nearest substance abuse facility for each county
 * Week of 11/11: Initial data importation, cleaning, and exploration prior to our meeting. 
 
     Specify and discuss what types of graphs/tables/etc. we want to have
-
-* types of graphs/tables/etc. we want to have
 
 * Week of 11/18: Create webpage- assign each person to one “tab” to avoid issues with Github
 

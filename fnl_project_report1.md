@@ -1,0 +1,83 @@
+Final Project Proposal
+================
+Hana Akbarnejad
+11/6/2019
+
+## Names and UNIs
+
+  - Hana Akbarnejad (ha2546)
+
+  - Julia Thomspson (jt3175)
+
+  - Jared Garfinkel (jsg2145)
+
+  - Alison Elgass (are2132)
+
+## Project Title
+
+**“Exploring Aspects of Opioid Crisis in the United States”**
+
+## Motivation
+
+The opioid epidemic is a national crisis. Every day, more than 130
+people die from overdosing on opioids in the US. The relevance and
+importance of finding a solution to the opioid epidemic is indisputable.
+We hope to explore trends in the opioid crisis from a demographic
+standpoint, as well as investigate the effectiveness of different
+efforts. We further want to find out how different public health
+initiatives might affect the trends of this disease.
+
+## The Intended Final Products
+
+  - Any association between Medication Assessment Treatment (MAT) and
+    number of opioid-related death?
+
+  - Any linkage between Syringe Exchange Programs (SEP) and infectious
+    disease (Hepatitis C and HIV/AIDS) outbreaks linked to opioid usage?
+    And any difference in these trends in states with SEP and those
+    which have banned SEP.
+
+  - Does the higher percent of drug treatment paid by medicare result in
+    lower drug-related death?
+
+  - Is there a relationship between medication collection box locations
+    and opioid overdose locations?
+
+  - Is there a relationship between distance to nearest substance abuse
+    facility and opioid overdoses?
+
+## Data Sources
+
+Most data from: <https://opioid.amfar.org/about/sources>,
+<https://health.data.ny.gov>, and <https://catalog.data.gov>.
+
+## Challenges & Planned Analyses
+
+Working with different datasets that contain data from different
+duration of time.
+
+Project requires working with multiple maps, and might need to show the
+overlaps between these maps.
+
+Create a heat map showing opioid overdoses by location in NYC.
+
+Create an interactive map showing where medication collection boxes are
+located.
+
+Additionally, we will have a chart showing distances to nearest
+substance abuse facility for each county.
+
+## Timeline
+
+  - Week of 11/11: Initial data importation, cleaning, and exploration
+    prior to our meeting.
+    
+    Specify and discuss what types of graphs/tables/etc. we want to have
+
+  - Week of 11/18: Create webpage- assign each person to one “tab” to
+    avoid issues with Github
+
+  - Week of 11/25: Write report- assign each person one section, review
+    together
+
+  - Week of 12/2: Finalize and create screencast
