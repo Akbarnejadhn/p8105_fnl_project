@@ -7,13 +7,40 @@ output: github_document
 
 ```{r setup, include=FALSE}
 library(tidyverse)
+library(viridis)
+library(arcos)
+knitr::opts_chunk$set(
+	echo = TRUE,
+	warning = FALSE,
+	fig.width = 8, 
+  fig.height = 6,
+  out.width = "90%"
+)
+options(
+  ggplot2.continuous.colour = "viridis",
+  ggplot2.continuous.fill = "viridis"
+)
+scale_colour_discrete = scale_colour_viridis_d
+scale_fill_discrete = scale_fill_viridis_d
+theme_set(theme_minimal() + theme(legend.position = "bottom"))
+```
 
+```{r load datasets}
 opioid_death_data = janitor::clean_names(read_csv('./opioid_related_deaths.csv'))
 
 opioid_er_data = janitor::clean_names(read_csv('./opioid_related_visits.csv'))
 
 opioid_treatment_distance = janitor::clean_names(read_csv('./distance_to_treatment.csv'))
 ```
+
+```{r pharma data}
+prod_county = arcos::summarized_county_annual(state = "NY", key = "WaPo") %>% 
+  janitor::clean_names()
+
+county_pop = arcos::county_population(state = "NY", key = "WaPo") %>% 
+  janitor::clean_names()
+```
+
 
 ```{r data cleaning}
 
@@ -39,9 +66,49 @@ opioid_treatment_distance %>%
 
 # Combine Data Sets #
 
-opioid_total_data = left_join(opioid_er_data, opioid_death_data, by = c('county', 'year'))
+opioid_total_data = left_join(opioid_er_data, opioid_death_data, by = c('county', 'year')) %>% 
+  arrange(county, year)
 
 opioid_total_data %>% arrange(year, county) %>% print()
 
+```
+
+```{r no of pills}
+prod_county %>% 
+  group_by(buyer_county) %>% 
+  summarize(nopills = sum(count)) %>% 
+  arrange(desc(nopills))
+```
+
+```{r pills per capita}
+pharma_df = left_join(prod_county, county_pop, by = c("buyer_county", "year")) %>% 
+  select(county_name, name, year, count, population) %>% 
+  rename(county = county_name) %>% 
+  mutate(ppp = count/population)
+```
+
+```{r}
+pharma_df %>% 
+  ggplot(aes(x = year, y = ppp, color = county)) +
+  geom_point() +
+  geom_smooth(se = FALSE) +
+  theme(legend.position = "none")
+```
+
+```{r}
+sum_df <- opioid_total_data %>% 
+  group_by(county, year) %>% 
+  summarize(er_opioid = sum(er_opioid),
+            inpatient_total_opioid = sum(inpatient_total_opioid),
+            er_inpatient_total_opioid = sum(er_inpatient_total_opioid),
+            outpatient_opioid = sum(outpatient_opioid),
+            overall_opioid = sum(overall_opioid),
+            opioid_poisoning_deaths = sum(opioid_poisoning_deaths)
+  )
+```
+
+```{r sales v outcomes}
+death_sales_df <- inner_join(sum_df, pharma_df, by = c("county", "year")) %>% 
+  select(county, year, overall_opioid, count, population, opioid_poisoning_deaths, ppp)
 ```
 
