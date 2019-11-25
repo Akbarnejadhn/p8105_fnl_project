@@ -169,5 +169,55 @@ sum_df <- opioid_total_data %>%
 
 ``` r
 death_sales_df <- inner_join(sum_df, pharma_df, by = c("county", "year")) %>% 
-  select(county, year, overall_opioid, count, population, opioid_poisoning_deaths, ppp)
+  select(-name) %>% 
+  ungroup() %>% 
+  mutate(county = as.factor(county),
+         year = as.factor(year),
+         deaths_per_cap = opioid_poisoning_deaths/population)
+```
+
+## model building is fun
+
+``` r
+fit1 <- lm(deaths_per_cap ~ ppp, data = death_sales_df)
+fit2 <- lm(deaths_per_cap ~ . -er_inpatient_total_opioid -population, data = death_sales_df)
+fit3 <- lm(deaths_per_cap ~ count * population, data = death_sales_df)
+fit4 <- lm(deaths_per_cap ~ count + population, data = death_sales_df)
+```
+
+``` r
+summary(fit1)
+summary(fit2)
+summary(fit3)
+summary(fit4)
+```
+
+``` r
+model1 <- step(fit1)
+```
+
+    ## Start:  AIC=-2952.46
+    ## deaths_per_cap ~ ppp
+    ## 
+    ##        Df  Sum of Sq        RSS     AIC
+    ## <none>               7.2674e-06 -2952.5
+    ## - ppp   1 2.9524e-07 7.5627e-06 -2947.5
+
+``` r
+anova(fit3, fit1)
+```
+
+``` r
+death_sales_df %>% 
+  ggplot(aes(x = count, y = opioid_poisoning_deaths, color = population)) +
+  geom_point() +
+  geom_smooth(se = FALSE)
+```
+
+    ## `geom_smooth()` using method = 'loess' and formula 'y ~ x'
+
+<img src="final_project_files/figure-gfm/unnamed-chunk-7-1.png" width="90%" />
+
+``` r
+anova(fit1)
 ```
