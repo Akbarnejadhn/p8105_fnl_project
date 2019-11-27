@@ -158,6 +158,10 @@ sum_df <- opioid_total_data %>%
 
 ```{r sales v outcomes}
 death_sales_df <- inner_join(sum_df, pharma_df, by = c("county", "year")) %>% 
+<<<<<<< HEAD
+=======
+  # select(-name) %>% 
+>>>>>>> 5f8a76cd880c8d50fe3e3e81a9fac112e125e8e4
   ungroup() %>% 
   mutate(county = as.factor(county),
          year = as.factor(year),
@@ -169,8 +173,13 @@ death_sales_df <- inner_join(sum_df, pharma_df, by = c("county", "year")) %>%
 ```{r}
 fit1 <- lm(deaths_per_cap ~ pills_bought/population, data = death_sales_df)
 fit2 <- lm(deaths_per_cap ~ . -er_inpatient_total_opioid -population, data = death_sales_df)
+<<<<<<< HEAD
 fit3 <- lm(deaths_per_cap ~ pills_bought, data = death_sales_df)
 fit4 <- lm(deaths_per_cap ~ pills_bought * population, data = death_sales_df)
+=======
+fit3 <- lm(deaths_per_cap ~ pills_bought * population, data = death_sales_df)
+fit4 <- lm(deaths_per_cap ~ pills_bought + population, data = death_sales_df)
+>>>>>>> 5f8a76cd880c8d50fe3e3e81a9fac112e125e8e4
 ```
 
 ```{r, results = "hide"}
