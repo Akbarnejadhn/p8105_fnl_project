@@ -67,7 +67,9 @@ opioid_treatment_distance %>%
 # Combine Data Sets #
 
 opioid_total_data = left_join(opioid_er_data, opioid_death_data, by = c('county', 'year')) %>% 
-  arrange(county, year)
+  arrange(county, year) %>% 
+  mutate(county = recode(county, "Kings (Brooklyn)" = "Kings",
+         "New York (Manhattan)" = "New York"))
 
 opioid_total_data %>% arrange(year, county) %>% print()
 
@@ -86,21 +88,61 @@ prod_county %>%
 # Pills bought by Pharmacies in Each county per Year #
 
 pharma_df = left_join(prod_county, county_pop, by = c("buyer_county", "year")) %>% 
-  select(county_name, name, year, count, population) %>% 
-  rename(county = county_name) %>% 
-  rename(pills_bought = count) %>%
-  select(-name) %>%
-  mutate(ppp = pills_bought/population) %>% 
-  print()
+  select(county_name, year, count, population) %>% 
+  rename(county = county_name,
+         pills_bought = count) %>% 
+  mutate(county = as.factor(county))
+```
+
+## fun with clustering
+
+```{r}
+int_slope_df =
+  pharma_df %>% 
+  nest(data = year:population) %>% 
+  mutate(
+    models = map(data, ~lm(pills_bought/population ~ year, data = .x)),
+    result = map(models, broom::tidy)
+  ) %>% 
+  select(county, result) %>% 
+  unnest(result) %>% 
+  select(county, term, estimate) %>% 
+  pivot_wider(
+    names_from = term,
+    values_from = estimate
+  ) %>% 
+  rename(int = "(Intercept)", slope = year)
+  
+```
+
+```{r, results = "hide"}
+int_slope_df %>% 
+  ggplot(aes(x = int, y = slope)) + 
+  geom_point()
+```
+```{r}
+km_fit = 
+  kmeans(
+    x = int_slope_df %>% select(-county) %>% scale, 
+    centers = 3)
+
+int_slope_df =
+  broom::augment(km_fit, int_slope_df)
+```
+
+```{r, results = "hide"}
+int_slope_df %>% 
+  ggplot(aes(x = int, y = slope, color = .cluster)) +
+  geom_point()
 ```
 
 ```{r}
-pharma_df %>% 
-  ggplot(aes(x = year, y = ppp, color = county)) +
-  geom_point() +
-  geom_smooth(se = FALSE) +
-  theme(legend.position = "none")
+left_join(pharma_df, int_slope_df) %>% 
+  ggplot(aes(x = year, y = pills_bought/population, group = county, color = .cluster)) + 
+  geom_point() + 
+  geom_path() 
 ```
+
 
 ```{r}
 sum_df <- opioid_total_data %>% 
@@ -116,7 +158,6 @@ sum_df <- opioid_total_data %>%
 
 ```{r sales v outcomes}
 death_sales_df <- inner_join(sum_df, pharma_df, by = c("county", "year")) %>% 
-  select(-name) %>% 
   ungroup() %>% 
   mutate(county = as.factor(county),
          year = as.factor(year),
@@ -126,10 +167,10 @@ death_sales_df <- inner_join(sum_df, pharma_df, by = c("county", "year")) %>%
 ## model building is fun
 
 ```{r}
-fit1 <- lm(deaths_per_cap ~ ppp, data = death_sales_df)
+fit1 <- lm(deaths_per_cap ~ pills_bought/population, data = death_sales_df)
 fit2 <- lm(deaths_per_cap ~ . -er_inpatient_total_opioid -population, data = death_sales_df)
-fit3 <- lm(deaths_per_cap ~ count * population, data = death_sales_df)
-fit4 <- lm(deaths_per_cap ~ count + population, data = death_sales_df)
+fit3 <- lm(deaths_per_cap ~ pills_bought, data = death_sales_df)
+fit4 <- lm(deaths_per_cap ~ pills_bought * population, data = death_sales_df)
 ```
 
 ```{r, results = "hide"}
@@ -143,14 +184,10 @@ summary(fit4)
 model1 <- step(fit1)
 ```
 
-```{r, results = "hide"}
-anova(fit3, fit1)
-```
-
 
 ```{r, results = "hide"}
 death_sales_df %>% 
-  ggplot(aes(x = count, y = opioid_poisoning_deaths, color = population)) +
+  ggplot(aes(x = pills_bought, y = opioid_poisoning_deaths, color = population)) +
   geom_point() +
   geom_smooth(se = FALSE)
 ```

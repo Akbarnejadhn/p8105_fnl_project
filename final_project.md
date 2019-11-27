@@ -92,7 +92,9 @@ opioid_treatment_distance %>%
 # Combine Data Sets #
 
 opioid_total_data = left_join(opioid_er_data, opioid_death_data, by = c('county', 'year')) %>% 
-  arrange(county, year)
+  arrange(county, year) %>% 
+  mutate(county = recode(county, "Kings (Brooklyn)" = "Kings",
+         "New York (Manhattan)" = "New York"))
 
 opioid_total_data %>% arrange(year, county) %>% print()
 ```
@@ -115,45 +117,95 @@ opioid_total_data %>% arrange(year, county) %>% print()
     ## #   overall_opioid <dbl>, opioid_poisoning_deaths <dbl>
 
 ``` r
+# Number of Perscription Opioids by County #
 prod_county %>% 
-  group_by(buyer_county) %>% 
-  summarize(nopills = sum(count)) %>% 
-  arrange(desc(nopills))
+  group_by(buyer_county,year) %>% 
+  summarize(numpills = sum(count)) %>% 
+  arrange(desc(numpills))
 ```
 
-    ## # A tibble: 62 x 2
-    ##    buyer_county nopills
-    ##    <chr>          <int>
-    ##  1 SUFFOLK       870497
-    ##  2 ERIE          702107
-    ##  3 NASSAU        632906
-    ##  4 NEW YORK      604129
-    ##  5 KINGS         600261
-    ##  6 QUEENS        544853
-    ##  7 MONROE        422297
-    ##  8 WESTCHESTER   357865
-    ##  9 BRONX         342213
-    ## 10 ONONDAGA      339065
-    ## # ... with 52 more rows
+    ## # A tibble: 434 x 3
+    ## # Groups:   buyer_county [62]
+    ##    buyer_county  year numpills
+    ##    <chr>        <int>    <int>
+    ##  1 SUFFOLK       2011   134486
+    ##  2 SUFFOLK       2010   132513
+    ##  3 SUFFOLK       2008   126750
+    ##  4 SUFFOLK       2009   125565
+    ##  5 SUFFOLK       2012   121018
+    ##  6 SUFFOLK       2007   120391
+    ##  7 ERIE          2011   110324
+    ##  8 SUFFOLK       2006   109774
+    ##  9 ERIE          2012   109624
+    ## 10 ERIE          2010   106673
+    ## # ... with 424 more rows
 
 ``` r
+# Pills bought by Pharmacies in Each county per Year #
+
 pharma_df = left_join(prod_county, county_pop, by = c("buyer_county", "year")) %>% 
-  select(county_name, name, year, count, population) %>% 
-  rename(county = county_name) %>% 
-  mutate(ppp = count/population)
+  select(county_name, year, count, population) %>% 
+  rename(county = county_name,
+         pills_bought = count) %>% 
+  mutate(county = as.factor(county))
+```
+
+## fun with clustering
+
+``` r
+int_slope_df =
+  pharma_df %>% 
+  nest(data = year:population) %>% 
+  mutate(
+    models = map(data, ~lm(pills_bought/population ~ year, data = .x)),
+    result = map(models, broom::tidy)
+  ) %>% 
+  select(county, result) %>% 
+  unnest(result) %>% 
+  select(county, term, estimate) %>% 
+  pivot_wider(
+    names_from = term,
+    values_from = estimate
+  ) %>% 
+  rename(int = "(Intercept)", slope = year)
 ```
 
 ``` r
-pharma_df %>% 
-  ggplot(aes(x = year, y = ppp, color = county)) +
-  geom_point() +
-  geom_smooth(se = FALSE) +
-  theme(legend.position = "none")
+int_slope_df %>% 
+  ggplot(aes(x = int, y = slope)) + 
+  geom_point()
 ```
 
-    ## `geom_smooth()` using method = 'loess' and formula 'y ~ x'
+<img src="final_project_files/figure-gfm/unnamed-chunk-2-1.png" width="90%" />
 
-<img src="final_project_files/figure-gfm/unnamed-chunk-1-1.png" width="90%" />
+``` r
+km_fit = 
+  kmeans(
+    x = int_slope_df %>% select(-county) %>% scale, 
+    centers = 3)
+
+int_slope_df =
+  broom::augment(km_fit, int_slope_df)
+```
+
+``` r
+int_slope_df %>% 
+  ggplot(aes(x = int, y = slope, color = .cluster)) +
+  geom_point()
+```
+
+<img src="final_project_files/figure-gfm/unnamed-chunk-4-1.png" width="90%" />
+
+``` r
+left_join(pharma_df, int_slope_df) %>% 
+  ggplot(aes(x = year, y = pills_bought/population, group = county, color = .cluster)) + 
+  geom_point() + 
+  geom_path() 
+```
+
+    ## Joining, by = "county"
+
+<img src="final_project_files/figure-gfm/unnamed-chunk-5-1.png" width="90%" />
 
 ``` r
 sum_df <- opioid_total_data %>% 
@@ -169,7 +221,6 @@ sum_df <- opioid_total_data %>%
 
 ``` r
 death_sales_df <- inner_join(sum_df, pharma_df, by = c("county", "year")) %>% 
-  select(-name) %>% 
   ungroup() %>% 
   mutate(county = as.factor(county),
          year = as.factor(year),
@@ -179,10 +230,10 @@ death_sales_df <- inner_join(sum_df, pharma_df, by = c("county", "year")) %>%
 ## model building is fun
 
 ``` r
-fit1 <- lm(deaths_per_cap ~ ppp, data = death_sales_df)
+fit1 <- lm(deaths_per_cap ~ pills_bought/population, data = death_sales_df)
 fit2 <- lm(deaths_per_cap ~ . -er_inpatient_total_opioid -population, data = death_sales_df)
-fit3 <- lm(deaths_per_cap ~ count * population, data = death_sales_df)
-fit4 <- lm(deaths_per_cap ~ count + population, data = death_sales_df)
+fit3 <- lm(deaths_per_cap ~ pills_bought, data = death_sales_df)
+fit4 <- lm(deaths_per_cap ~ pills_bought * population, data = death_sales_df)
 ```
 
 ``` r
@@ -196,27 +247,23 @@ summary(fit4)
 model1 <- step(fit1)
 ```
 
-    ## Start:  AIC=-2952.46
-    ## deaths_per_cap ~ ppp
+    ## Start:  AIC=-2957.97
+    ## deaths_per_cap ~ pills_bought/population
     ## 
-    ##        Df  Sum of Sq        RSS     AIC
-    ## <none>               7.2674e-06 -2952.5
-    ## - ppp   1 2.9524e-07 7.5627e-06 -2947.5
-
-``` r
-anova(fit3, fit1)
-```
+    ##                           Df  Sum of Sq        RSS     AIC
+    ## <none>                                  6.9605e-06 -2958.0
+    ## - pills_bought:population  1 1.4541e-07 7.1059e-06 -2956.4
 
 ``` r
 death_sales_df %>% 
-  ggplot(aes(x = count, y = opioid_poisoning_deaths, color = population)) +
+  ggplot(aes(x = pills_bought, y = opioid_poisoning_deaths, color = population)) +
   geom_point() +
   geom_smooth(se = FALSE)
 ```
 
     ## `geom_smooth()` using method = 'loess' and formula 'y ~ x'
 
-<img src="final_project_files/figure-gfm/unnamed-chunk-7-1.png" width="90%" />
+<img src="final_project_files/figure-gfm/unnamed-chunk-10-1.png" width="90%" />
 
 ``` r
 anova(fit1)
