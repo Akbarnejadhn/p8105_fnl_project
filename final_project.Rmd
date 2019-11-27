@@ -73,18 +73,25 @@ opioid_total_data %>% arrange(year, county) %>% print()
 
 ```
 
-```{r no of pills}
+```{r number of pills}
+# Number of Perscription Opioids by County #
 prod_county %>% 
-  group_by(buyer_county) %>% 
-  summarize(nopills = sum(count)) %>% 
-  arrange(desc(nopills))
+  group_by(buyer_county,year) %>% 
+  summarize(numpills = sum(count)) %>% 
+  arrange(desc(numpills))
 ```
 
 ```{r pills per capita}
+
+# Pills bought by Pharmacies in Each county per Year #
+
 pharma_df = left_join(prod_county, county_pop, by = c("buyer_county", "year")) %>% 
   select(county_name, name, year, count, population) %>% 
   rename(county = county_name) %>% 
-  mutate(ppp = count/population)
+  rename(pills_bought = count) %>%
+  select(-name) %>%
+  mutate(ppp = pills_bought/population) %>% 
+  print()
 ```
 
 ```{r}
