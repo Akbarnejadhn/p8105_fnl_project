@@ -110,4 +110,15 @@ opioid_demographics %>%
   rename(race = race_or_ethnicity)
 ```
 
+```{r er_visits}
+
+# spaghetti plot of 
+opioid_er_data %>% 
+  group_by(year, county) %>% 
+  summarize(sum_er_visit = sum(er_opioid)) %>% 
+  ggplot(aes(x= year, y = sum_er_visit, color = county)) +
+  geom_line(alpha = .3) +
+  ylim(0, 1000) +
+   theme(legend.position = "none")
+```
 
