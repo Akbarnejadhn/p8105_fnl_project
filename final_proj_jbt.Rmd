@@ -1,0 +1,123 @@
+---
+title: "Untitled"
+author: "Julia Thompson"
+date: "11/30/2019"
+output: html_document
+---
+
+## ER visits by county & distance to treatment facility
+
+Is there any relationship between number of ER visits and distance to treatment facility?
+
+```{r setup, include=FALSE}
+library(tidyverse)
+library(viridis)
+library(arcos)
+library(readxl)
+knitr::opts_chunk$set(
+	echo = TRUE,
+	warning = FALSE,
+	fig.width = 8, 
+  fig.height = 6,
+  out.width = "90%"
+)
+options(
+  ggplot2.continuous.colour = "viridis",
+  ggplot2.continuous.fill = "viridis"
+)
+scale_colour_discrete = scale_colour_viridis_d
+scale_fill_discrete = scale_fill_viridis_d
+theme_set(theme_minimal() + theme(legend.position = "bottom"))
+```
+
+```{r load datasets}
+opioid_death_data = janitor::clean_names(read_csv('./opioid_related_deaths.csv'))
+
+county_pop = janitor::clean_names(read_excel("./data/county_pop.xlsx"))
+
+opioid_treatment_distance = janitor::clean_names(read_csv('./distance_to_treatment.csv'))
+```
+
+Because distance to nearest treatment facility data is from 2017, look at opioid deaths in just 2017.
+
+```{r}
+# clean opioid death data #
+
+opioid_death = opioid_death_data %>% 
+  filter(year == 2017) %>% 
+  select(-year)
+
+county_pop = 
+  county_pop %>% 
+  mutate(
+    county = str_replace(county, " County", "")
+  )
+
+opioid_treatment_dist = 
+  opioid_treatment_distance %>% 
+  rename(distance = value) %>% 
+  filter(state == 'New York') %>%
+  select(county, distance)
+
+# get rid of "county" in opioid_treatment_distance
+
+opioid_treatment_dist = 
+  opioid_treatment_dist %>% 
+  mutate(
+    county = str_replace(county, " County", "")
+  )
+
+treatment_death = 
+  left_join(opioid_treatment_dist, opioid_death, by = "county")
+
+treatment_death_final = 
+  left_join(treatment_death, county_pop, by = "county") %>% 
+  select(-rank) %>% 
+  mutate(
+    deaths_rate = (opioid_poisoning_deaths / population)*100
+  )
+```
+
+any relationship between rate and distance? Nope... the shorter the distance, the more deaths. Looking at rate, there is no real pattern? Kinda interesting that there's no relationship I guess.
+
+```{r}
+ggplot(treatment_death_final, aes(x = distance, y = opioid_poisoning_deaths))+
+  geom_point()
+
+ggplot(treatment_death_final, aes(x = distance, y = deaths_rate))+
+  geom_point()
+```
+
+```{r}
+take_back = read_csv("./data/take_back.csv") %>% 
+  janitor::clean_names() %>% 
+  select(county) %>% 
+  group_by(county) %>% 
+  summarize(
+    takeback_facilities = n()
+  )
+```
+
+compare number of pill take back locations by county
+
+```{r}
+treatment_death_final = treatment_death_final %>% 
+  left_join(take_back, treatment_death_final, by = "county")
+
+treatment_death_final = treatment_death_final %>% 
+  mutate(
+    takeback_facilities = replace_na(takeback_facilities, 0)
+  )
+
+ggplot(treatment_death_final, aes(x = distance, y = takeback_facilities))+
+  geom_point()
+
+ggplot(treatment_death_final, aes(x = takeback_facilities, y = deaths_rate))+
+  geom_point()
+```
+
+
+
+
+https://www.health.ny.gov/statistics/opioid/data/pdf/nys_opioid_annual_report_2017.pdf
+

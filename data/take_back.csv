@@ -1,0 +1,382 @@
+Name,Address Line 1,Address Line 2,City,State,Zip Code,County,Available to Public?,Location 1
+Fairview Pharmacy & Homecare Supply,4747-10 Nesconset Highway,,Port Jefferson Station,NY,11776,Suffolk,Yes,"4747-10 Nesconset Highway
+Port Jefferson Station, NY 11776
+(40.916646, -73.054855)"
+"Bartholomews Pharmacy, Inc.",2 Elm Street,,Franklinville,NY,14737,Cattaraugus,Yes,"2 Elm Street
+Franklinville, NY 14737
+(42.337191, -78.457883)"
+Gerould's Professional Pharmacy,130 South Main Street,,Elmira,NY,14904,Chemung,Yes,"130 South Main Street
+Elmira, NY 14904
+(42.083663, -76.805385)"
+Grassy Sprain Pharmacy,640 Tuckahoe Rd,,Yonkers,NY,10710,Westchester,Yes,"640 Tuckahoe Rd
+Yonkers, NY 10710
+(40.953661, -73.845061)"
+Market Street Apothecary LLC,78 W. Market St,,Corning,NY,14830,Steuben,Yes,"78 W. Market St
+Corning, NY 14830
+(42.143983, -77.057638)"
+Kenby Pharmacy,6024 5th Avenue,,Brooklyn,NY,11220,Kings,Yes,"6024 5th Avenue
+Brooklyn, NY 11220
+(40.639006, -74.016671)"
+Summit Park Pharmacy ,2578 Niagara Falls Blvd,,Niagara Falls,NY,14304,Niagara,Yes,"2578 Niagara Falls Blvd
+Niagara Falls, NY 14304
+(43.092572, -78.90658)"
+Established Drugs,3001 Clarendon Road,,Brooklyn,NY,11226,Kings,Yes,"3001 Clarendon Road
+Brooklyn, NY 11226
+(40.643253, -73.948589)"
+JAK Pharma Inc. DBA Arthur Avenue Pharmacy,2343 Arthur Ave,,Bronx,NY,10458,Bronx,Yes,"2343 Arthur Ave
+Bronx, NY 10458
+(40.85443, -73.888527)"
+Elizabethtown Community Hospital,75 Park St,PO Box 277,Elizabethtown,NY,12932,Essex,Yes,"75 Park St
+Elizabethtown, NY 12932
+(44.21543, -73.596624)"
+"Marg Pharmacy, Inc",76 Graham Avenue,,Brooklyn,NY,11206,Kings,Yes,"76 Graham Avenue
+Brooklyn, NY 11206
+(40.70354, -73.942577)"
+AVK Rx Pharmacy,3904 Church Avenue,,Brooklyn,NY,11203,Kings,Yes,"3904 Church Avenue
+Brooklyn, NY 11203
+(40.651236, -73.940923)"
+Franhill Pharmacy,204-19 Hillside Avenue,,Hollis,NY,11423,Queens,Yes,"204-19 Hillside Avenue
+Hollis, NY 11423
+(40.720675, -73.760261)"
+Vic Vena Pharmacy,1322 W State St,,Olean,NY,14760,Cattaraugus,Yes,"1322 W State St
+Olean, NY 14760
+(42.0774, -78.445434)"
+Riverside Remedies Rx Corp,39 Lower Main Street,,Callicoon,NY,12723,Sullivan,Yes,"39 Lower Main Street
+Callicoon, NY 12723
+(41.766547, -75.058403)"
+Beavers Pharmacy,7 Main Street,,Canisteo,NY,14823,Steuben,Yes,"7 Main Street
+Canisteo, NY 14823
+(42.270159, -77.605466)"
+Allure Specialty Pharmacy,4377 Bronx Blvd,,Bronx,NY,10466,Bronx,Yes,"4377 Bronx Blvd
+Bronx, NY 10466
+(40.899369, -73.85812)"
+Wanakah Pharmacy,4923 Lakeshore Rd,,Hamburg,NY,14075,Erie,Yes,"4923 Lakeshore Rd
+Hamburg, NY 14075
+(42.749206, -78.898466)"
+RND Pharmacy Inc d/b/a Casa de Vida Pharmacy,52 W Burnside Ave,,Bronx,NY,10453,Bronx,Yes,"52 W Burnside Ave
+Bronx, NY 10453
+(40.854006, -73.909533)"
+Brooks Pharmacy,4481 Lakeshore Road,,Hamburg,NY,14075,Erie,Yes,"4481 Lakeshore Road
+Hamburg, NY 14075
+(42.762279, -78.879344)"
+"Alfred Pharmacy, Inc.",36 N Main St,,Alfred,NY,14802,Allegany,Yes,"36 N Main St
+Alfred, NY 14802
+(42.255165, -77.790206)"
+Stone's Pharmacy Inc.,1 Main St,,Lake Luzerne,NY,12846,Warren,Yes,"1 Main St
+Lake Luzerne, NY 12846
+(43.316977, -73.840796)"
+Crestwood Pharmacy,26A Picotte Dr,,Albany,NY,12208,Albany,Yes,"26A Picotte Dr
+Albany, NY 12208
+(42.652306, -73.811914)"
+Friendship Pharmacy,9 W Main St,,Friendship,NY,14739,Allegany,Yes,"9 W Main St
+Friendship, NY 14739
+(42.207702, -78.134325)"
+ERX Pharmaceutical DBA/QwikMeds,159 Ralph Avenue,,Brooklyn,NY,11233,Kings,Yes,"159 Ralph Avenue
+Brooklyn, NY 11233
+(40.684478, -73.923025)"
+Transit Hill Pharmacy,6344 Transit Rd,,Depew,NY,14043,Erie,Yes,"6344 Transit Rd
+Depew, NY 14043
+(42.928509, -78.696924)"
+St. George Pharmacy,99 Stuyvesant Place,,Staten Island,NY,10301,Richmond,Yes,"99 Stuyvesant Place
+Staten Island, NY 10301
+(40.643728, -74.07749)"
+Country Village Chemists,227 E Main St,,Huntington,NY,11743,Suffolk,Yes,"227 E Main St
+Huntington, NY 11743
+(40.881887, -73.392805)"
+Evergreen Drugs Co,87-08 Justice Avenue,,Elmhurst,NY,11373,Chautauqua,Yes,"87-08 Justice Avenue
+Elmhurst, NY 11373
+(40.737453, -73.876165)"
+Gerould's Professional Pharmacy Inc,215 Hoffman Street,,Elmira,NY,14905,Chemung,Yes,"215 Hoffman Street
+Elmira, NY 14905
+(42.085166, -76.822644)"
+"Attica Pharmacy, Inc.",2 Market St.,,Attica,NY,14011,Wyoming,Yes,"2 Market St.
+Attica, NY 14011
+(42.864419, -78.28431)"
+Life Pharma II Inc.,471 Lenox Ave,,New York,NY,10037,New York,Yes,"471 Lenox Ave
+New York, NY 10037
+(40.813145, -73.941659)"
+Community Care Pharmacy,2913 Surf Avenue,Pharmacy,Brooklyn,NY,11224,Kings,Yes,"2913 Surf Avenue
+Brooklyn, NY 11224
+(40.572836, -73.995376)"
+Prohealth Pharmacy,370 Lexington Avenue,,New York,NY,10017,New York,Yes,"370 Lexington Avenue
+New York, NY 10017
+(40.750791, -73.976557)"
+Tri-Road Pharmacy,791 Westchester Ave ,,Bronx,NY,10455,Bronx,Yes,"791 Westchester Ave
+Bronx, NY 10455
+(40.818595, -73.903821)"
+S&M Pharmacy,6850 Main Street,,Flushing,NY,11367,Queens,Yes,"6850 Main Street
+Flushing, NY 11367
+(40.732115, -73.82479)"
+Adirondack Apothecary DBA Moriah Pharmacy,4315 Main St,,Port Henry,NY,12974,Essex,Yes,"4315 Main St
+Port Henry, NY 12974
+(44.048052, -73.459603)"
+Galens Health Mart Pharmacy,17 Sodus St,,Clyde,NY,14433,Wayne,Yes,"17 Sodus St
+Clyde, NY 14433
+(43.082595, -76.872253)"
+Trotta's West Street Pharmacy,15 Halstead Ave,,Harrison,NY,10528,Westchester,Yes,"15 Halstead Ave
+Harrison, NY 10528
+(40.962157, -73.723098)"
+13th Ave Pharmacy,5211 13th Avenue,,Brooklyn,NY,11219,Kings,Yes,"5211 13th Avenue
+Brooklyn, NY 11219
+(40.633086, -73.994127)"
+Jan Pharma Inc.,311 Saint Nicholas Ave,,Ridgewood,NY,11385,Ridgewood,Yes,"311 Saint Nicholas Ave
+Ridgewood, NY 11385
+(40.701192, -73.910926)"
+"Moden-Giroux, Inc DBA Middleport Family Health Center",81 Rochester Rd,PO Box 188,Middleport,NY,14105,Niagara,Yes,"81 Rochester Rd
+Middleport, NY 14105
+(43.20522, -78.482064)"
+Simfarose Pharmacy,765 Morris Park Ave,,Bronx,NY,10462,Bronx,Yes,"765 Morris Park Ave
+Bronx, NY 10462
+(40.845731, -73.863658)"
+Four Corners Pharmacy LLC,360 Delaware Ave,,Delmar,NY,12054,Albany,Yes,"360 Delaware Ave
+Delmar, NY 12054
+(42.622658, -73.831607)"
+New Rochelle Prescription Center,551 Main St,,New Rochelle,NY,10801,Westchester,Yes,"551 Main St
+New Rochelle, NY 10801
+(40.907787, -73.783225)"
+Ami Pharmacy DBA St. Jesus Pharmacy,4180 Broadway,,New York,NY,10033,New York,Yes,"4180 Broadway
+New York, NY 10033
+(40.847902, -73.937904)"
+"Young's Pharmacy & General Store, LLC",1636 Burden Lake Rd,,Averill Park,NY,12018,Rensselaer,Yes,"1636 Burden Lake Rd
+Averill Park, NY 12018
+(42.634304, -73.554152)"
+Tile Pharmacy,1031 Cleveland Dr,,Cheektowaga,NY,14225,Erie,Yes,"1031 Cleveland Dr
+Cheektowaga, NY 14225
+(42.945285, -78.761215)"
+MRR Pharma Inc.,6220 11th Ave,,Brooklyn,NY,11219,Kings,Yes,"6220 11th Ave
+Brooklyn, NY 11219
+(40.630247, -74.004253)"
+Prohealth Pharmacy,385 Second Avenue,,New York,NY,10010,New York,Yes,"385 Second Avenue
+New York, NY 10010
+(40.737423, -73.981231)"
+The Casey Group LLC DBA Alberty Drugs,81 Main Street,,Batavia,NY,14020,Genesee,Yes,"81 Main Street
+Batavia, NY 14020
+(42.99756, -78.183765)"
+Marra's Pharmacy,217 Remsen St,PO Box 229,Cohoes,NY,12047,Albany,Yes,"217 Remsen St
+Cohoes, NY 12047
+(42.771042, -73.700562)"
+Bertrand Chaffee Hospital,224 East Main Street,,Springville,NY,14141,Erie,Yes,"224 East Main Street
+Springville, NY 14141
+(42.508484, -78.659235)"
+Dedrick's Pharmacy,190 Main St,,New Paltz,NY,12561,Ulster,Yes,"190 Main St
+New Paltz, NY 12561
+(41.746042, -74.078317)"
+Oak Park Pharmacy,205 Prospect Park West,,Brooklyn,NY,11215,Kings,Yes,"205 Prospect Park West
+Brooklyn, NY 11215
+(40.660646, -73.98017)"
+Condo Pharmacy,28 Montcalm Ave,,Plattsburgh,NY,12901,Clinton,Yes,"28 Montcalm Ave
+Plattsburgh, NY 12901
+(44.699955, -73.460535)"
+Heritage Park Rehab and Skilled Nursing Inc.,150 Prather Ave,,Jamestown,NY,14701,Chautauqua,"No, exclusive to resident of facility","150 Prather Ave
+Jamestown, NY 14701
+(42.090308, -79.238233)"
+Heritage Green Rehab and Skilled Nursing Inc.,3023 Route 430,,Greenhurst,NY,14742,Chautauqua,"No, exclusive to resident of facility","3023 Route 430
+Greenhurst, NY 14742
+(42.123312, -79.307622)"
+Avonora Pharmacy,5456 Myrtle Avenue,,Ridgewood,NY,11385,Queens,Yes,"5456 Myrtle Avenue
+Ridgewood, NY 11385
+(40.69983, -73.908771)"
+Addison's Apothecary,36 Main Street,,Addison,NY,14801,Steuben,Yes,"36 Main Street
+Addison, NY 14801
+(42.106134, -77.233989)"
+Glen Cove Chemists,20 Forest Avenue,,Glen Cove,NY,11542,Nassau,Yes,"20 Forest Avenue
+Glen Cove, NY 11542
+(40.870357, -73.628225)"
+Fontak Inc Ryan Medical Pharmacy,2000 North Village Avenue ,Suite 107,Rockville Centre,NY,11570,Nassau,Yes,"2000 North Village Avenue
+Rockville Centre, NY 11570
+(40.688539, -73.633121)"
+Plainview Family Pharmacy,142-A Manetto Hill Road,,Plainview,NY,11803,Nassau,Yes,"142-A Manetto Hill Road
+Plainview, NY 11803
+(40.783706, -73.472936)"
+Village Apothecary,79 Tinker St,,Woodstock,NY,12498,Ulster,Yes,"79 Tinker St
+Woodstock, NY 12498
+(42.040332, -74.12154)"
+Nicholson Pharmacy,36 Schuyler Street,,Belmont,NY,14813,Allegany,Yes,"36 Schuyler Street
+Belmont, NY 14813
+(42.223187, -78.033422)"
+Family Pharmacy Plus,320 S Transit St,,Lockport,NY,14094,Niagara,Yes,"320 S Transit St
+Lockport, NY 14094
+(43.158688, -78.696869)"
+Marcs Village Pharmacy DBA Marinellis Village Pharmacy,31 E Main Street,,Elmsford,NY,10523,Westchester,Yes,"31 E Main Street
+Elmsford, NY 10523
+(41.054413, -73.818352)"
+Ascan Pharmacy Inc.,10121 Metropolitan Avenue,,Forest Hills,NY,11375,Queens,Yes,"10121 Metropolitan Avenue
+Forest Hills, NY 11375
+(40.710498, -73.851076)"
+Saugerties Pharmacy,250 Main St,,Saugerties,NY,12477,Ulster,Yes,"250 Main St
+Saugerties, NY 12477
+(42.07756, -73.953367)"
+Alice Hyde Medical Center,133 Park St,,Malone,NY,12953,Franklin,Yes,"133 Park St
+Malone, NY 12953
+(44.856658, -74.29193)"
+Cedars Pharmacy,95-19 57th Avenue,,Elmhurst,NY,11373,Queens,Yes,"95-19 57th Avenue
+Elmhurst, NY 11373
+(40.736854, -73.865095)"
+Ballard Pharmacy,226 Prospect Park West,,Brooklyn,NY,11215,Kings,Yes,"226 Prospect Park West
+Brooklyn, NY 11215
+(40.659886, -73.980805)"
+Savall Drug,393 Merrick Ave N,(cor. Camp Ave),Merrick,NY,11566,Nassau,Yes,"393 Merrick Ave N
+Merrick, NY 11566
+(40.676439, -73.557403)"
+Lange's Pharmacy,2205 Nott Street,,Niskayuna,NY,12309,Schenectady,Yes,"2205 Nott Street
+Niskayuna, NY 12309
+(42.815761, -73.894429)"
+Towne Center Pharmacy DBA Beekman Pharmacy,2540 Route 55 ,PO Box 335,Poughquag,NY,12570,Dutchess,Yes,"2540 Route 55
+Poughquag, NY 12570
+(41.625355, -73.688373)"
+"Transcript Pharmacy of New York, Inc.",87 Hempstead Turnpike ,,Farmingdale,NY,11735,Nassau,Yes,"87 Hempstead Turnpike
+Farmingdale, NY 11735
+(40.730168, -73.461471)"
+Cayuga Medical Center at Ithaca,101 Dates Dr,,Ithaca,NY,14850,Tompkins,Yes,"101 Dates Dr
+Ithaca, NY 14850
+(42.467096, -76.538808)"
+Sinclair Pharmacy,75 N Main St,,Warsaw,NY,14569,Wyoming,Yes,"75 N Main St
+Warsaw, NY 14569
+(42.741335, -78.13258)"
+Sunrise Pharmacy,2 Park Ave,,Yonkers,NY,10703,Westchester,Yes,"2 Park Ave
+Yonkers, NY 10703
+(40.940382, -73.892098)"
+Sterling Pharmacy,38-01 Bell Boulevard,,Bayside,NY,11361,Queens,Yes,"38-01 Bell Boulevard
+Bayside, NY 11361
+(40.766367, -73.77245)"
+The Medicine Shoppe,10 Central Ave,,Ilion,NY,13357,Herkimer,Yes,"10 Central Ave
+Ilion, NY 13357
+(43.016379, -75.034914)"
+NeighboRx Pharmacy at Pearl River,139 N Middletown Rd,,Pearl River,NY,10965,Rockland,Yes,"139 N Middletown Rd
+Pearl River, NY 10965
+(41.064672, -74.012656)"
+Rosenkrans Pharmacy Inc,526 Main St,,Medina,NY,14103,Orleans,Yes,"526 Main St
+Medina, NY 14103
+(43.220063, -78.38692)"
+Community Memorial Hospital,150 Broad Street,,Hamilton,NY,13346,Madison,Yes,"150 Broad Street
+Hamilton, NY 13346
+(42.813906, -75.541908)"
+Castle Hill Community Pharmacy,706 Castle Hill Ave,,Bronx,NY,10473,Bronx,Yes,"706 Castle Hill Ave
+Bronx, NY 10473
+(40.821357, -73.848577)"
+Paul's Pharmacy,222 Oakridge Common,,South Salem,NY,10590,Westchester,Yes,"222 Oakridge Common
+South Salem, NY 10590
+(41.214938, -73.517635)"
+"Queens Central Pharmacy, Inc",116-08 Queens Boulevard,,Forest Hills,NY,11375,Queens,Yes,"116-08 Queens Boulevard
+Forest Hills, NY 11375
+(40.715961, -73.833681)"
+Bangladesh Farmacia,73-21 37th Road,,Jackson Heights,NY,11372,Queens,Yes,"73-21 37th Road
+Jackson Heights, NY 11372
+(40.74717, -73.892176)"
+"Martin's Foods of South Burlington, LLC DBA Hannaford Food & Drug #8320",1400 Altamont Ave,,Schenectady,NY,12303,Schenectady,Yes,"1400 Altamont Ave
+Schenectady, NY 12303
+(42.786069, -73.943134)"
+Lewis County General Hospital,7785 N State St ,Pharmacy,Lowville,NY,13367,Lewis,Yes,"7785 N State St
+Lowville, NY 13367
+(43.795771, -75.49812)"
+Hill Rx Corp DBA New Victory Pharmacy,9216 4th Avenue,,Brooklyn,NY,11209,Kings,Yes,"9216 4th Avenue
+Brooklyn, NY 11209
+(40.618017, -74.030312)"
+Ocean A& R Pharmacy Inc.,2806 Ocean Avenue,,Brooklyn,NY,11229,Kings,Yes,"2806 Ocean Avenue
+Brooklyn, NY 11229
+(40.593076, -73.95022)"
+Euro Chemist Pharmacy,669 Manhattan Ave,,Brooklyn,NY,11222,Kings,Yes,"669 Manhattan Ave
+Brooklyn, NY 11222
+(40.724764, -73.951363)"
+Alden Pharmacy,13203 Broadway St,,Alden,NY,14004,Erie,Yes,"13203 Broadway St
+Alden, NY 14004
+(42.900076, -78.496102)"
+HealthSmart Pharmacy,203 Main St,,Ossining,NY,10562,Westchester,Yes,"203 Main St
+Ossining, NY 10562
+(41.161792, -73.861743)"
+Carthage Area Hospital,1001 West St.,,Carthage,NY,13619,Jefferson,Yes,"1001 West St.
+Carthage, NY 13619
+(43.986162, -75.594861)"
+"Cornerstone Drug & Gift, Inc.",72 Champlain St,,Rouses Point,NY,12979,Clinton,Yes,"72 Champlain St
+Rouses Point, NY 12979
+(44.982757, -73.371533)"
+Upstate University Hospital,750 East Adams Street,,Syracuse,NY,13210,Onondaga,Yes,"750 East Adams Street
+Syracuse, NY 13210
+(43.042677, -76.139323)"
+Bayside Pharmacy Inc,221-36 Horace Harding Expressway,,Oakland Gardens,NY,11364,Queens,Yes,"221-36 Horace Harding Expressway
+Oakland Gardens, NY 11364
+(40.749294, -73.755836)"
+My Hope Pharmacy LLC,14114 Northern Boulevard,,Flushing,NY,11354,Queens,Yes,"14114 Northern Boulevard
+Flushing, NY 11354
+(40.764394, -73.825263)"
+Heritage Village Rehab and Skilled Nursing Inc.,4570 Route 60,,Gerry,NY,14740,Chautauqua,"No, exclusive to resident of facility","4570 Route 60
+Gerry, NY 14740
+(42.196098, -79.251972)"
+Lemac Pharmacy,623 McLean Ave,,Yonkers,NY,10705,Westchester,Yes,"623 McLean Ave
+Yonkers, NY 10705
+(40.909462, -73.879759)"
+ESCO Drug Co Inc.,687 9th Avenue,,New York,NY,10036,New York,Yes,"687 9th Avenue
+New York, NY 10036
+(40.761828, -73.990164)"
+Dexter Pharmacy,1453 Jefferson Avenue,,Buffalo,NY,14208,Erie,Yes,"1453 Jefferson Avenue
+Buffalo, NY 14208
+(42.914707, -78.85399)"
+"Keeseville Pharmacy, Inc.",1730 Front St,,Keeseville,NY,12944,Essex,Yes,"1730 Front St
+Keeseville, NY 12944
+(44.504495, -73.48032)"
+Franklin Square Pharmacy Inc.,925 Hemptead Tpke,,Franklin Square,NY,11010,Nassau,Yes,"925 Hemptead Tpke
+Franklin Square, NY 11010
+(40.707327, -73.674628)"
+Harpell Chemists,12-65 150th St,,Whitestone,NY,11357,Queens,Yes,"12-65 150th St
+Whitestone, NY 11357
+(40.788973, -73.81386)"
+Family Medical Pharmacy,120 Plaza Drive,,Williamsville,NY,14221,Erie,Yes,"120 Plaza Drive
+Williamsville, NY 14221
+(43.000592, -78.740445)"
+Flatbush Rx Pharmacy,1855 Flatbush Avenue ,,Brooklyn,NY,11210,Kings,Yes,"1855 Flatbush Avenue
+Brooklyn, NY 11210
+(40.62458, -73.938944)"
+Margaretville Memorial Hospital,42084 NY-28,,Margaretville,NY,12455,Delaware,Yes,"42084 NY-28
+Margaretville, NY 12455
+(42.147654, -74.642629)"
+Taconic Pharmacy,3659 Lee Rd,,Jefferson Valley,NY,10535,Westchester,Yes,"3659 Lee Rd
+Jefferson Valley, NY 10535
+(41.332651, -73.809692)"
+Avonora Pharmacy,149-01 Union Turnpike,,Flushing,NY,11367,Queens,Yes,"149-01 Union Turnpike
+Flushing, NY 11367
+(40.718737, -73.81354)"
+Danny's Pharmacy,1632 Bruckner Boulevard,,Bronx,NY,10473,Bronx,Yes,"1632 Bruckner Boulevard
+Bronx, NY 10473
+(40.82398, -73.87419)"
+Vijan Pharma Inc.,312 Ralph Ave,,Brooklyn,NY,11233,Kings,Yes,"312 Ralph Ave
+Brooklyn, NY 11233
+(40.678495, -73.921679)"
+Jojan Pharma Inc. ,121 Saint Nicholas Ave,,Brooklyn,NY,11237,Kings,Yes,"121 Saint Nicholas Ave
+Brooklyn, NY 11237
+(40.705325, -73.917955)"
+Gerould's Pharmacy,98 West Pulteney Street,,Corning,NY,14830,Steuben,Yes,"98 West Pulteney Street
+Corning, NY 14830
+(42.151361, -77.064739)"
+Bardonia Pharmacy,301 Route 304 Suite 4,,Bardonia,NY,10954,Rockland,Yes,"301 Route 304 Suite 4
+Bardonia, NY 10954
+(41.108671, -73.996153)"
+Fishkill Pharmacy LLC dba The Medicine Shoppe,1004 Main St Bldg 554,Suites 5 & 6,Fishkill,NY,12524,Dutchess,Yes,"1004 Main St Bldg 554
+Fishkill, NY 12524
+(41.532462, -73.906335)"
+Cy's Elma Pharmacy,2317 Bowen Rd,,Elma,NY,14059,Erie,Yes,"2317 Bowen Rd
+Elma, NY 14059
+(42.834589, -78.636862)"
+"G.S.P. Longterm Care, Inc",1567 Central Park Avenue,,Yonkers,NY,10710,Westchester,Yes,"1567 Central Park Avenue
+Yonkers, NY 10710
+(40.952642, -73.844051)"
+Orleans Community Health Medina Hospital,200 Ohio Street,,Medina,NY,14103,Orleans,Yes,"200 Ohio Street
+Medina, NY 14103
+(43.223707, -78.397073)"
+Nekos-Dedrick's Pharmacy,86 North Front Street,,Kingston,NY,12401,Ulster,Yes,"86 North Front Street
+Kingston, NY 12401
+(41.935051, -74.022314)"
+Saratoga Hospital,211 Church St,,Saratoga Springs,NY,12866,Saratoga,Yes,"211 Church St
+Saratoga Springs, NY 12866
+(43.084794, -73.796223)"
+Wurlitzer Family Pharmacy Inc.,521 Division St,,North Tonawanda,NY,14120,Niagara,Yes,"521 Division St
+North Tonawanda, NY 14120
+(43.037084, -78.86289)"
+Forteen Star Enterprises Inc. DBA Central Ave Pharmacy,346 Central Ave,,Albany,NY,12206,Albany,Yes,"346 Central Ave
+Albany, NY 12206
+(42.666051, -73.773972)"
+"Martin's Foods of South Burlington, LLC DBA Hannaford Food & Drug #8364",2967 Rte 9 Ste 400,,Valatie,NY,12184,Columbia,Yes,"2967 Rte 9 Ste 400
+Valatie, NY 12184
+(42.428163, -73.688544)"
+Park Ridge Apothecary,1561 Long Pond Road,Suite 104,Rochester,NY,14626,Ulster,Yes,"1561 Long Pond Road
+Rochester, NY 14626
+(43.196816, -77.701382)"

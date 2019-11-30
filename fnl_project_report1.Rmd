@@ -50,6 +50,8 @@ Create an interactive map showing where medication collection boxes are located.
 
 Additionally, we will have a chart showing distances to nearest substance abuse facility for each county.
 
+Map that updates over time- for example a bar chart 
+
 
 
 ## Timeline
