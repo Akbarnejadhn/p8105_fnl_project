@@ -1,0 +1,161 @@
+---
+title: "animated_graphs"
+author: "Olivia Wagner"
+date: "11/28/2019"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+library(tidyverse)
+library(viridis)
+library(arcos)
+library(gganimate)
+library(gifski)
+
+
+```
+
+```{r load datasets}
+opioid_death_data = janitor::clean_names(read_csv('./opioid_related_deaths.csv'))
+
+opioid_er_data = janitor::clean_names(read_csv('./opioid_related_visits.csv'))
+
+opioid_treatment_distance = janitor::clean_names(read_csv('./distance_to_treatment.csv'))
+```
+
+```{r pharma data}
+prod_county = arcos::summarized_county_annual(state = "NY", key = "WaPo") %>% 
+  janitor::clean_names()
+
+county_pop = arcos::county_population(state = "NY", key = "WaPo") %>% 
+  janitor::clean_names()
+```
+
+
+```{r data cleaning}
+
+# clean opioid death data #
+
+opioid_death_data = opioid_death_data %>% 
+  filter(year >= 2010) %>% print()
+
+# clean opioid er data #
+
+opioid_er_data = opioid_er_data %>% 
+  select(year, patient_county_name, rural_urban, payer, er_opioid, inpatient_total_opioid, er_inpatient_total_opioid, outpatient_opioid, overall_opioid) %>%
+  rename(county = patient_county_name) %>% print()
+
+# clean opioid treatment data #
+# data is only for the year 2017#
+
+opioid_treatment_distance %>% 
+  filter(state == 'New York') %>%
+  select(state, county, value) %>%
+  rename(distance = value) 
+
+
+# Combine Data Sets #
+
+opioid_total_data = left_join(opioid_er_data, opioid_death_data, by = c('county', 'year')) %>% 
+  arrange(county, year) %>% 
+  mutate(county = recode(county, "Kings (Brooklyn)" = "Kings",
+         "New York (Manhattan)" = "New York")) 
+
+opioid_total_data %>% arrange(year, county) %>% print()
+
+```
+
+```{r number of pills}
+# Number of Perscription Opioids by County #
+prod_county = prod_county %>% 
+  group_by(buyer_county,year) %>% 
+  summarize(numpills = sum(count)) %>% 
+  rename(county = buyer_county) %>%
+  ungroup() %>%
+  arrange(county, year) %>% 
+  mutate(county = ifelse(county == 'SAINT LAWRENCE', 'ST. LAWRENCE', county)) %>%
+  print()
+
+
+```
+
+
+## Animation Graphs ##
+
+```{r animation overdoses}
+
+# bar chart for number of pills perscribed/overdoses #
+# rename common columns #
+patients = opioid_total_data %>% group_by(year, county) %>% summarize(opioids = sum(overall_opioid)) %>% filter(county != 'Statewide Total') %>% mutate(county = toupper(county)) %>% mutate(county = ifelse(county == 'RICHMOND (STATEN ISLAND)', 'RICHMOND', county)) 
+
+# join the two data sets #
+perscriptions_data = left_join(patients, prod_county, by = c('county', 'year'))
+
+# filter by applicable counties #
+perscriptions_data = perscriptions_data %>% filter(county != 'UNKNOWN', county != 'OTHER THAN NEW YORK STATE') %>% filter(year %in% c('2010', '2011', '2012')) 
+
+# bar graph data #
+bargraph = perscriptions_data %>% group_by(year) %>%
+  mutate(rank = rank(-opioids)) %>%
+  group_by(county) %>% 
+  filter(rank <= 25) %>%
+  ungroup()
+
+# gganimate, bar chart top 25 counties #
+bar = ggplot(bargraph, aes(x = rank,
+                          y = as.numeric(opioids),
+                          group = county, 
+                          fill = as.factor(county),
+                          color = as.factor(county))) +
+  geom_bar(stat = 'identity', alpha = 0.8) +
+  coord_flip(clip = "off", expand = FALSE)+
+  geom_text(aes(y=0, label = paste(county, ' ')), vjust = 0.2, hjust = 1, size = 2.5, color = 'black')+
+  geom_text(aes(label = as.numeric(opioids)), size = 2.5, hjust = 0, vjust=0.5, position=position_dodge(width = 1), color = 'black')+
+  scale_x_continuous(trans = 'reverse', position = 'top')+
+  scale_y_continuous(position = 'left')+
+  labs(x = "County", y = "Opioid Related Treatment Cases")+
+  theme(legend.position = 'none', plot.margin=unit(c(2, 2, 2, 5),"cm"))+
+  labs(title = 'Number of Opioid Related Treatments',  
+       subtitle  =  'Top 25 Counties') +
+  transition_states(year, state_length = 3)+
+  enter_fade()+
+  exit_shrink()+
+  ease_aes('linear')
+ 
+  print(bar)
+  
+
+
+```
+
+```{r animate time pass of pills perscribed}
+# animated graph that shows how many pills were perscribed in each county as time passes#
+# NY state instituted restrictions on opioids perscribed #
+
+print(prod_county)
+
+#data = prod_county #
+
+time_plot = ggplot(data = prod_county, aes(x = year, y = numpills, group = county)) +
+  geom_line()+
+  geom_segment(aes(xend = 2013 , yend = numpills), linetype = 'dotted' , color = 'grey') +
+  geom_point(size = 2) +
+  geom_text(aes(x = max(year)+1, label = county), hjust = 1) +
+  transition_reveal(year)+
+  coord_cartesian(clip = 'off') +
+  labs(title = 'Number of Prescriptions per County', x = 'Year', y = 'Number of Perscriptions (aggregate)') +
+  theme_bw()+
+  theme(plot.margin = margin(5.5, 40, 5.5, 5.5)) +
+  scale_x_continuous(limits = c(2006, 2014))
+
+print(time_plot)
+
+
+```
+
+```{r animated graph }
+
+# 
+
+```
+
