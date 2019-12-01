@@ -50,7 +50,9 @@ county_pop = arcos::county_population(state = "NY", key = "WaPo") %>%
 # clean opioid death data #
 
 opioid_death_data = opioid_death_data %>% 
-  filter(year >= 2010) 
+  filter(year >= 2010) %>% 
+  mutate(county = recode(county, "Kings (Brooklyn)" = "Kings",
+                         "New York (Manhattan)" = "New York"))
 
 # clean opioid er data #
 
@@ -70,12 +72,7 @@ opioid_treatment_distance %>%
 # Combine Data Sets #
 
 opioid_total_data = left_join(opioid_er_data, opioid_death_data, by = c('county', 'year')) %>% 
-  arrange(county, year) %>% 
-  mutate(county = recode(county, "Kings (Brooklyn)" = "Kings",
-         "New York (Manhattan)" = "New York"))
-
-opioid_total_data %>% arrange(year, county) %>% print()
-
+  arrange(county, year)
 ```
 
 ```{r number of pills}
@@ -93,7 +90,55 @@ prod_county %>%
 pharma_df = left_join(prod_county, county_pop, by = c("buyer_county", "year")) %>% 
   select(county_name, year, count, population) %>% 
   rename(county = county_name,
-         pills_bought = count) %>% 
+         pills_bought = count)
+```
+## is there a rural/urban gradient?
+
+```{r opioid total by year}
+sum_df <- opioid_total_data %>% 
+  group_by(county, year, rural_urban) %>% 
+  summarize(er_opioid = sum(er_opioid),
+            inpatient_total_opioid = sum(inpatient_total_opioid),
+            er_inpatient_total_opioid = sum(er_inpatient_total_opioid),
+            outpatient_opioid = sum(outpatient_opioid),
+            overall_opioid = sum(overall_opioid),
+            opioid_poisoning_deaths = sum(opioid_poisoning_deaths)
+  )
+```
+
+```{r rural v urban}
+rural_urban_df <- inner_join(sum_df, pharma_df, by = c("county", "year"))
+```
+
+
+```{r}
+rural_urban_df %>% 
+  ggplot(aes(x = year, y = opioid_poisoning_deaths/population*10000, color = rural_urban)) +
+  geom_point(alpha = 0.3) +
+  geom_smooth(method = "lm", se = FALSE)
+```
+
+## spaghetti plots
+
+```{r}
+sum_total_df <- opioid_total_data %>% 
+  group_by(county, year) %>% 
+  summarize(er_opioid = sum(er_opioid),
+            inpatient_total_opioid = sum(inpatient_total_opioid),
+            er_inpatient_total_opioid = sum(er_inpatient_total_opioid),
+            outpatient_opioid = sum(outpatient_opioid),
+            overall_opioid = sum(overall_opioid),
+            opioid_poisoning_deaths = sum(opioid_poisoning_deaths)
+  )
+```
+
+```{r}
+death_sales_df <- inner_join(sum_total_df, pharma_df, by = c("county", "year"))
+```
+
+
+```{r}
+int_slope_dat <- pharma_df %>% 
   mutate(
     year = recode(year, 
                   "2006" = 0,
@@ -109,15 +154,15 @@ pharma_df = left_join(prod_county, county_pop, by = c("buyer_county", "year")) %
 ```
 
 ```{r}
-pharma_df %>% 
-  ggplot(aes(x = year, y = ppp, color = county)) +
+int_slope_dat %>% 
+  ggplot(aes(x = year, y = ppp, group = county)) +
   geom_point() +
   geom_line(se = FALSE) +
   theme(legend.position = "none")
 ```
 
 ```{r}
-int_slope_df <- pharma_df %>% 
+int_slope_df <- int_slope_dat %>% 
   nest(data = year:ppp) %>%
   mutate(
     models = map(data, ~lm(ppp ~ year, data = .x)),
@@ -154,9 +199,48 @@ int_slope_df %>%
   ggplot(aes(x = slope, y = int, color = .cluster)) +
   geom_point()
 ```
+
 ```{r}
-left_join(pharma_df, int_slope_df) %>% 
+left_join(int_slope_dat, int_slope_df) %>% 
   ggplot(aes(x = year, y = ppp, group = county, color = .cluster)) + 
   geom_point() + 
   geom_path() 
 ```
+
+```{r}
+death_sales_dat <- death_sales_df %>%
+  ungroup() %>% 
+  mutate(
+    year = recode(year, 
+                  "2010" = 0,
+                  "2011" = 1,
+                  "2012" = 2)
+  )
+```
+
+## opioid deaths are endemic
+
+```{r endemic}
+death_sales_dat %>%
+  ggplot(aes(x = population, y = opioid_poisoning_deaths)) +
+  geom_point(alpha = 0.3) +
+  geom_smooth(method = "lm", se = FALSE) +
+  theme(legend.position = "none")
+```
+
+```{r}
+death_sales_dat %>%
+  ggplot(aes(x = pills_bought, y = opioid_poisoning_deaths)) +
+  geom_point(alpha = 0.3) +
+  geom_smooth(method = "lm", se = FALSE) +
+  theme(legend.position = "none")
+```
+
+
+```{r}
+death_sales_df %>% 
+  ggplot(aes(x = population, y = pills_bought)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE)
+```
+
