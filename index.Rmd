@@ -1,0 +1,17 @@
+---
+title: "A Closer Look at Opioids in NYC"
+output: 
+  html_document:
+    toc: true
+    toc_float: true
+    theme: cerulean
+---
+
+# This is our data science final project
+
+Home page, we can introduce our topic etc etc here.
+
+More text
+
+
+

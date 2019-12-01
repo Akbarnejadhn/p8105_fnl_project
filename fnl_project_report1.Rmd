@@ -2,7 +2,7 @@
 title: "Final Project Proposal"
 author: "Hana Akbarnejad"
 date: "11/6/2019"
-output: github_document
+output: html_document
 
 ---
 
@@ -13,7 +13,7 @@ knitr::opts_chunk$set(echo = TRUE)
 ## Names and UNIs
 * Hana Akbarnejad (ha2546)
 
-* Julia Thomspson (jt3175)
+* Julia Thompson (jt3175)
 
 * Jared Garfinkel (jsg2145)
 
