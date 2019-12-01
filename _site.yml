@@ -3,14 +3,10 @@ output_dir: "."
 navbar:
   title: "Home"
   right:
-    - text: "The Data"
-      href: fnl_project_report1.html
-    - text: "Graphs"
+    - text: "Plotly & Plots"
       href: final_proj_jbt.html
-    - icon: fa-envelope fa-lg
-      href: mailto:jbennett010@gmail.com
     - icon: fa-github fa-lg
-      href: http://github.com/jthompson3175/
+      href: https://github.com/Akbarnejadhn/p8105_fnl_project
 output:
   html_document:
     theme: journal

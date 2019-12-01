@@ -1,27 +1,50 @@
----
-title: "animated_graphs"
-author: "Olivia Wagner"
-date: "11/28/2019"
-output: github_document
----
+animated\_graphs
+================
+Olivia Wagner
+11/28/2019
 
-```{r setup, include=FALSE}
-library(tidyverse)
-library(viridis)
-library(arcos)
-library(gganimate)
-library(gifski)
+``` r
+opioid_death_data = janitor::clean_names(read_csv('./opioid_related_deaths.csv'))
 ```
 
-```{r load datasets}
-opioid_death_data = janitor::clean_names(read_csv('./opioid_related_deaths.csv'))
+    ## Parsed with column specification:
+    ## cols(
+    ##   Year = col_double(),
+    ##   County = col_character(),
+    ##   `Opioid Poisoning Deaths` = col_double()
+    ## )
 
+``` r
 opioid_er_data = janitor::clean_names(read_csv('./opioid_related_visits.csv'))
+```
 
+    ## Parsed with column specification:
+    ## cols(
+    ##   .default = col_double(),
+    ##   `Patient County Name` = col_character(),
+    ##   `Rural/Urban` = col_character(),
+    ##   Payer = col_character()
+    ## )
+
+    ## See spec(...) for full column specifications.
+
+``` r
 opioid_treatment_distance = janitor::clean_names(read_csv('./distance_to_treatment.csv'))
 ```
 
-```{r pharma data}
+    ## Parsed with column specification:
+    ## cols(
+    ##   STATEFP = col_character(),
+    ##   COUNTYFP = col_character(),
+    ##   YEAR = col_double(),
+    ##   INDICATOR = col_character(),
+    ##   VALUE = col_double(),
+    ##   STATE = col_character(),
+    ##   STATEABBREVIATION = col_character(),
+    ##   COUNTY = col_character()
+    ## )
+
+``` r
 prod_county = arcos::summarized_county_annual(state = "NY", key = "WaPo") %>% 
   janitor::clean_names()
 
@@ -29,9 +52,7 @@ county_pop = arcos::county_population(state = "NY", key = "WaPo") %>%
   janitor::clean_names()
 ```
 
-
-```{r data cleaning}
-
+``` r
 # clean opioid death data #
 
 opioid_death_data = opioid_death_data %>% 
@@ -54,16 +75,31 @@ opioid_treatment_distance %>%
   filter(state == 'New York') %>%
   select(state, county, value) %>%
   rename(distance = value) 
+```
 
+    ## # A tibble: 62 x 3
+    ##    state    county             distance
+    ##    <chr>    <chr>                 <dbl>
+    ##  1 New York Albany County          5.97
+    ##  2 New York Allegany County       14.6 
+    ##  3 New York Bronx County           0.32
+    ##  4 New York Broome County          7.96
+    ##  5 New York Cattaraugus County     9.86
+    ##  6 New York Cayuga County         11.9 
+    ##  7 New York Chautauqua County      8.15
+    ##  8 New York Chemung County         6.53
+    ##  9 New York Chenango County       11.6 
+    ## 10 New York Clinton County        14.4 
+    ## # ... with 52 more rows
 
+``` r
 # Combine Data Sets #
 
 opioid_total_data = left_join(opioid_er_data, opioid_death_data, by = c('county', 'year')) %>% 
   arrange(county, year) 
-
 ```
 
-```{r number of pills}
+``` r
 # Number of Perscription Opioids by County #
 prod_county = prod_county %>% 
   group_by(buyer_county,year) %>% 
@@ -72,15 +108,11 @@ prod_county = prod_county %>%
   ungroup() %>%
   arrange(county, year) %>% 
   mutate(county = ifelse(county == 'SAINT LAWRENCE', 'ST. LAWRENCE', county)) 
-
-
 ```
 
+## Animation Graphs
 
-## Animation Graphs ##
-
-```{r animation overdoses}
-
+``` r
 # bar chart for number of pills perscribed/overdoses #
 # rename common columns #
 patients = opioid_total_data %>% group_by(year, county) %>% summarize(opioids = sum(overall_opioid)) %>% filter(county != 'Statewide Total') %>% mutate(county = toupper(county))
@@ -120,17 +152,31 @@ bar = ggplot(bargraph, aes(x = rank,
   ease_aes('linear')
  
   print(bar)
-  
-
-
 ```
 
-```{r animate time pass of pills perscribed}
+``` r
 # animated graph that shows how many pills were perscribed in each county as time passes#
 # NY state instituted restrictions on opioids perscribed #
 
 print(prod_county)
+```
 
+    ## # A tibble: 434 x 3
+    ##    county    year numpills
+    ##    <chr>    <int>    <int>
+    ##  1 ALBANY    2006    15696
+    ##  2 ALBANY    2007    18424
+    ##  3 ALBANY    2008    20264
+    ##  4 ALBANY    2009    20641
+    ##  5 ALBANY    2010    21543
+    ##  6 ALBANY    2011    21103
+    ##  7 ALBANY    2012    21094
+    ##  8 ALLEGANY  2006     3747
+    ##  9 ALLEGANY  2007     3986
+    ## 10 ALLEGANY  2008     3930
+    ## # ... with 424 more rows
+
+``` r
 #data = prod_county #
 
 time_plot = ggplot(data = prod_county, aes(x = year, y = numpills, group = county)) +
@@ -145,11 +191,9 @@ time_plot = ggplot(data = prod_county, aes(x = year, y = numpills, group = count
   scale_x_continuous(limits = c(2006, 2014))
 
 print(time_plot)
-
-
 ```
 
-```{r animated graph }
+``` r
 # data by insurance provider #
 
 
@@ -172,4 +216,3 @@ boxplot_treatment = ggplot(data = insurance_data, aes(x = payer, y = opioid_trea
 
 print(boxplot_treatment)
 ```
-
