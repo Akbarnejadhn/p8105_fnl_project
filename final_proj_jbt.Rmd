@@ -116,8 +116,76 @@ ggplot(treatment_death_final, aes(x = takeback_facilities, y = deaths_rate))+
   geom_point()
 ```
 
-
-
-
 https://www.health.ny.gov/statistics/opioid/data/pdf/nys_opioid_annual_report_2017.pdf
+
+## Look at demographic data
+
+```{r}
+deaths_age_grp = read_csv("./data/deaths_age_group.csv") %>% 
+  janitor::clean_names() %>% 
+  pivot_wider(
+    names_from = age_group,
+    values_from = opioid_poisoning_deaths
+  ) %>% 
+  janitor::clean_names()
+```
+
+Deaths by race by year:
+
+```{r}
+deaths_by_year = deaths_age_grp %>% 
+  select(year, region, race_or_ethnicity, sex, total) %>% 
+  group_by(year, race_or_ethnicity) %>% 
+  summarize(
+    count = sum(total)
+  )
+
+ggplot(deaths_by_year, aes(x = year, y = count, fill = race_or_ethnicity)) +
+  geom_bar(stat = "identity", position="dodge")
+```
+
+Deaths by age group by year
+
+```{r}
+# deaths_by_age = deaths_age_grp %>% 
+#   select(-region, -race_or_ethnicity, -total, -sex) %>% 
+#   group_by(year) %>% 
+#   summarize(
+#      "1_to_9" = sum(x1_9, na.rm = T), 
+#      "10_to_19" = sum(x10_19, na.rm = T), 
+#      "65_to_74" = sum(x65_74, na.rm = T), 
+#      "75_to_84" = sum(x75_84, na.rm = T), 
+#      "85+" = sum(x85, na.rm = T), 
+#      "<1" = sum(x1, na.rm = T),
+#      "20_to_24" = sum(x20_24, na.rm = T),
+#      "25_to_34" = sum(x25_34, na.rm = T), 
+#      "55_to_64" = sum(x55_64, na.rm = T), 
+#      "35_to_44" = sum(x35_44, na.rm = T),
+#      "45_to_54" = sum(x45_54, na.rm = T)
+#   )
+
+deaths_by_age = read_csv("./data/deaths_age_group.csv") %>% 
+  janitor::clean_names() %>% 
+  select(-region, -race_or_ethnicity, -sex) %>% 
+  filter(age_group != "Total") %>% 
+  group_by(year, age_group) %>% 
+  summarize(
+    count = sum(opioid_poisoning_deaths)
+  )
+
+ggplot(deaths_by_age, aes(x = year, y = count, fill = age_group)) +
+  geom_bar(stat = "identity", position="dodge")
+
+ggplot(deaths_by_age, aes(x = year, y = count, color = age_group)) +
+  geom_point() +
+  geom_line()
+
+```
+
+Might need to adjust for population, proportion of ethnicity, etc.
+
+
+
+
+
 
