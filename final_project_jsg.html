@@ -427,7 +427,9 @@ pharma_df = left_join(prod_county, county_pop, by = c(&quot;buyer_county&quot;, 
 <pre class="r"><code>rural_urban_df %&gt;% 
   ggplot(aes(x = year, y = opioid_poisoning_deaths/population*10000, color = rural_urban)) +
   geom_point(alpha = 0.3) +
-  geom_smooth(method = &quot;lm&quot;, se = FALSE)</code></pre>
+  geom_smooth(method = &quot;lm&quot;, se = FALSE) +
+  ylab(&quot;Opioid Deaths per 10,000&quot;) +
+  scale_x_continuous(breaks = c(2010, 2011, 2012), labels = c(&quot;2010&quot;, &quot;2011&quot;, &quot;2012&quot;))</code></pre>
 <p><img src="final_project_jsg_files/figure-html/unnamed-chunk-1-1.png" width="90%" /></p>
 </div>
 <div id="spaghetti-plots" class="section level2">
@@ -509,22 +511,25 @@ int_slope_df =
 <div id="opioid-deaths-are-endemic" class="section level2">
 <h2>opioid deaths are endemic</h2>
 <pre class="r"><code>death_sales_dat %&gt;%
+  filter(year == 2) %&gt;% 
   ggplot(aes(x = population, y = opioid_poisoning_deaths)) +
   geom_point(alpha = 0.3) +
   geom_smooth(method = &quot;lm&quot;, se = FALSE) +
   theme(legend.position = &quot;none&quot;)</code></pre>
 <p><img src="final_project_jsg_files/figure-html/endemic-1.png" width="90%" /></p>
 <pre class="r"><code>death_sales_dat %&gt;%
+  filter(year == 2) %&gt;% 
   ggplot(aes(x = pills_bought, y = opioid_poisoning_deaths)) +
-  geom_point(alpha = 0.3) +
+  geom_point() +
   geom_smooth(method = &quot;lm&quot;, se = FALSE) +
   theme(legend.position = &quot;none&quot;)</code></pre>
-<p><img src="final_project_jsg_files/figure-html/unnamed-chunk-12-1.png" width="90%" /></p>
+<p><img src="final_project_jsg_files/figure-html/pill%20count%20v%20opioid%20deaths%20in%202012-1.png" width="90%" /></p>
 <pre class="r"><code>death_sales_df %&gt;% 
+  filter(year == 2012) %&gt;% 
   ggplot(aes(x = population, y = pills_bought)) +
   geom_point() +
   geom_smooth(method = &quot;lm&quot;, se = FALSE)</code></pre>
-<p><img src="final_project_jsg_files/figure-html/unnamed-chunk-13-1.png" width="90%" /></p>
+<p><img src="final_project_jsg_files/figure-html/pill%20count%20v%20population%20in%202012-1.png" width="90%" /></p>
 </div>
 
 

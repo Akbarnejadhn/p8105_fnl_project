@@ -115,7 +115,9 @@ rural_urban_df <- inner_join(sum_df, pharma_df, by = c("county", "year"))
 rural_urban_df %>% 
   ggplot(aes(x = year, y = opioid_poisoning_deaths/population*10000, color = rural_urban)) +
   geom_point(alpha = 0.3) +
-  geom_smooth(method = "lm", se = FALSE)
+  geom_smooth(method = "lm", se = FALSE) +
+  ylab("Opioid Deaths per 10,000") +
+  scale_x_continuous(breaks = c(2010, 2011, 2012), labels = c("2010", "2011", "2012"))
 ```
 
 ## spaghetti plots
@@ -222,23 +224,26 @@ death_sales_dat <- death_sales_df %>%
 
 ```{r endemic}
 death_sales_dat %>%
+  filter(year == 2) %>% 
   ggplot(aes(x = population, y = opioid_poisoning_deaths)) +
   geom_point(alpha = 0.3) +
   geom_smooth(method = "lm", se = FALSE) +
   theme(legend.position = "none")
 ```
 
-```{r}
+```{r pill count v opioid deaths in 2012}
 death_sales_dat %>%
+  filter(year == 2) %>% 
   ggplot(aes(x = pills_bought, y = opioid_poisoning_deaths)) +
-  geom_point(alpha = 0.3) +
+  geom_point() +
   geom_smooth(method = "lm", se = FALSE) +
   theme(legend.position = "none")
 ```
 
 
-```{r}
+```{r pill count v population in 2012}
 death_sales_df %>% 
+  filter(year == 2012) %>% 
   ggplot(aes(x = population, y = pills_bought)) +
   geom_point() +
   geom_smooth(method = "lm", se = FALSE)
