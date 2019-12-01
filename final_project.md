@@ -220,51 +220,49 @@ sum_df <- opioid_total_data %>%
 ```
 
 ``` r
-death_sales_df <- inner_join(sum_df, pharma_df, by = c("county", "year")) %>% 
-  ungroup() %>% 
-  mutate(county = as.factor(county),
-         year = as.factor(year),
-         deaths_per_cap = opioid_poisoning_deaths/population)
+# death_sales_df <- inner_join(sum_df, pharma_df, by = c("county", "year")) %>% 
+# <<<<<<< HEAD
+# =======
+#   # select(-name) %>% 
+# >>>>>>> 5f8a76cd880c8d50fe3e3e81a9fac112e125e8e4
+#   ungroup() %>% 
+#   mutate(county = as.factor(county),
+#          year = as.factor(year),
+#          deaths_per_cap = opioid_poisoning_deaths/population)
 ```
 
 ## model building is fun
 
 ``` r
-fit1 <- lm(deaths_per_cap ~ pills_bought/population, data = death_sales_df)
-fit2 <- lm(deaths_per_cap ~ . -er_inpatient_total_opioid -population, data = death_sales_df)
-fit3 <- lm(deaths_per_cap ~ pills_bought, data = death_sales_df)
-fit4 <- lm(deaths_per_cap ~ pills_bought * population, data = death_sales_df)
+# fit1 <- lm(deaths_per_cap ~ pills_bought/population, data = death_sales_df)
+# fit2 <- lm(deaths_per_cap ~ . -er_inpatient_total_opioid -population, data = death_sales_df)
+# <<<<<<< HEAD
+# fit3 <- lm(deaths_per_cap ~ pills_bought, data = death_sales_df)
+# fit4 <- lm(deaths_per_cap ~ pills_bought * population, data = death_sales_df)
+# =======
+# fit3 <- lm(deaths_per_cap ~ pills_bought * population, data = death_sales_df)
+# fit4 <- lm(deaths_per_cap ~ pills_bought + population, data = death_sales_df)
+# >>>>>>> 5f8a76cd880c8d50fe3e3e81a9fac112e125e8e4
 ```
 
 ``` r
-summary(fit1)
-summary(fit2)
-summary(fit3)
-summary(fit4)
+# summary(fit1)
+# summary(fit2)
+# summary(fit3)
+# summary(fit4)
 ```
 
 ``` r
-model1 <- step(fit1)
+# model1 <- step(fit1)
 ```
 
-    ## Start:  AIC=-2957.97
-    ## deaths_per_cap ~ pills_bought/population
-    ## 
-    ##                           Df  Sum of Sq        RSS     AIC
-    ## <none>                                  6.9605e-06 -2958.0
-    ## - pills_bought:population  1 1.4541e-07 7.1059e-06 -2956.4
-
 ``` r
-death_sales_df %>% 
-  ggplot(aes(x = pills_bought, y = opioid_poisoning_deaths, color = population)) +
-  geom_point() +
-  geom_smooth(se = FALSE)
+# death_sales_df %>% 
+#   ggplot(aes(x = pills_bought, y = opioid_poisoning_deaths, color = population)) +
+#   geom_point() +
+#   geom_smooth(se = FALSE)
 ```
 
-    ## `geom_smooth()` using method = 'loess' and formula 'y ~ x'
-
-<img src="final_project_files/figure-gfm/unnamed-chunk-10-1.png" width="90%" />
-
 ``` r
-anova(fit1)
+# anova(fit1)
 ```
