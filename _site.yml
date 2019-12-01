@@ -1,0 +1,16 @@
+name: "Yay internet!"
+output_dir: "."
+navbar:
+  title: "Home"
+  right:
+    - text: "The Data"
+      href: fnl_project_report1.html
+    - text: "Graphs"
+      href: final_proj_jbt.html
+    - icon: fa-envelope fa-lg
+      href: mailto:jbennett010@gmail.com
+    - icon: fa-github fa-lg
+      href: http://github.com/jthompson3175/
+output:
+  html_document:
+    theme: journal

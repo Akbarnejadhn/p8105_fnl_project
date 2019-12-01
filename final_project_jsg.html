@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="Jared Garfinkel" />
+
+<meta name="date" content="2019-11-29" />
+
+<title>final_project_jsg</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/journal.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 61px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 66px;
+  margin-top: -66px;
+}
+.section h2 {
+  padding-top: 66px;
+  margin-top: -66px;
+}
+.section h3 {
+  padding-top: 66px;
+  margin-top: -66px;
+}
+.section h4 {
+  padding-top: 66px;
+  margin-top: -66px;
+}
+.section h5 {
+  padding-top: 66px;
+  margin-top: -66px;
+}
+.section h6 {
+  padding-top: 66px;
+  margin-top: -66px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Home</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="fnl_project_report1.html">The Data</a>
+</li>
+<li>
+  <a href="final_proj_jbt.html">Graphs</a>
+</li>
+<li>
+  <a href="mailto:jbennett010@gmail.com">
+    <span class="fa fa-envelope fa-lg"></span>
+     
+  </a>
+</li>
+<li>
+  <a href="http://github.com/jthompson3175/">
+    <span class="fa fa-github fa-lg"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">final_project_jsg</h1>
+<h4 class="author">Jared Garfinkel</h4>
+<h4 class="date">11/29/2019</h4>
+
+</div>
+
+
+<pre class="r"><code>opioid_death_data = read_csv(&#39;./opioid_related_deaths.csv&#39;) %&gt;% 
+  janitor::clean_names()</code></pre>
+<pre><code>## Parsed with column specification:
+## cols(
+##   Year = col_double(),
+##   County = col_character(),
+##   `Opioid Poisoning Deaths` = col_double()
+## )</code></pre>
+<pre class="r"><code>opioid_er_data = read_csv(&#39;./opioid_related_visits.csv&#39;) %&gt;% 
+  janitor::clean_names()</code></pre>
+<pre><code>## Parsed with column specification:
+## cols(
+##   .default = col_double(),
+##   `Patient County Name` = col_character(),
+##   `Rural/Urban` = col_character(),
+##   Payer = col_character()
+## )</code></pre>
+<pre><code>## See spec(...) for full column specifications.</code></pre>
+<pre class="r"><code>opioid_treatment_distance = read_csv(&#39;./distance_to_treatment.csv&#39;) %&gt;% 
+  janitor::clean_names()</code></pre>
+<pre><code>## Parsed with column specification:
+## cols(
+##   STATEFP = col_character(),
+##   COUNTYFP = col_character(),
+##   YEAR = col_double(),
+##   INDICATOR = col_character(),
+##   VALUE = col_double(),
+##   STATE = col_character(),
+##   STATEABBREVIATION = col_character(),
+##   COUNTY = col_character()
+## )</code></pre>
+<pre class="r"><code>prod_county = arcos::summarized_county_annual(state = &quot;NY&quot;, key = &quot;WaPo&quot;) %&gt;% 
+  janitor::clean_names()
+
+county_pop = arcos::county_population(state = &quot;NY&quot;, key = &quot;WaPo&quot;) %&gt;% 
+  janitor::clean_names()</code></pre>
+<pre class="r"><code># clean opioid death data #
+
+opioid_death_data = opioid_death_data %&gt;% 
+  filter(year &gt;= 2010) %&gt;% 
+  mutate(county = recode(county, &quot;Kings (Brooklyn)&quot; = &quot;Kings&quot;,
+                         &quot;New York (Manhattan)&quot; = &quot;New York&quot;))
+
+# clean opioid er data #
+
+opioid_er_data = opioid_er_data %&gt;% 
+  select(year, patient_county_name, rural_urban, payer, er_opioid, inpatient_total_opioid, er_inpatient_total_opioid, outpatient_opioid, overall_opioid) %&gt;%
+  rename(county = patient_county_name)
+
+# clean opioid treatment data #
+# data is only for the year 2017#
+
+opioid_treatment_distance %&gt;% 
+  filter(state == &#39;New York&#39;) %&gt;%
+  select(state, county, value) %&gt;%
+  rename(distance = value) </code></pre>
+<pre><code>## # A tibble: 62 x 3
+##    state    county             distance
+##    &lt;chr&gt;    &lt;chr&gt;                 &lt;dbl&gt;
+##  1 New York Albany County          5.97
+##  2 New York Allegany County       14.6 
+##  3 New York Bronx County           0.32
+##  4 New York Broome County          7.96
+##  5 New York Cattaraugus County     9.86
+##  6 New York Cayuga County         11.9 
+##  7 New York Chautauqua County      8.15
+##  8 New York Chemung County         6.53
+##  9 New York Chenango County       11.6 
+## 10 New York Clinton County        14.4 
+## # ... with 52 more rows</code></pre>
+<pre class="r"><code># Combine Data Sets #
+
+opioid_total_data = left_join(opioid_er_data, opioid_death_data, by = c(&#39;county&#39;, &#39;year&#39;)) %&gt;% 
+  arrange(county, year)</code></pre>
+<pre class="r"><code># Number of Perscription Opioids by County #
+prod_county %&gt;% 
+  group_by(buyer_county,year) %&gt;% 
+  summarize(numpills = sum(count)) %&gt;% 
+  arrange(desc(numpills))</code></pre>
+<pre><code>## # A tibble: 434 x 3
+## # Groups:   buyer_county [62]
+##    buyer_county  year numpills
+##    &lt;chr&gt;        &lt;int&gt;    &lt;int&gt;
+##  1 SUFFOLK       2011   134486
+##  2 SUFFOLK       2010   132513
+##  3 SUFFOLK       2008   126750
+##  4 SUFFOLK       2009   125565
+##  5 SUFFOLK       2012   121018
+##  6 SUFFOLK       2007   120391
+##  7 ERIE          2011   110324
+##  8 SUFFOLK       2006   109774
+##  9 ERIE          2012   109624
+## 10 ERIE          2010   106673
+## # ... with 424 more rows</code></pre>
+<pre class="r"><code># Pills bought by Pharmacies in Each county per Year #
+
+pharma_df = left_join(prod_county, county_pop, by = c(&quot;buyer_county&quot;, &quot;year&quot;)) %&gt;% 
+  select(county_name, year, count, population) %&gt;% 
+  rename(county = county_name,
+         pills_bought = count)</code></pre>
+<div id="is-there-a-ruralurban-gradient" class="section level2">
+<h2>is there a rural/urban gradient?</h2>
+<pre class="r"><code>sum_df &lt;- opioid_total_data %&gt;% 
+  group_by(county, year, rural_urban) %&gt;% 
+  summarize(er_opioid = sum(er_opioid),
+            inpatient_total_opioid = sum(inpatient_total_opioid),
+            er_inpatient_total_opioid = sum(er_inpatient_total_opioid),
+            outpatient_opioid = sum(outpatient_opioid),
+            overall_opioid = sum(overall_opioid),
+            opioid_poisoning_deaths = sum(opioid_poisoning_deaths)
+  )</code></pre>
+<pre class="r"><code>rural_urban_df &lt;- inner_join(sum_df, pharma_df, by = c(&quot;county&quot;, &quot;year&quot;))</code></pre>
+<pre class="r"><code>rural_urban_df %&gt;% 
+  ggplot(aes(x = year, y = opioid_poisoning_deaths/population*10000, color = rural_urban)) +
+  geom_point(alpha = 0.3) +
+  geom_smooth(method = &quot;lm&quot;, se = FALSE) +
+  ylab(&quot;Opioid Deaths per 10,000&quot;) +
+  scale_x_continuous(breaks = c(2010, 2011, 2012), labels = c(&quot;2010&quot;, &quot;2011&quot;, &quot;2012&quot;))</code></pre>
+<p><img src="final_project_jsg_files/figure-html/unnamed-chunk-1-1.png" width="90%" /></p>
+</div>
+<div id="spaghetti-plots" class="section level2">
+<h2>spaghetti plots</h2>
+<pre class="r"><code>sum_total_df &lt;- opioid_total_data %&gt;% 
+  group_by(county, year) %&gt;% 
+  summarize(er_opioid = sum(er_opioid),
+            inpatient_total_opioid = sum(inpatient_total_opioid),
+            er_inpatient_total_opioid = sum(er_inpatient_total_opioid),
+            outpatient_opioid = sum(outpatient_opioid),
+            overall_opioid = sum(overall_opioid),
+            opioid_poisoning_deaths = sum(opioid_poisoning_deaths)
+  )</code></pre>
+<pre class="r"><code>death_sales_df &lt;- inner_join(sum_total_df, pharma_df, by = c(&quot;county&quot;, &quot;year&quot;))</code></pre>
+<pre class="r"><code>int_slope_dat &lt;- pharma_df %&gt;% 
+  mutate(
+    year = recode(year, 
+                  &quot;2006&quot; = 0,
+                  &quot;2007&quot; = 1,
+                  &quot;2008&quot; = 2,
+                  &quot;2009&quot; = 3,
+                  &quot;2010&quot; = 4,
+                  &quot;2011&quot; = 5,
+                  &quot;2012&quot; = 6)
+  ) %&gt;% 
+  group_by(county, year) %&gt;% 
+  summarize(ppp = pills_bought/population)</code></pre>
+<pre class="r"><code>int_slope_dat %&gt;% 
+  ggplot(aes(x = year, y = ppp, group = county)) +
+  geom_point() +
+  geom_line(se = FALSE) +
+  theme(legend.position = &quot;none&quot;)</code></pre>
+<p><img src="final_project_jsg_files/figure-html/unnamed-chunk-5-1.png" width="90%" /></p>
+<pre class="r"><code>int_slope_df &lt;- int_slope_dat %&gt;% 
+  nest(data = year:ppp) %&gt;%
+  mutate(
+    models = map(data, ~lm(ppp ~ year, data = .x)),
+    result = map(models, broom::tidy)
+  ) %&gt;% 
+  select(county, result) %&gt;% 
+  unnest(result) %&gt;% 
+  select(county, term, estimate) %&gt;% 
+  pivot_wider(
+    names_from = term,
+    values_from = estimate
+  ) %&gt;% 
+  rename(int = &quot;(Intercept)&quot;, slope = year)</code></pre>
+<pre class="r"><code>int_slope_df %&gt;% 
+  ggplot(aes(x = slope, y = int)) +
+  geom_point() +
+  theme(legend.position = &quot;none&quot;)</code></pre>
+<p><img src="final_project_jsg_files/figure-html/unnamed-chunk-7-1.png" width="90%" /></p>
+<pre class="r"><code>km_fit = 
+  kmeans(
+    int_slope_df[,c(2,3)] %&gt;% scale, 
+    centers = 3)
+
+int_slope_df =
+  broom::augment(km_fit, int_slope_df)</code></pre>
+<pre class="r"><code>int_slope_df %&gt;% 
+  ggplot(aes(x = slope, y = int, color = .cluster)) +
+  geom_point()</code></pre>
+<p><img src="final_project_jsg_files/figure-html/unnamed-chunk-9-1.png" width="90%" /></p>
+<pre class="r"><code>left_join(int_slope_dat, int_slope_df) %&gt;% 
+  ggplot(aes(x = year, y = ppp, group = county, color = .cluster)) + 
+  geom_point() + 
+  geom_path() </code></pre>
+<pre><code>## Joining, by = &quot;county&quot;</code></pre>
+<p><img src="final_project_jsg_files/figure-html/unnamed-chunk-10-1.png" width="90%" /></p>
+<pre class="r"><code>death_sales_dat &lt;- death_sales_df %&gt;%
+  ungroup() %&gt;% 
+  mutate(
+    year = recode(year, 
+                  &quot;2010&quot; = 0,
+                  &quot;2011&quot; = 1,
+                  &quot;2012&quot; = 2)
+  )</code></pre>
+</div>
+<div id="opioid-deaths-are-endemic" class="section level2">
+<h2>opioid deaths are endemic</h2>
+<pre class="r"><code>death_sales_dat %&gt;%
+  filter(year == 2) %&gt;% 
+  ggplot(aes(x = population, y = opioid_poisoning_deaths)) +
+  geom_point(alpha = 0.3) +
+  geom_smooth(method = &quot;lm&quot;, se = FALSE) +
+  theme(legend.position = &quot;none&quot;)</code></pre>
+<p><img src="final_project_jsg_files/figure-html/endemic-1.png" width="90%" /></p>
+<pre class="r"><code>death_sales_dat %&gt;%
+  filter(year == 2) %&gt;% 
+  ggplot(aes(x = pills_bought, y = opioid_poisoning_deaths)) +
+  geom_point() +
+  geom_smooth(method = &quot;lm&quot;, se = FALSE) +
+  theme(legend.position = &quot;none&quot;)</code></pre>
+<p><img src="final_project_jsg_files/figure-html/pill%20count%20v%20opioid%20deaths%20in%202012-1.png" width="90%" /></p>
+<pre class="r"><code>death_sales_df %&gt;% 
+  filter(year == 2012) %&gt;% 
+  ggplot(aes(x = population, y = pills_bought)) +
+  geom_point() +
+  geom_smooth(method = &quot;lm&quot;, se = FALSE)</code></pre>
+<p><img src="final_project_jsg_files/figure-html/pill%20count%20v%20population%20in%202012-1.png" width="90%" /></p>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
