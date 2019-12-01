@@ -469,13 +469,13 @@ pharma_df = left_join(prod_county, county_pop, by = c(&quot;buyer_county&quot;, 
 <p><img src="final_project_jsg_files/figure-html/unnamed-chunk-3-1.png" width="90%" /></p>
 <pre class="r"><code>km_fit = 
   kmeans(
-    int_slope_df[,c(2,3)], 
+    int_slope_df[,c(2,3)] %&gt;% scale, 
     centers = 3)
 
 int_slope_df =
   broom::augment(km_fit, int_slope_df)</code></pre>
 <pre class="r"><code>int_slope_df %&gt;% 
-  ggplot(aes(x = int, y = slope, color = .cluster)) +
+  ggplot(aes(x = slope, y = int, color = .cluster)) +
   geom_point()</code></pre>
 <p><img src="final_project_jsg_files/figure-html/unnamed-chunk-5-1.png" width="90%" /></p>
 <pre class="r"><code>left_join(pharma_df, int_slope_df) %&gt;% 
