@@ -1,17 +1,48 @@
 ---
-title: "A Closer Look at Opioids in NYC"
+title: "Exploring Aspects of Opioid Crisis in NYC"
 output: 
   html_document:
     toc: true
     toc_float: true
-    theme: cerulean
 ---
 
-# This is our data science final project
+![](opioids-82.jpg)
 
-Home page, we can introduce our topic etc etc here.
+## Motivation
 
-More text
+The opioid epidemic is a national crisis. Every day, more than 130 people die from overdosing on opioids in the US. The relevance and importance of finding a solution to the opioid epidemic is indisputable. We hope to explore trends in the opioid crisis from a demographic standpoint, as well as investigate the effectiveness of different efforts. We further want to find out how different public health initiatives might affect the trends of this disease.
 
+## Data
 
+We explore 4 datasets, detailed below, for our analyses regarding the opioid crisis in NYC.
+
+* https://opioid.amfar.org/about/sources
+
+* https://health.data.ny.gov
+
+* https://catalog.data.gov
+
+## Research Questions
+
+* Does the higher percent of drug treatment paid by medicare result in lower drug-related death?
+
+* Is there a relationship between medication collection box locations and opioid overdoses?
+
+* Is there a relationship between distance to nearest substance abuse facility and opioid deaths?
+
+* What is the distribution over time of opioid deaths by age and race?
+
+## Findings
+
+We found that there is no distinct relationship between the distance to a treatment facility and the proportion of opioid deaths. This is likely because of the presence of other unmeasured variables, such as the fact that treatment facilities are placed in higher risk areas, or urban areas have a higher proportion of young people. Additionally, we found that the majority of opioid deaths from 2003 to 2017 are in white males. 
+
+## Website Overview
+
+* Interactive graphs
+
+* Plotly
+
+* Screencast
+
+* Report
 
