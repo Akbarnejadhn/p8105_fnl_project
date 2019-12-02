@@ -7,10 +7,12 @@ navbar:
       href: fnl_project_report1.html
     - text: "Graphs"
       href: final_proj_jbt.html
+    - text: "Screencast"
+      href: index_screencast.html
     - icon: fa-envelope fa-lg
       href: mailto:jbennett010@gmail.com
     - icon: fa-github fa-lg
       href: http://github.com/jthompson3175/
 output:
   html_document:
-    theme: journal
+    theme: flatly
