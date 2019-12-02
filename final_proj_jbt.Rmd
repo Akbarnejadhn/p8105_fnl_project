@@ -1,11 +1,15 @@
 ---
-title: "Graphs of Opioid Deaths"
+title: "Graphs of Opioid Deaths & Related Statistics"
 output: html_document
 ---
 
-## ER visits by county & distance to treatment facility
+Here we present some visualizations we created as part of an exploratory data analysis of the opioid epidemic in NYC. These figures are meant to give an overview of some of the interesting findings and key takeaways; however this is a complex topic and these should be considered in the larger context of the epidemic.  
 
-Is there any relationship between number of ER visits and distance to treatment facility?
+## Opioid Deaths vs. Distance to Treatment Centers
+
+We first explore the research question: Is there any relationship between number of ER visits in a county and distance to the nearest treatment facility?  
+  
+Note that because the "distance to nearest treatment facility" data is from 2017, we will look at opioid deaths in _just_ 2017.
 
 ```{r setup, include=FALSE}
 library(tidyverse)
@@ -28,7 +32,7 @@ scale_fill_discrete = scale_fill_viridis_d
 theme_set(theme_minimal() + theme(legend.position = "bottom"))
 ```
 
-```{r load datasets}
+```{r load, include=FALSE}
 opioid_death_data = janitor::clean_names(read_csv('./opioid_related_deaths.csv'))
 
 county_pop = janitor::clean_names(read_excel("./data/county_pop.xlsx"))
@@ -36,9 +40,8 @@ county_pop = janitor::clean_names(read_excel("./data/county_pop.xlsx"))
 opioid_treatment_distance = janitor::clean_names(read_csv('./distance_to_treatment.csv'))
 ```
 
-Because distance to nearest treatment facility data is from 2017, look at opioid deaths in just 2017.
 
-```{r}
+```{r clean, include=FALSE}
 # clean opioid death data #
 
 opioid_death = opioid_death_data %>% 
@@ -76,17 +79,25 @@ treatment_death_final =
   )
 ```
 
-any relationship between rate and distance? Nope... the shorter the distance, the more deaths. Looking at rate, there is no real pattern? Kinda interesting that there's no relationship I guess.
 
-```{r}
-ggplot(treatment_death_final, aes(x = distance, y = opioid_poisoning_deaths))+
-  geom_point()
+```{r graphs}
+ggplot(treatment_death_final, 
+       aes(x = distance, y = opioid_poisoning_deaths)) +
+  geom_point() + xlab("Distance (miles)") + ylab("Gross # Deaths") +
+  ggtitle("# Opioid Deaths vs. Distance to Treatment Facility")
 
-ggplot(treatment_death_final, aes(x = distance, y = deaths_rate))+
-  geom_point()
+ggplot(treatment_death_final, aes(x = distance, y = deaths_rate)) +
+  geom_point() + xlab("Distance (miles)") + ylab("Death Rate") +
+  ggtitle("Death Rate vs. Distance to Treatment Facility")
 ```
 
-```{r}
+There is no clear relationship in the above graphs, counter to our hypothesis. If anything the first graph shows a _decrease_ in gross deaths as the distance to a treatment facility increases. However the more telling graph is the second where the y axis represents the death rate (deaths / county population), and this graph does not have any discernible pattern.  
+
+## Opioid Deaths vs. Pill Take-Back Locations
+
+Next we load in data noting the locations of various pill "take-back" boxes around NYC, counting and sorting by county. These boxes are a public health initiative intended to encourage responsible use and disposal of opioids.
+
+```{r load takeback, include=FALSE}
 take_back = read_csv("./data/take_back.csv") %>% 
   janitor::clean_names() %>% 
   select(county) %>% 
@@ -94,22 +105,21 @@ take_back = read_csv("./data/take_back.csv") %>%
   summarize(
     takeback_facilities = n()
   )
+
+#add data from above dataset (pill take-back boxes)
+treatment_death_final = treatment_death_final %>% 
+  left_join(take_back, treatment_death_final, by = "county")
+
+#fill in na values
+treatment_death_final = treatment_death_final %>% 
+  mutate(
+    takeback_facilities = replace_na(takeback_facilities, 0)
+  )
 ```
 
 compare number of pill take back locations by county
 
 ```{r}
-treatment_death_final = treatment_death_final %>% 
-  left_join(take_back, treatment_death_final, by = "county")
-
-treatment_death_final = treatment_death_final %>% 
-  mutate(
-    takeback_facilities = replace_na(takeback_facilities, 0)
-  )
-
-ggplot(treatment_death_final, aes(x = distance, y = takeback_facilities))+
-  geom_point()
-
 ggplot(treatment_death_final, aes(x = takeback_facilities, y = deaths_rate))+
   geom_point()
 ```
