@@ -1,0 +1,41 @@
+---
+title: "final_project_ha"
+author: "Hana Akbarnejad"
+date: "12/2/2019"
+output: github_document
+---
+
+```{r include=FALSE}
+library(tidyverse)
+library(viridis)
+library(arcos)
+library(plotly)
+
+knitr::opts_chunk$set(
+	echo = TRUE,
+	warning = FALSE,
+	fig.width = 8,
+  fig.height = 6,
+  out.width = "90%"
+)
+options(
+  ggplot2.continuous.colour = "viridis",
+  ggplot2.continuous.fill = "viridis"
+)
+scale_colour_discrete = scale_colour_viridis_d
+scale_fill_discrete = scale_fill_viridis_d
+theme_set(theme_minimal() + theme(legend.position = "bottom"))
+```
+
+```{r}
+# data import
+
+opioid_death_data = janitor::clean_names(read_csv('./opioid_related_deaths.csv'))
+
+opioid_er_data = janitor::clean_names(read_csv('./opioid_related_visits.csv'))
+
+opioid_treatment_distance = janitor::clean_names(read_csv('./distance_to_treatment.csv'))
+
+opioid_demographics = janitor::clean_names(read_csv("./opioid_demographics.csv"))
+```
+
