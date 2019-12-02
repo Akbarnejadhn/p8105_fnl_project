@@ -196,20 +196,6 @@ deaths_by_age = read_csv("./data/deaths_age_group.csv") %>%
   ungroup()
 ```
 
-```{r graph deathsbyrace, echo=FALSE}
-ggplot(deaths_by_year, aes(x = year, y = count, 
-                           fill = race_or_ethnicity)) +
-  geom_bar(stat = "identity", position = "dodge") + 
-  ggtitle("Deaths by Race, 2003-2017") + ylab("deaths")
-```
-
-```{r graph deathsbyage, echo=FALSE}
-
-ggplot(deaths_by_age, aes(x = year, y = count, color = age_group)) +
-  geom_point() +
-  geom_line()
-```
-
 Count of deaths by age group from 2003 to 2017:
 
 ```{r, message = FALSE, echo = FALSE}
