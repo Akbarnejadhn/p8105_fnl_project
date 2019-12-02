@@ -1,13 +1,15 @@
 ---
-title: "Graphs of Opioid Deaths"
-author: "Julia Thompson"
-date: "11/30/2019"
+title: "Graphs of Opioid Deaths & Related Statistics"
 output: html_document
 ---
+  
+Here we present some visualizations we created as part of an exploratory data analysis of the opioid epidemic in NYC. These figures are meant to give an overview of some of the interesting findings and key takeaways; however this is a complex topic and these should be considered in the larger context of the epidemic.  
+  
+## Opioid Deaths vs. Distance to Treatment Centers
 
-## ER visits by county & distance to treatment facility
-
-Is there any relationship between number of ER visits and distance to treatment facility?
+We first explore the research question: Is there any relationship between number of ER visits in a county and distance to the nearest treatment facility?  
+  
+Note that because the "distance to nearest treatment facility" data is from 2017, we will look at opioid deaths in _just_ 2017.
 
 ```{r setup, include=FALSE}
 library(tidyverse)
@@ -31,7 +33,9 @@ scale_fill_discrete = scale_fill_viridis_d
 theme_set(theme_minimal() + theme(legend.position = "bottom"))
 ```
 
-```{r load datasets, include=FALSE}
+
+```{r load, include=FALSE}
+
 opioid_death_data = janitor::clean_names(read_csv('./opioid_related_deaths.csv'))
 
 county_pop = janitor::clean_names(read_excel("./data/county_pop.xlsx"))
@@ -39,9 +43,8 @@ county_pop = janitor::clean_names(read_excel("./data/county_pop.xlsx"))
 opioid_treatment_distance = janitor::clean_names(read_csv('./distance_to_treatment.csv'))
 ```
 
-Because distance to nearest treatment facility data is from 2017, look at opioid deaths in just 2017.
+```{r clean, include=FALSE}
 
-```{r, include=FALSE}
 # clean opioid death data #
 
 opioid_death = opioid_death_data %>% 
@@ -79,17 +82,25 @@ treatment_death_final =
   )
 ```
 
-any relationship between rate and distance? Nope... the shorter the distance, the more deaths. Looking at rate, there is no real pattern? Kinda interesting that there's no relationship I guess.
+```{r graphs1, echo=FALSE}
+ggplot(treatment_death_final, 
+       aes(x = distance, y = opioid_poisoning_deaths)) +
+  geom_point() + xlab("Distance (miles)") + ylab("Gross # Deaths") +
+  ggtitle("Number of Opioid Deaths vs. Distance to Facility")
 
-```{r, include=FALSE}
-ggplot(treatment_death_final, aes(x = distance, y = opioid_poisoning_deaths))+
-  geom_point()
-
-ggplot(treatment_death_final, aes(x = distance, y = deaths_rate))+
-  geom_point()
+ggplot(treatment_death_final, aes(x = distance, y = deaths_rate)) +
+  geom_point() + xlab("Distance (miles)") + ylab("Death Rate") +
+  ggtitle("Death Rate vs. Distance to Facility")
 ```
 
-```{r, include=FALSE}
+There is no clear relationship in the above graphs, counter to our hypothesis. If anything the first graph shows a _decrease_ in gross deaths as the distance to a treatment facility increases. However the more telling graph is the second where the y axis represents the death rate (deaths / county population), and this graph does not have any discernible pattern.  
+
+## Opioid Deaths vs. Pill Take-Back Locations
+
+We can also look at whether opioid deaths are associated with/influenced by the presence of "pill take-back" boxes around NYC. These drop-off points are part of a public health initiative intended to encourage responsible use and disposal of opioids. To do this we include a dataset that lists the addresses of these take-back facilities, counting and sorting by county.
+
+```{r load takeback, include=FALSE}
+
 take_back = read_csv("./data/take_back.csv") %>% 
   janitor::clean_names() %>% 
   select(county) %>% 
@@ -97,21 +108,26 @@ take_back = read_csv("./data/take_back.csv") %>%
   summarize(
     takeback_facilities = n()
   )
+
 ```
 
 ```{r, include=FALSE}
+#add data from above dataset (pill take-back boxes)
 treatment_death_final = treatment_death_final %>% 
   left_join(take_back, treatment_death_final, by = "county")
 
+#fill in na values
 treatment_death_final = treatment_death_final %>% 
   mutate(
     takeback_facilities = replace_na(takeback_facilities, 0)
   )
+```
 
-
-
-ggplot(treatment_death_final, aes(x = takeback_facilities, y = deaths_rate))+
-  geom_point()
+```{r graphs2, echo=FALSE}
+ggplot(treatment_death_final, 
+       aes(x = takeback_facilities, y = deaths_rate)) +
+  geom_point() + xlab("# Take-Back Points") + ylab("Death Rate") +
+  ggtitle("Opioid Death Rate vs. # Boxes")
 ```
 
 We plot the distance to the closest treatment facility in each county vs the number of takeback facilities in that county. We find that counties that are closer to treatment facilities also tend to have more takeback facilities. 
@@ -121,9 +137,11 @@ ggplot(treatment_death_final, aes(x = distance, y = takeback_facilities))+
   geom_point()
 ```
 
-## Look at demographic data
+## Opioid Deaths by Demographics
 
-```{r, include=FALSE}
+Next we look at opioid deaths sorted by 2 demographic variables: race and age.
+
+```{r load2, include=FALSE}
 deaths_age_grp = read_csv("./data/deaths_age_group.csv") %>% 
   janitor::clean_names() %>% 
   pivot_wider(
@@ -134,6 +152,9 @@ deaths_age_grp = read_csv("./data/deaths_age_group.csv") %>%
 ```
 
 ```{r, include=FALSE}
+
+#sort by year/race
+
 deaths_by_year = deaths_age_grp %>% 
   select(year, region, race_or_ethnicity, sex, total) %>% 
   group_by(year, race_or_ethnicity) %>% 
@@ -144,8 +165,15 @@ deaths_by_year = deaths_age_grp %>%
     race_or_ethnicity = factor(race_or_ethnicity, levels = c("Not Stated", "Other Non Hispanic", "Black Non Hispanic", "Hispanic", "White Non Hispanic"))
   )
 
-ggplot(deaths_by_year, aes(x = year, y = count, fill = race_or_ethnicity)) +
-  geom_bar(stat = "identity", position="dodge")
+#sort by year/age
+deaths_by_age = read_csv("./data/deaths_age_group.csv") %>% 
+  janitor::clean_names() %>% 
+  select(-region, -race_or_ethnicity, -sex) %>% 
+  filter(age_group != "Total") %>% 
+  group_by(year, age_group) %>% 
+  summarize(
+    count = sum(opioid_poisoning_deaths)
+  )
 ```
 
 Count of deaths by race from 2003 to 2017:
@@ -166,9 +194,16 @@ deaths_by_age = read_csv("./data/deaths_age_group.csv") %>%
     count = sum(opioid_poisoning_deaths)
   ) %>% 
   ungroup()
+```
 
-ggplot(deaths_by_age, aes(x = year, y = count, fill = age_group)) +
-  geom_bar(stat = "identity", position="dodge")
+```{r graph deathsbyrace, echo=FALSE}
+ggplot(deaths_by_year, aes(x = year, y = count, 
+                           fill = race_or_ethnicity)) +
+  geom_bar(stat = "identity", position = "dodge") + 
+  ggtitle("Deaths by Race, 2003-2017") + ylab("deaths")
+```
+
+```{r graph deathsbyage, echo=FALSE}
 
 ggplot(deaths_by_age, aes(x = year, y = count, color = age_group)) +
   geom_point() +
@@ -183,8 +218,4 @@ deaths_by_age %>%
     color = ~factor(age_group), alpha = 0.5)
 ```
 
-
-
-
-
-
+We can see that the majority of deaths occur in white males by far. Also it appears that the most affected age groups are....  
