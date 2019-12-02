@@ -2,7 +2,7 @@
 title: "animated_graphs"
 author: "Olivia Wagner"
 date: "11/28/2019"
-output: github_document
+output: html_document
 ---
 
 ```{r setup, include=FALSE}
@@ -11,6 +11,8 @@ library(viridis)
 library(arcos)
 library(gganimate)
 library(gifski)
+
+
 ```
 
 ```{r load datasets}

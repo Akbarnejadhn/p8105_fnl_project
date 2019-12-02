@@ -3,10 +3,12 @@ output_dir: "."
 navbar:
   title: "Home"
   right:
-    - text: "Plotly & Plots"
+    - text: "Graphs"
       href: final_proj_jbt.html
+    - text: "Screencast"
+      href: index_screencast.html
     - icon: fa-github fa-lg
       href: https://github.com/Akbarnejadhn/p8105_fnl_project
 output:
   html_document:
-    theme: journal
+    theme: flatly

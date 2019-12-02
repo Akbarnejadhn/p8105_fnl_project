@@ -1,5 +1,5 @@
 ---
-title: "Exploring Aspects of Opioid Crisis in NYC"
+title: "A Closer Look at Opioids in NYC"
 output: 
   html_document:
     toc: true
@@ -45,4 +45,3 @@ We found that there is no distinct relationship between the distance to a treatm
 * Screencast
 
 * Report
-

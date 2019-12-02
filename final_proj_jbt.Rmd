@@ -14,7 +14,6 @@ library(tidyverse)
 library(viridis)
 library(arcos)
 library(readxl)
-library(plotly)
 knitr::opts_chunk$set(
 	echo = TRUE,
 	warning = FALSE,
@@ -31,7 +30,7 @@ scale_fill_discrete = scale_fill_viridis_d
 theme_set(theme_minimal() + theme(legend.position = "bottom"))
 ```
 
-```{r load datasets, include = FALSE}
+```{r load datasets}
 opioid_death_data = janitor::clean_names(read_csv('./opioid_related_deaths.csv'))
 
 county_pop = janitor::clean_names(read_excel("./data/county_pop.xlsx"))
@@ -39,7 +38,9 @@ county_pop = janitor::clean_names(read_excel("./data/county_pop.xlsx"))
 opioid_treatment_distance = janitor::clean_names(read_csv('./distance_to_treatment.csv'))
 ```
 
-```{r, include = FALSE}
+Because distance to nearest treatment facility data is from 2017, look at opioid deaths in just 2017.
+
+```{r}
 # clean opioid death data #
 
 opioid_death = opioid_death_data %>% 
@@ -87,7 +88,7 @@ ggplot(treatment_death_final, aes(x = distance, y = deaths_rate))+
   geom_point()
 ```
 
-```{r, include = FALSE}
+```{r}
 take_back = read_csv("./data/take_back.csv") %>% 
   janitor::clean_names() %>% 
   select(county) %>% 
@@ -99,7 +100,7 @@ take_back = read_csv("./data/take_back.csv") %>%
 
 compare number of pill take back locations by county
 
-```{r, include = FALSE}
+```{r}
 treatment_death_final = treatment_death_final %>% 
   left_join(take_back, treatment_death_final, by = "county")
 
@@ -107,9 +108,7 @@ treatment_death_final = treatment_death_final %>%
   mutate(
     takeback_facilities = replace_na(takeback_facilities, 0)
   )
-```
 
-```{r}
 ggplot(treatment_death_final, aes(x = distance, y = takeback_facilities))+
   geom_point()
 
@@ -121,7 +120,7 @@ https://www.health.ny.gov/statistics/opioid/data/pdf/nys_opioid_annual_report_20
 
 ## Look at demographic data
 
-```{r, include = FALSE}
+```{r}
 deaths_age_grp = read_csv("./data/deaths_age_group.csv") %>% 
   janitor::clean_names() %>% 
   pivot_wider(
@@ -133,7 +132,7 @@ deaths_age_grp = read_csv("./data/deaths_age_group.csv") %>%
 
 Deaths by race by year:
 
-```{r, include = FALSE}
+```{r}
 deaths_by_year = deaths_age_grp %>% 
   select(year, region, race_or_ethnicity, sex, total) %>% 
   group_by(year, race_or_ethnicity) %>% 
@@ -145,15 +144,26 @@ ggplot(deaths_by_year, aes(x = year, y = count, fill = race_or_ethnicity)) +
   geom_bar(stat = "identity", position="dodge")
 ```
 
-```{r}
-deaths_by_year %>% 
-  plot_ly(x = ~year, y = ~count, type = "bar",
-          color = ~race_or_ethnicity, alpha = 0.5)
-```
-
 Deaths by age group by year
 
-```{r, include = FALSE}
+```{r}
+# deaths_by_age = deaths_age_grp %>% 
+#   select(-region, -race_or_ethnicity, -total, -sex) %>% 
+#   group_by(year) %>% 
+#   summarize(
+#      "1_to_9" = sum(x1_9, na.rm = T), 
+#      "10_to_19" = sum(x10_19, na.rm = T), 
+#      "65_to_74" = sum(x65_74, na.rm = T), 
+#      "75_to_84" = sum(x75_84, na.rm = T), 
+#      "85+" = sum(x85, na.rm = T), 
+#      "<1" = sum(x1, na.rm = T),
+#      "20_to_24" = sum(x20_24, na.rm = T),
+#      "25_to_34" = sum(x25_34, na.rm = T), 
+#      "55_to_64" = sum(x55_64, na.rm = T), 
+#      "35_to_44" = sum(x35_44, na.rm = T),
+#      "45_to_54" = sum(x45_54, na.rm = T)
+#   )
+
 deaths_by_age = read_csv("./data/deaths_age_group.csv") %>% 
   janitor::clean_names() %>% 
   select(-region, -race_or_ethnicity, -sex) %>% 
@@ -172,16 +182,10 @@ ggplot(deaths_by_age, aes(x = year, y = count, color = age_group)) +
 
 ```
 
-```{r}
-deaths_by_age %>% 
-    plot_ly(x = ~year, y = ~count, type = "bar",
-          color = ~age_group, alpha = 0.5)
-
-deaths_by_age %>% 
-    plot_ly(x = ~year, y = ~count, type = "scatter", mode = "lines+markers",
-          color = ~age_group, alpha = 0.5)
-```
-
-
 Might need to adjust for population, proportion of ethnicity, etc.
+
+
+
+
+
 
