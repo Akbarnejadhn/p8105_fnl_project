@@ -350,6 +350,38 @@ opioid_death_data = janitor::clean_names(read_csv(&#39;./opioid_related_deaths.c
 
 county_pop = arcos::county_population(state = &quot;NY&quot;, key = &quot;WaPo&quot;) %&gt;% 
   janitor::clean_names()</code></pre>
+<pre class="r"><code># clean opioid death data #
+
+opioid_death_data = opioid_death_data %&gt;% 
+  filter(year &gt;= 2010) 
+
+# clean opioid er data #
+
+opioid_er_data = opioid_er_data %&gt;% 
+  select(year, patient_county_name, rural_urban, payer, er_opioid, inpatient_total_opioid, er_inpatient_total_opioid, outpatient_opioid, overall_opioid) %&gt;%
+  rename(county = patient_county_name)
+
+# clean opioid treatment data #
+# data is only for the year 2017#
+
+opioid_treatment_distance %&gt;% 
+  filter(state == &#39;New York&#39;) %&gt;%
+  select(state, county, value) %&gt;%
+  rename(distance = value) </code></pre>
+<pre><code>## # A tibble: 62 x 3
+##    state    county             distance
+##    &lt;chr&gt;    &lt;chr&gt;                 &lt;dbl&gt;
+##  1 New York Albany County          5.97
+##  2 New York Allegany County       14.6 
+##  3 New York Bronx County           0.32
+##  4 New York Broome County          7.96
+##  5 New York Cattaraugus County     9.86
+##  6 New York Cayuga County         11.9 
+##  7 New York Chautauqua County      8.15
+##  8 New York Chemung County         6.53
+##  9 New York Chenango County       11.6 
+## 10 New York Clinton County        14.4 
+## # ... with 52 more rows</code></pre>
 
 
 
