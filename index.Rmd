@@ -26,13 +26,13 @@ We explore 4 datasets, detailed below, for our analyses regarding the opioid cri
 
 ## Research Questions
 
-* Does the higher percent of drug treatment paid by medicare result in lower drug-related death?
+* Is there a relationship between distance to nearest substance abuse facility and opioid deaths?
 
 * Is there a relationship between medication collection box locations and opioid overdoses?
 
-* Is there a relationship between distance to nearest substance abuse facility and opioid deaths?
+* What is the trend over time in opioid deaths by age and race?
 
-* What is the distribution over time of opioid deaths by age and race?
+* Does the higher percent of drug treatment paid by medicare result in lower drug-related death?
 
 ## Findings
 

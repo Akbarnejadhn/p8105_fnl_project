@@ -10,11 +10,9 @@
 <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
-<meta name="author" content="Julia Thompson" />
 
-<meta name="date" content="2019-11-30" />
 
-<title>Graphs of Opioid Deaths</title>
+<title>Graphs of Opioid Deaths &amp; Related Statistics</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -299,187 +297,35 @@ $(document).ready(function () {
 
 
 
-<h1 class="title toc-ignore">Graphs of Opioid Deaths</h1>
-<h4 class="author">Julia Thompson</h4>
-<h4 class="date">11/30/2019</h4>
+<h1 class="title toc-ignore">Graphs of Opioid Deaths &amp; Related Statistics</h1>
 
 </div>
 
 
-<div id="er-visits-by-county-distance-to-treatment-facility" class="section level2">
-<h2>ER visits by county &amp; distance to treatment facility</h2>
-<p>Is there any relationship between number of ER visits and distance to treatment facility?</p>
-<pre class="r"><code>opioid_death_data = janitor::clean_names(read_csv(&#39;./opioid_related_deaths.csv&#39;))</code></pre>
-<pre><code>## Parsed with column specification:
-## cols(
-##   Year = col_double(),
-##   County = col_character(),
-##   `Opioid Poisoning Deaths` = col_double()
-## )</code></pre>
-<pre class="r"><code>county_pop = janitor::clean_names(read_excel(&quot;./data/county_pop.xlsx&quot;))
-
-opioid_treatment_distance = janitor::clean_names(read_csv(&#39;./distance_to_treatment.csv&#39;))</code></pre>
-<pre><code>## Parsed with column specification:
-## cols(
-##   STATEFP = col_character(),
-##   COUNTYFP = col_character(),
-##   YEAR = col_double(),
-##   INDICATOR = col_character(),
-##   VALUE = col_double(),
-##   STATE = col_character(),
-##   STATEABBREVIATION = col_character(),
-##   COUNTY = col_character()
-## )</code></pre>
-<p>Because distance to nearest treatment facility data is from 2017, look at opioid deaths in just 2017.</p>
-<pre class="r"><code># clean opioid death data #
-
-opioid_death = opioid_death_data %&gt;% 
-  filter(year == 2017) %&gt;% 
-  select(-year)
-
-county_pop = 
-  county_pop %&gt;% 
-  mutate(
-    county = str_replace(county, &quot; County&quot;, &quot;&quot;)
-  )
-
-opioid_treatment_dist = 
-  opioid_treatment_distance %&gt;% 
-  rename(distance = value) %&gt;% 
-  filter(state == &#39;New York&#39;) %&gt;%
-  select(county, distance)
-
-# get rid of &quot;county&quot; in opioid_treatment_distance
-
-opioid_treatment_dist = 
-  opioid_treatment_dist %&gt;% 
-  mutate(
-    county = str_replace(county, &quot; County&quot;, &quot;&quot;)
-  )
-
-treatment_death = 
-  left_join(opioid_treatment_dist, opioid_death, by = &quot;county&quot;)
-
-treatment_death_final = 
-  left_join(treatment_death, county_pop, by = &quot;county&quot;) %&gt;% 
-  select(-rank) %&gt;% 
-  mutate(
-    deaths_rate = (opioid_poisoning_deaths / population)*100
-  )</code></pre>
-<p>any relationship between rate and distance? Nope… the shorter the distance, the more deaths. Looking at rate, there is no real pattern? Kinda interesting that there’s no relationship I guess.</p>
-<pre class="r"><code>ggplot(treatment_death_final, aes(x = distance, y = opioid_poisoning_deaths))+
-  geom_point()</code></pre>
-<p><img src="final_proj_jbt_files/figure-html/unnamed-chunk-2-1.png" width="90%" /></p>
-<pre class="r"><code>ggplot(treatment_death_final, aes(x = distance, y = deaths_rate))+
-  geom_point()</code></pre>
-<p><img src="final_proj_jbt_files/figure-html/unnamed-chunk-2-2.png" width="90%" /></p>
-<pre class="r"><code>take_back = read_csv(&quot;./data/take_back.csv&quot;) %&gt;% 
-  janitor::clean_names() %&gt;% 
-  select(county) %&gt;% 
-  group_by(county) %&gt;% 
-  summarize(
-    takeback_facilities = n()
-  )</code></pre>
-<pre><code>## Parsed with column specification:
-## cols(
-##   Name = col_character(),
-##   `Address Line 1` = col_character(),
-##   `Address Line 2` = col_character(),
-##   City = col_character(),
-##   State = col_character(),
-##   `Zip Code` = col_double(),
-##   County = col_character(),
-##   `Available to Public?` = col_character(),
-##   `Location 1` = col_character()
-## )</code></pre>
-<p>compare number of pill take back locations by county</p>
-<pre class="r"><code>treatment_death_final = treatment_death_final %&gt;% 
-  left_join(take_back, treatment_death_final, by = &quot;county&quot;)
-
-treatment_death_final = treatment_death_final %&gt;% 
-  mutate(
-    takeback_facilities = replace_na(takeback_facilities, 0)
-  )
-
-ggplot(treatment_death_final, aes(x = distance, y = takeback_facilities))+
-  geom_point()</code></pre>
-<p><img src="final_proj_jbt_files/figure-html/unnamed-chunk-4-1.png" width="90%" /></p>
-<pre class="r"><code>ggplot(treatment_death_final, aes(x = takeback_facilities, y = deaths_rate))+
-  geom_point()</code></pre>
-<p><img src="final_proj_jbt_files/figure-html/unnamed-chunk-4-2.png" width="90%" /></p>
+<p>Here we present some visualizations we created as part of an exploratory data analysis of the opioid epidemic in NYC. These figures are meant to give an overview of some of the interesting findings and key takeaways; however this is a complex topic and these should be considered in the larger context of the epidemic.</p>
+<div id="opioid-deaths-vs.-distance-to-treatment-centers" class="section level2">
+<h2>Opioid Deaths vs. Distance to Treatment Centers</h2>
+<p>We first explore the research question: Is there any relationship between number of ER visits in a county and distance to the nearest treatment facility?</p>
+<p>Note that because the “distance to nearest treatment facility” data is from 2017, we will look at opioid deaths in <em>just</em> 2017.</p>
+<p><img src="final_proj_jbt_files/figure-html/graphs1-1.png" width="90%" /><img src="final_proj_jbt_files/figure-html/graphs1-2.png" width="90%" /></p>
+<p>There is no clear relationship in the above graphs, counter to our hypothesis. If anything the first graph shows a <em>decrease</em> in gross deaths as the distance to a treatment facility increases. However the more telling graph is the second where the y axis represents the death rate (deaths / county population), and this graph does not have any discernible pattern.</p>
+</div>
+<div id="opioid-deaths-vs.-pill-take-back-locations" class="section level2">
+<h2>Opioid Deaths vs. Pill Take-Back Locations</h2>
+<p>Next we load in data noting the locations of various pill “take-back” boxes around NYC, counting and sorting by county. These boxes are a public health initiative intended to encourage responsible use and disposal of opioids.</p>
+<p><img src="final_proj_jbt_files/figure-html/graphs2-1.png" width="90%" /></p>
 <p><a href="https://www.health.ny.gov/statistics/opioid/data/pdf/nys_opioid_annual_report_2017.pdf" class="uri">https://www.health.ny.gov/statistics/opioid/data/pdf/nys_opioid_annual_report_2017.pdf</a></p>
 </div>
-<div id="look-at-demographic-data" class="section level2">
-<h2>Look at demographic data</h2>
-<pre class="r"><code>deaths_age_grp = read_csv(&quot;./data/deaths_age_group.csv&quot;) %&gt;% 
-  janitor::clean_names() %&gt;% 
-  pivot_wider(
-    names_from = age_group,
-    values_from = opioid_poisoning_deaths
-  ) %&gt;% 
-  janitor::clean_names()</code></pre>
-<pre><code>## Parsed with column specification:
-## cols(
-##   Year = col_double(),
-##   Region = col_character(),
-##   `Race or Ethnicity` = col_character(),
-##   Sex = col_character(),
-##   `Age Group` = col_character(),
-##   `Opioid Poisoning Deaths` = col_double()
-## )</code></pre>
-<p>Deaths by race by year:</p>
-<pre class="r"><code>deaths_by_year = deaths_age_grp %&gt;% 
-  select(year, region, race_or_ethnicity, sex, total) %&gt;% 
-  group_by(year, race_or_ethnicity) %&gt;% 
-  summarize(
-    count = sum(total)
-  )
-
-ggplot(deaths_by_year, aes(x = year, y = count, fill = race_or_ethnicity)) +
-  geom_bar(stat = &quot;identity&quot;, position=&quot;dodge&quot;)</code></pre>
-<p><img src="final_proj_jbt_files/figure-html/unnamed-chunk-6-1.png" width="90%" /></p>
-<p>Deaths by age group by year</p>
-<pre class="r"><code># deaths_by_age = deaths_age_grp %&gt;% 
-#   select(-region, -race_or_ethnicity, -total, -sex) %&gt;% 
-#   group_by(year) %&gt;% 
-#   summarize(
-#      &quot;1_to_9&quot; = sum(x1_9, na.rm = T), 
-#      &quot;10_to_19&quot; = sum(x10_19, na.rm = T), 
-#      &quot;65_to_74&quot; = sum(x65_74, na.rm = T), 
-#      &quot;75_to_84&quot; = sum(x75_84, na.rm = T), 
-#      &quot;85+&quot; = sum(x85, na.rm = T), 
-#      &quot;&lt;1&quot; = sum(x1, na.rm = T),
-#      &quot;20_to_24&quot; = sum(x20_24, na.rm = T),
-#      &quot;25_to_34&quot; = sum(x25_34, na.rm = T), 
-#      &quot;55_to_64&quot; = sum(x55_64, na.rm = T), 
-#      &quot;35_to_44&quot; = sum(x35_44, na.rm = T),
-#      &quot;45_to_54&quot; = sum(x45_54, na.rm = T)
-#   )
-
-deaths_by_age = read_csv(&quot;./data/deaths_age_group.csv&quot;) %&gt;% 
-  janitor::clean_names() %&gt;% 
-  select(-region, -race_or_ethnicity, -sex) %&gt;% 
-  filter(age_group != &quot;Total&quot;) %&gt;% 
-  group_by(year, age_group) %&gt;% 
-  summarize(
-    count = sum(opioid_poisoning_deaths)
-  )</code></pre>
-<pre><code>## Parsed with column specification:
-## cols(
-##   Year = col_double(),
-##   Region = col_character(),
-##   `Race or Ethnicity` = col_character(),
-##   Sex = col_character(),
-##   `Age Group` = col_character(),
-##   `Opioid Poisoning Deaths` = col_double()
-## )</code></pre>
-<pre class="r"><code>ggplot(deaths_by_age, aes(x = year, y = count, fill = age_group)) +
-  geom_bar(stat = &quot;identity&quot;, position=&quot;dodge&quot;)</code></pre>
-<p><img src="final_proj_jbt_files/figure-html/unnamed-chunk-7-1.png" width="90%" /></p>
-<pre class="r"><code>ggplot(deaths_by_age, aes(x = year, y = count, color = age_group)) +
-  geom_point() +
-  geom_line()</code></pre>
-<p><img src="final_proj_jbt_files/figure-html/unnamed-chunk-7-2.png" width="90%" /></p>
+<div id="opioid-deaths-by-demographics" class="section level2">
+<h2>Opioid Deaths by Demographics</h2>
+<p><img src="final_proj_jbt_files/figure-html/graph%20deathsbyrace-1.png" width="90%" /></p>
+<p><img src="final_proj_jbt_files/figure-html/graph%20deathsbyage-1.png" width="90%" /></p>
+<pre><code>## $title
+## [1] &quot;Deaths by Age Group, 2003-2017&quot;
+## 
+## attr(,&quot;class&quot;)
+## [1] &quot;labels&quot;</code></pre>
+<p>We can see that the majority of deaths occur in white males by far. Also it appears that the most affected age groups are….</p>
 <p>Might need to adjust for population, proportion of ethnicity, etc.</p>
 </div>
 

@@ -2,9 +2,9 @@
 title: "Graphs of Opioid Deaths & Related Statistics"
 output: html_document
 ---
-
+  
 Here we present some visualizations we created as part of an exploratory data analysis of the opioid epidemic in NYC. These figures are meant to give an overview of some of the interesting findings and key takeaways; however this is a complex topic and these should be considered in the larger context of the epidemic.  
-
+  
 ## Opioid Deaths vs. Distance to Treatment Centers
 
 We first explore the research question: Is there any relationship between number of ER visits in a county and distance to the nearest treatment facility?  
@@ -80,22 +80,22 @@ treatment_death_final =
 ```
 
 
-```{r graphs}
+```{r graphs1, echo=FALSE}
 ggplot(treatment_death_final, 
        aes(x = distance, y = opioid_poisoning_deaths)) +
   geom_point() + xlab("Distance (miles)") + ylab("Gross # Deaths") +
-  ggtitle("# Opioid Deaths vs. Distance to Treatment Facility")
+  ggtitle("# Opioid Deaths vs. Distance to Facility")
 
 ggplot(treatment_death_final, aes(x = distance, y = deaths_rate)) +
   geom_point() + xlab("Distance (miles)") + ylab("Death Rate") +
-  ggtitle("Death Rate vs. Distance to Treatment Facility")
+  ggtitle("Death Rate vs. Distance to Facility")
 ```
 
 There is no clear relationship in the above graphs, counter to our hypothesis. If anything the first graph shows a _decrease_ in gross deaths as the distance to a treatment facility increases. However the more telling graph is the second where the y axis represents the death rate (deaths / county population), and this graph does not have any discernible pattern.  
 
 ## Opioid Deaths vs. Pill Take-Back Locations
 
-Next we load in data noting the locations of various pill "take-back" boxes around NYC, counting and sorting by county. These boxes are a public health initiative intended to encourage responsible use and disposal of opioids.
+We can also look at whether opioid deaths are associated with/influenced by the presence of "pill take-back" boxes around NYC. These drop-off points are part of a public health initiative intended to encourage responsible use and disposal of opioids. To do this we include a dataset that lists the addresses of these take-back facilities, counting and sorting by county.
 
 ```{r load takeback, include=FALSE}
 take_back = read_csv("./data/take_back.csv") %>% 
@@ -117,18 +117,21 @@ treatment_death_final = treatment_death_final %>%
   )
 ```
 
-compare number of pill take back locations by county
 
-```{r}
-ggplot(treatment_death_final, aes(x = takeback_facilities, y = deaths_rate))+
-  geom_point()
+```{r graphs2, echo=FALSE}
+ggplot(treatment_death_final, 
+       aes(x = takeback_facilities, y = deaths_rate)) +
+  geom_point() + xlab("# Take-Back Points") + ylab("Death Rate") +
+  ggtitle("Opioid Death Rate vs. # Boxes")
 ```
 
 https://www.health.ny.gov/statistics/opioid/data/pdf/nys_opioid_annual_report_2017.pdf
 
-## Look at demographic data
+## Opioid Deaths by Demographics
 
-```{r}
+Next we look at opioid deaths sorted by 2 demographic variables: race and age.
+
+```{r load2, include=FALSE}
 deaths_age_grp = read_csv("./data/deaths_age_group.csv") %>% 
   janitor::clean_names() %>% 
   pivot_wider(
@@ -136,11 +139,8 @@ deaths_age_grp = read_csv("./data/deaths_age_group.csv") %>%
     values_from = opioid_poisoning_deaths
   ) %>% 
   janitor::clean_names()
-```
 
-Deaths by race by year:
-
-```{r}
+#sort by year/race
 deaths_by_year = deaths_age_grp %>% 
   select(year, region, race_or_ethnicity, sex, total) %>% 
   group_by(year, race_or_ethnicity) %>% 
@@ -148,13 +148,27 @@ deaths_by_year = deaths_age_grp %>%
     count = sum(total)
   )
 
-ggplot(deaths_by_year, aes(x = year, y = count, fill = race_or_ethnicity)) +
-  geom_bar(stat = "identity", position="dodge")
+#sort by year/age
+deaths_by_age = read_csv("./data/deaths_age_group.csv") %>% 
+  janitor::clean_names() %>% 
+  select(-region, -race_or_ethnicity, -sex) %>% 
+  filter(age_group != "Total") %>% 
+  group_by(year, age_group) %>% 
+  summarize(
+    count = sum(opioid_poisoning_deaths)
+  )
 ```
 
-Deaths by age group by year
 
-```{r}
+```{r graph deathsbyrace, echo=FALSE}
+ggplot(deaths_by_year, aes(x = year, y = count, 
+                           fill = race_or_ethnicity)) +
+  geom_bar(stat = "identity", position = "dodge") + 
+  ggtitle("Deaths by Race, 2003-2017") + ylab("deaths")
+```
+
+
+```{r graph deathsbyage, echo=FALSE}
 # deaths_by_age = deaths_age_grp %>% 
 #   select(-region, -race_or_ethnicity, -total, -sex) %>% 
 #   group_by(year) %>% 
@@ -172,25 +186,19 @@ Deaths by age group by year
 #      "45_to_54" = sum(x45_54, na.rm = T)
 #   )
 
-deaths_by_age = read_csv("./data/deaths_age_group.csv") %>% 
-  janitor::clean_names() %>% 
-  select(-region, -race_or_ethnicity, -sex) %>% 
-  filter(age_group != "Total") %>% 
-  group_by(year, age_group) %>% 
-  summarize(
-    count = sum(opioid_poisoning_deaths)
-  )
 
-ggplot(deaths_by_age, aes(x = year, y = count, fill = age_group)) +
-  geom_bar(stat = "identity", position="dodge")
+#ggplot(deaths_by_age, aes(x = year, y = count, fill = age_group)) +
+  #geom_bar(stat = "identity", position = "dodge")
 
 ggplot(deaths_by_age, aes(x = year, y = count, color = age_group)) +
-  geom_point() +
-  geom_line()
+  geom_point() + geom_line() + ylab("deaths")
+  ggtitle("Deaths by Age Group, 2003-2017")
 
 ```
 
-Might need to adjust for population, proportion of ethnicity, etc.
+We can see that the majority of deaths occur in white males by far. Also it appears that the most affected age groups are....  
+  
+(Might need to adjust for population, proportion of ethnicity, etc.)
 
 
 
