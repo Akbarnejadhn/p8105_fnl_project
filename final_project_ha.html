@@ -345,6 +345,11 @@ opioid_death_data = janitor::clean_names(read_csv(&#39;./opioid_related_deaths.c
 ##   `Age Group` = col_character(),
 ##   `Opioid Poisoning Deaths` = col_double()
 ## )</code></pre>
+<pre class="r"><code>prod_county = arcos::summarized_county_annual(state = &quot;NY&quot;, key = &quot;WaPo&quot;) %&gt;% 
+  janitor::clean_names()
+
+county_pop = arcos::county_population(state = &quot;NY&quot;, key = &quot;WaPo&quot;) %&gt;% 
+  janitor::clean_names()</code></pre>
 
 
 

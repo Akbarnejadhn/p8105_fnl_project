@@ -39,3 +39,12 @@ opioid_treatment_distance = janitor::clean_names(read_csv('./distance_to_treatme
 opioid_demographics = janitor::clean_names(read_csv("./opioid_demographics.csv"))
 ```
 
+```{r}
+
+prod_county = arcos::summarized_county_annual(state = "NY", key = "WaPo") %>% 
+  janitor::clean_names()
+
+county_pop = arcos::county_population(state = "NY", key = "WaPo") %>% 
+  janitor::clean_names()
+```
+
