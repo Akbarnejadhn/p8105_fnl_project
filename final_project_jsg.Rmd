@@ -9,6 +9,7 @@ output: html_document
 library(tidyverse)
 library(viridis)
 library(arcos)
+library(plotly)
 knitr::opts_chunk$set(
 	echo = FALSE,
 	warning = FALSE,
@@ -132,7 +133,7 @@ join_df <- inner_join(sum_df, pharma_df, by = c("county", "year"))
 ```
 
 
-```{r, include = TRUE}
+```{r}
 join_df %>% 
   ggplot(aes(x = year, y = opioid_poisoning_deaths/population*10000, color = rural_urban)) +
   geom_point(alpha = 0.3) +
@@ -238,12 +239,18 @@ int_slope_df %>%
 ```
 
 ```{r, include = TRUE}
-left_join(int_slope_dat, int_slope_df) %>% 
-  ggplot(aes(x = year, y = ppp, group = county, color = .cluster)) + 
+pills_plot <- left_join(int_slope_dat, int_slope_df) %>% 
+  group_by(county) %>% 
+  ggplot(aes(x = year, y = ppp, color = .cluster)) + 
   geom_point() + 
   geom_path() +
   scale_x_continuous(breaks = c(0, 1, 2, 3, 4, 5, 6), labels = c("2006", "2007", "2008", "2009", "2010", "2011", "2012")) +
-  theme(legend.position = "none")
+  theme(legend.position = "none") +
+  xlab("Year") +
+  ylab("Pills Bought Per Person")
+```
+```{r, include = TRUE}
+ggplotly(pills_plot)
 ```
 
 ```{r}
@@ -284,12 +291,7 @@ death_sales_df %>%
   geom_smooth(method = "lm", se = FALSE)
 ```
 
-```{r, include = TRUE}
-join_df %>% 
-  ggplot(aes(x = ppp, y = opioid_poisoning_deaths/population*10000)) +
-  geom_point() +
-  geom_smooth(method = "lm", se = FALSE)
-```
+
 
 ## clustering with opioid deaths
 
@@ -353,12 +355,16 @@ death_int_slope_df %>%
 ```
 
 ```{r}
-left_join(death_sales_dat, death_int_slope_df) %>% 
-  ggplot(aes(x = year, y = opioid_poisoning_deaths/population*10000, group = county, color = .cluster)) + 
+deaths_plot <- left_join(death_sales_dat, death_int_slope_df) %>% 
+  group_by(county) %>% 
+  ggplot(aes(x = year, y = opioid_poisoning_deaths/population*10000, color = .cluster)) + 
   geom_point() + 
   geom_path() +
   scale_x_continuous(breaks = c(0, 1, 2), labels = c("2010", "2011", "2012")) +
   theme(legend.position = "none")
+```
+```{r, include = TRUE}
+ggplotly(deaths_plot)
 ```
 
 ## clustering with ER visits
@@ -423,19 +429,33 @@ er_int_slope_df %>%
 ```
 
 ```{r}
-left_join(er_sales_dat, er_int_slope_df) %>% 
-  ggplot(aes(x = year, y = er_opioid/population*10000, group = county, color = .cluster)) + 
-  geom_point() + 
+er_plot <- left_join(er_sales_dat, er_int_slope_df) %>% 
+  group_by(county) %>% 
+  ggplot(aes(x = year, y = er_opioid/population*10000, color = .cluster)) + 
+  geom_point() +
   geom_path() +
   scale_x_continuous(breaks = c(0, 1, 2), labels = c("2010", "2011", "2012")) +
   theme(legend.position = "none")
 ```
+```{r, include = TRUE}
+ggplotly(er_plot)
+```
+
+
+```{r, include = TRUE}
+join_df %>% 
+  ggplot(aes(x = ppp, y = opioid_poisoning_deaths/population*10000)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE)
+```
+
+
 
 ```{r}
 join_dat <- join_df %>%
   ungroup() %>% 
   mutate(year = factor(year),
-         region = ifelse(county %in% c("New York", "Kings", "Bronx", "Queens", "Staten Island"), "NYC", "ROS")) %>% 
+         region = ifelse(county %in% c("New York", "Kings", "Bronx", "Queens", "Richmond"), "NYC", "ROS")) %>% 
   select(-county)
 fit1 <- lm(opioid_poisoning_deaths ~ ., data = join_dat)
 fit2 <- lm(opioid_poisoning_deaths ~ region + pills_bought + rural_urban, data = join_dat)
@@ -450,6 +470,6 @@ summary(model2)
 ```
 
 ```{r}
-anova(model2, model1)
+anova(model1, model2)
 ```
 
