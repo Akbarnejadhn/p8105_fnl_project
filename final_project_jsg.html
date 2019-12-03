@@ -480,7 +480,8 @@ int_slope_df =
   ggplot(aes(x = year, y = ppp, group = county, color = .cluster)) + 
   geom_point() + 
   geom_path() +
-  scale_x_continuous(breaks = c(0, 1, 2, 3, 4, 5, 6), labels = c(&quot;2006&quot;, &quot;2007&quot;, &quot;2008&quot;, &quot;2009&quot;, &quot;2010&quot;, &quot;2011&quot;, &quot;2012&quot;))</code></pre>
+  scale_x_continuous(breaks = c(0, 1, 2, 3, 4, 5, 6), labels = c(&quot;2006&quot;, &quot;2007&quot;, &quot;2008&quot;, &quot;2009&quot;, &quot;2010&quot;, &quot;2011&quot;, &quot;2012&quot;)) +
+  theme(legend.position = &quot;none&quot;)</code></pre>
 <pre><code>## Joining, by = &quot;county&quot;</code></pre>
 <p><img src="final_project_jsg_files/figure-html/unnamed-chunk-11-1.png" width="90%" /></p>
 <pre class="r"><code>death_sales_dat &lt;- death_sales_df %&gt;%
