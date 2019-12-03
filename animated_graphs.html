@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="Olivia Wagner" />
+
+<meta name="date" content="2019-11-28" />
+
+<title>animated_graphs</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/journal.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 61px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 66px;
+  margin-top: -66px;
+}
+.section h2 {
+  padding-top: 66px;
+  margin-top: -66px;
+}
+.section h3 {
+  padding-top: 66px;
+  margin-top: -66px;
+}
+.section h4 {
+  padding-top: 66px;
+  margin-top: -66px;
+}
+.section h5 {
+  padding-top: 66px;
+  margin-top: -66px;
+}
+.section h6 {
+  padding-top: 66px;
+  margin-top: -66px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Home</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="fnl_project_report1.html">The Data</a>
+</li>
+<li>
+  <a href="final_proj_jbt.html">Graphs</a>
+</li>
+<li>
+  <a href="mailto:jbennett010@gmail.com">
+    <span class="fa fa-envelope fa-lg"></span>
+     
+  </a>
+</li>
+<li>
+  <a href="http://github.com/jthompson3175/">
+    <span class="fa fa-github fa-lg"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">animated_graphs</h1>
+<h4 class="author">Olivia Wagner</h4>
+<h4 class="date">11/28/2019</h4>
+
+</div>
+
+
+<pre class="r"><code>opioid_death_data = janitor::clean_names(read_csv(&#39;./opioid_related_deaths.csv&#39;))</code></pre>
+<pre><code>## Parsed with column specification:
+## cols(
+##   Year = col_double(),
+##   County = col_character(),
+##   `Opioid Poisoning Deaths` = col_double()
+## )</code></pre>
+<pre class="r"><code>opioid_er_data = janitor::clean_names(read_csv(&#39;./opioid_related_visits.csv&#39;))</code></pre>
+<pre><code>## Parsed with column specification:
+## cols(
+##   .default = col_double(),
+##   `Patient County Name` = col_character(),
+##   `Rural/Urban` = col_character(),
+##   Payer = col_character()
+## )</code></pre>
+<pre><code>## See spec(...) for full column specifications.</code></pre>
+<pre class="r"><code>opioid_treatment_distance = janitor::clean_names(read_csv(&#39;./distance_to_treatment.csv&#39;))</code></pre>
+<pre><code>## Parsed with column specification:
+## cols(
+##   STATEFP = col_character(),
+##   COUNTYFP = col_character(),
+##   YEAR = col_double(),
+##   INDICATOR = col_character(),
+##   VALUE = col_double(),
+##   STATE = col_character(),
+##   STATEABBREVIATION = col_character(),
+##   COUNTY = col_character()
+## )</code></pre>
+<pre class="r"><code>prod_county = arcos::summarized_county_annual(state = &quot;NY&quot;, key = &quot;WaPo&quot;) %&gt;% 
+  janitor::clean_names()
+
+county_pop = arcos::county_population(state = &quot;NY&quot;, key = &quot;WaPo&quot;) %&gt;% 
+  janitor::clean_names()</code></pre>
+<pre class="r"><code># clean opioid death data #
+
+opioid_death_data = opioid_death_data %&gt;% 
+  mutate(county = recode(county, &#39;St Lawrence&#39; = &#39;St. Lawrence&#39;)) %&gt;%
+  filter(year &gt;= 2010) 
+
+# clean opioid er data #
+
+opioid_er_data = opioid_er_data %&gt;% 
+  select(year, patient_county_name, rural_urban, payer, er_opioid, inpatient_total_opioid, er_inpatient_total_opioid, outpatient_opioid, overall_opioid) %&gt;%
+  rename(county = patient_county_name) %&gt;% 
+  mutate(county = recode(county, &quot;Kings (Brooklyn)&quot; = &quot;Kings&quot;,
+         &quot;New York (Manhattan)&quot; = &quot;New York&quot;, &#39;Richmond (Staten Island)&#39; = &#39;Richmond&#39;)) 
+
+
+# clean opioid treatment data #
+# data is only for the year 2017#
+
+opioid_treatment_distance %&gt;% 
+  filter(state == &#39;New York&#39;) %&gt;%
+  select(state, county, value) %&gt;%
+  rename(distance = value) </code></pre>
+<pre><code>## # A tibble: 62 x 3
+##    state    county             distance
+##    &lt;chr&gt;    &lt;chr&gt;                 &lt;dbl&gt;
+##  1 New York Albany County          5.97
+##  2 New York Allegany County       14.6 
+##  3 New York Bronx County           0.32
+##  4 New York Broome County          7.96
+##  5 New York Cattaraugus County     9.86
+##  6 New York Cayuga County         11.9 
+##  7 New York Chautauqua County      8.15
+##  8 New York Chemung County         6.53
+##  9 New York Chenango County       11.6 
+## 10 New York Clinton County        14.4 
+## # ... with 52 more rows</code></pre>
+<pre class="r"><code># Combine Data Sets #
+
+opioid_total_data = left_join(opioid_er_data, opioid_death_data, by = c(&#39;county&#39;, &#39;year&#39;)) %&gt;% 
+  arrange(county, year) </code></pre>
+<pre class="r"><code># Number of Perscription Opioids by County #
+prod_county = prod_county %&gt;% 
+  group_by(buyer_county,year) %&gt;% 
+  summarize(numpills = sum(count)) %&gt;% 
+  rename(county = buyer_county) %&gt;%
+  ungroup() %&gt;%
+  arrange(county, year) %&gt;% 
+  mutate(county = ifelse(county == &#39;SAINT LAWRENCE&#39;, &#39;ST. LAWRENCE&#39;, county)) </code></pre>
+<div id="animation-graphs" class="section level2">
+<h2>Animation Graphs</h2>
+<pre class="r"><code># bar chart for number of pills perscribed/overdoses #
+# rename common columns #
+patients = opioid_total_data %&gt;% group_by(year, county) %&gt;% summarize(opioids = sum(overall_opioid)) %&gt;% filter(county != &#39;Statewide Total&#39;) %&gt;% mutate(county = toupper(county))
+
+# join the two data sets #
+perscriptions_data = left_join(patients, prod_county, by = c(&#39;county&#39;, &#39;year&#39;))
+
+# filter by applicable counties #
+perscriptions_data = perscriptions_data %&gt;% filter(county != &#39;UNKNOWN&#39;, county != &#39;OTHER THAN NEW YORK STATE&#39;) %&gt;% filter(year %in% c(&#39;2010&#39;, &#39;2011&#39;, &#39;2012&#39;)) 
+
+# bar graph data #
+bargraph = perscriptions_data %&gt;% group_by(year) %&gt;%
+  mutate(rank = rank(-opioids)) %&gt;%
+  group_by(county) %&gt;% 
+  filter(rank &lt;= 25) %&gt;%
+  ungroup()
+
+# gganimate, bar chart top 25 counties #
+bar = ggplot(bargraph, aes(x = rank,
+                          y = as.numeric(opioids),
+                          group = county, 
+                          fill = as.factor(county),
+                          color = as.factor(county))) +
+  geom_bar(stat = &#39;identity&#39;, alpha = 0.8) +
+  coord_flip(clip = &quot;off&quot;, expand = FALSE)+
+  geom_text(aes(y=0, label = paste(county, &#39; &#39;)), vjust = 0.2, hjust = 1, size = 2.5, color = &#39;black&#39;)+
+  geom_text(aes(label = as.numeric(opioids)), size = 2.5, hjust = 0, vjust=0.5, position=position_dodge(width = 1), color = &#39;black&#39;)+
+  scale_x_continuous(trans = &#39;reverse&#39;, position = &#39;top&#39;)+
+  scale_y_continuous(position = &#39;left&#39;)+
+  labs(x = &quot;County&quot;, y = &quot;Opioid Related Treatment Cases&quot;)+
+  theme(legend.position = &#39;none&#39;, plot.margin=unit(c(2, 2, 2, 5),&quot;cm&quot;))+
+  labs(title = &#39;Number of Opioid Related Treatments&#39;,  
+       subtitle  =  &#39;Top 25 Counties: {closest_state}&#39;) +
+  transition_states(year, state_length = 3)+
+  enter_fade()+
+  exit_shrink()+
+  ease_aes(&#39;linear&#39;)
+ 
+  print(bar)</code></pre>
+<pre class="r"><code># animated graph that shows how many pills were perscribed in each county as time passes#
+# NY state instituted restrictions on opioids perscribed #
+
+print(prod_county)</code></pre>
+<pre><code>## # A tibble: 434 x 3
+##    county    year numpills
+##    &lt;chr&gt;    &lt;int&gt;    &lt;int&gt;
+##  1 ALBANY    2006    15696
+##  2 ALBANY    2007    18424
+##  3 ALBANY    2008    20264
+##  4 ALBANY    2009    20641
+##  5 ALBANY    2010    21543
+##  6 ALBANY    2011    21103
+##  7 ALBANY    2012    21094
+##  8 ALLEGANY  2006     3747
+##  9 ALLEGANY  2007     3986
+## 10 ALLEGANY  2008     3930
+## # ... with 424 more rows</code></pre>
+<pre class="r"><code>#data = prod_county #
+
+time_plot = ggplot(data = prod_county, aes(x = year, y = numpills, group = county)) +
+  geom_line()+
+  geom_segment(aes(xend = 2013 , yend = numpills), linetype = &#39;dotted&#39; , color = &#39;grey&#39;) +
+  geom_point(size = 2) +
+  geom_text(aes(x = max(year)+1, label = county), hjust = 1) +
+  transition_reveal(year)+
+  coord_cartesian(clip = &#39;off&#39;) +
+  labs(title = &#39;Number of Pills Perscribed by County&#39;, x = &#39;Year&#39;, y = &#39;Number of Pills Perscribed&#39;) +
+  theme(plot.margin = margin(5.5, 40, 5.5, 5.5)) +
+  scale_x_continuous(limits = c(2006, 2014))
+
+print(time_plot)</code></pre>
+<pre class="r"><code># data by insurance provider #
+
+
+insurance_data = opioid_total_data %&gt;% group_by(payer, year, county) %&gt;% 
+  filter(county != &#39;Unknown&#39;, county != &#39;Statewide Total&#39;, county != &#39;Other than New York State&#39;) %&gt;%
+  summarise(opioid_treatment = sum(overall_opioid), opioid_death = sum(opioid_poisoning_deaths)) %&gt;%
+  filter(payer %in% c(&#39;Commercial&#39;, &#39;Medicaid&#39;, &#39;Medicare&#39;))
+
+
+# graph of opioid deaths v treatment overtime by payer #
+
+boxplot_treatment = ggplot(data = insurance_data, aes(x = payer, y = opioid_treatment, fill = as.factor(payer), alpha = 0.35))+
+  geom_boxplot() +
+  transition_states(year, transition_length = 2, state_length = 3) +
+  enter_fade()+
+  exit_shrink()+
+  ease_aes(&#39;sine-in-out&#39;)+
+  labs(title = &#39;Distribution of Opioid Treatment by Insurance Payer: {closest_state}&#39;, x = &#39;Insurance Payer&#39;, y = &#39;Number of Opioid Related Treatments&#39;)+
+  theme(legend.position = &#39;none&#39;)
+
+print(boxplot_treatment)</code></pre>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
