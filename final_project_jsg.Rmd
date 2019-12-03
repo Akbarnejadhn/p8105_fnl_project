@@ -241,7 +241,7 @@ int_slope_df %>%
 ```{r, include = TRUE}
 pills_plot <- left_join(int_slope_dat, int_slope_df) %>% 
   group_by(county) %>% 
-  ggplot(aes(x = year, y = ppp, color = .cluster)) + 
+  ggplot(aes(x = year, y = ppp, color = .cluster, text = county)) + 
   geom_point() + 
   geom_path() +
   scale_x_continuous(breaks = c(0, 1, 2, 3, 4, 5, 6), labels = c("2006", "2007", "2008", "2009", "2010", "2011", "2012")) +
@@ -250,7 +250,7 @@ pills_plot <- left_join(int_slope_dat, int_slope_df) %>%
   ylab("Pills Bought Per Person")
 ```
 ```{r, include = TRUE}
-ggplotly(pills_plot)
+ggplotly(pills_plot, tooltip = "text")
 ```
 
 ```{r}
@@ -357,14 +357,16 @@ death_int_slope_df %>%
 ```{r}
 deaths_plot <- left_join(death_sales_dat, death_int_slope_df) %>% 
   group_by(county) %>% 
-  ggplot(aes(x = year, y = opioid_poisoning_deaths/population*10000, color = .cluster)) + 
+  ggplot(aes(x = year, y = opioid_poisoning_deaths/population*10000, color = .cluster, text = county)) + 
   geom_point() + 
   geom_path() +
   scale_x_continuous(breaks = c(0, 1, 2), labels = c("2010", "2011", "2012")) +
-  theme(legend.position = "none")
+  theme(legend.position = "none") + 
+  xlab("Year") +
+  ylab("Opioid Related Deaths per 10000")
 ```
 ```{r, include = TRUE}
-ggplotly(deaths_plot)
+ggplotly(deaths_plot, tooltip = "text")
 ```
 
 ## clustering with ER visits
@@ -431,14 +433,16 @@ er_int_slope_df %>%
 ```{r}
 er_plot <- left_join(er_sales_dat, er_int_slope_df) %>% 
   group_by(county) %>% 
-  ggplot(aes(x = year, y = er_opioid/population*10000, color = .cluster)) + 
+  ggplot(aes(x = year, y = er_opioid/population*10000, color = .cluster, text = county)) + 
   geom_point() +
   geom_path() +
   scale_x_continuous(breaks = c(0, 1, 2), labels = c("2010", "2011", "2012")) +
-  theme(legend.position = "none")
+  theme(legend.position = "none") +
+  xlab("Year") +
+  ylab("Opioid Related ER Visits per 10000")
 ```
 ```{r, include = TRUE}
-ggplotly(er_plot)
+ggplotly(er_plot, tooltip = "text")
 ```
 
 
@@ -446,7 +450,9 @@ ggplotly(er_plot)
 join_df %>% 
   ggplot(aes(x = ppp, y = opioid_poisoning_deaths/population*10000)) +
   geom_point() +
-  geom_smooth(method = "lm", se = FALSE)
+  geom_smooth(method = "lm", se = FALSE) +
+  xlab("Pills Bought per Person") +
+  ylab("Opioid Related Deaths per 10000")
 ```
 
 
