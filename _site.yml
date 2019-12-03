@@ -6,11 +6,11 @@ navbar:
     - text: "Analysis"
       menu: 
       - text: "Demographics"
-        href: final_proj_jbt.html
+        href: demographics.html
       - text: "Trends"
-        href: final_project_ha.html
+        href: trends.html
       - text: "Statistical Learning"
-        href: final_proj_jsg.html
+        href: stat_learning.html
     - text: "Report"
       href: index_report.html
     - text: "Screencast"
