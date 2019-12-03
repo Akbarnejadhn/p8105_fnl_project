@@ -111,3 +111,17 @@ opioid_er_data %>%
    theme(legend.position = "none")
 ```
 
+```{r death_sex}
+
+# type: plotly/ focus: summary-introduction
+# looking at #death by sex over years
+opioid_demographics %>% 
+  filter(region == "NYC") %>% 
+  group_by(year, sex) %>% 
+  summarize(
+    count = sum(opioid_poisoning_deaths)
+  ) %>% 
+  plot_ly(x = ~year, y = ~count, type = "bar",
+          color = ~sex, alpha = 0.5)
+```
+
