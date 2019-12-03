@@ -406,6 +406,26 @@ opioid_total_data %&gt;% arrange(year, county) %&gt;% print()</code></pre>
 ## # ... with 1,940 more rows, and 4 more variables:
 ## #   er_inpatient_total_opioid &lt;dbl&gt;, outpatient_opioid &lt;dbl&gt;,
 ## #   overall_opioid &lt;dbl&gt;, opioid_poisoning_deaths &lt;dbl&gt;</code></pre>
+<pre class="r"><code># Number of Perscription Opioids by County #
+prod_county %&gt;% 
+  group_by(buyer_county,year) %&gt;% 
+  summarize(numpills = sum(count)) %&gt;% 
+  arrange(desc(numpills))</code></pre>
+<pre><code>## # A tibble: 434 x 3
+## # Groups:   buyer_county [62]
+##    buyer_county  year numpills
+##    &lt;chr&gt;        &lt;int&gt;    &lt;int&gt;
+##  1 SUFFOLK       2011   134486
+##  2 SUFFOLK       2010   132513
+##  3 SUFFOLK       2008   126750
+##  4 SUFFOLK       2009   125565
+##  5 SUFFOLK       2012   121018
+##  6 SUFFOLK       2007   120391
+##  7 ERIE          2011   110324
+##  8 SUFFOLK       2006   109774
+##  9 ERIE          2012   109624
+## 10 ERIE          2010   106673
+## # ... with 424 more rows</code></pre>
 
 
 

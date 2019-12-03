@@ -82,3 +82,12 @@ opioid_total_data = left_join(opioid_er_data, opioid_death_data, by = c('county'
 opioid_total_data %>% arrange(year, county) %>% print()
 ```
 
+```{r number_of_pills}
+
+# Number of Perscription Opioids by County #
+prod_county %>% 
+  group_by(buyer_county,year) %>% 
+  summarize(numpills = sum(count)) %>% 
+  arrange(desc(numpills))
+```
+
