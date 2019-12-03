@@ -2,7 +2,7 @@
 title: "final_project_ha"
 author: "Hana Akbarnejad"
 date: "12/2/2019"
-output: github_document
+output: html_document
 ---
 
 ```{r include=FALSE}
