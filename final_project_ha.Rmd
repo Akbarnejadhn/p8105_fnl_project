@@ -144,6 +144,8 @@ joined %>%
   arrange(desc(numpills)) %>%  
   plot_ly (x = ~year, y = ~numpills_adj, type = "scatter", mode = "lines",
            color = ~buyer_county)
+
+# I thought we can pick the highest 10
 ```
 
 ```{r}

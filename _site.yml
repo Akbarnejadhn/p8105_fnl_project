@@ -3,8 +3,10 @@ output_dir: "."
 navbar:
   title: "Home"
   right:
-    - text: "Graphs"
+    - text: "Statistical Analysis"
       href: final_proj_jbt.html
+    - text: "Report"
+      href: index_report.html
     - text: "Screencast"
       href: index_screencast.html
     - icon: fa-github fa-lg
