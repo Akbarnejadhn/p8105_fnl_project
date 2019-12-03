@@ -10,7 +10,7 @@ navbar:
       - text: "Trends"
         href: final_project_ha.html
       - text: "Statistical Learning"
-        href: index_report.html
+        href: final_proj_jsg.html
     - text: "Report"
       href: index_report.html
     - text: "Screencast"
