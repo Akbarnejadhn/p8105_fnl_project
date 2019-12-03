@@ -3,8 +3,14 @@ output_dir: "."
 navbar:
   title: "Home"
   right:
-    - text: "Statistical Analysis"
-      href: final_proj_jbt.html
+    - text: "Analysis"
+      menu: 
+      - text: "Demographics"
+        href: final_proj_jbt.html
+      - text: "Trends"
+        href: final_project_ha.html
+      - text: "Statistical Learning"
+        href: index_report.html
     - text: "Report"
       href: index_report.html
     - text: "Screencast"
