@@ -15,8 +15,6 @@ navbar:
       href: index_report.html
     - text: "Screencast"
       href: index_screencast.html
-    - text: "Exploring Opioid Prescriptions"
-      href: final_proj_jsg.html
     - icon: fa-github fa-lg
       href: https://github.com/Akbarnejadhn/p8105_fnl_project
 output:

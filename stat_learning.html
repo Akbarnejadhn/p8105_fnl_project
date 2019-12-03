@@ -10,9 +10,10 @@
 <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
+<meta name="author" content="Julia Thompson" />
 
 
-<title>A Closer Look at Opioids in NYC</title>
+<title>Statistical Learning</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -20,9 +21,6 @@
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
-<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
-<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
-<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
@@ -253,63 +251,6 @@ $(document).ready(function () {
 
 
 
-<style type="text/css">
-
-#TOC {
-  margin: 25px 0px 20px 0px;
-}
-@media (max-width: 768px) {
-#TOC {
-  position: relative;
-  width: 100%;
-}
-}
-
-
-.toc-content {
-  padding-left: 30px;
-  padding-right: 40px;
-}
-
-div.main-container {
-  max-width: 1200px;
-}
-
-div.tocify {
-  width: 20%;
-  max-width: 260px;
-  max-height: 85%;
-}
-
-@media (min-width: 768px) and (max-width: 991px) {
-  div.tocify {
-    width: 25%;
-  }
-}
-
-@media (max-width: 767px) {
-  div.tocify {
-    width: 100%;
-    max-width: none;
-  }
-}
-
-.tocify ul, .tocify li {
-  line-height: 20px;
-}
-
-.tocify-subheader .tocify-item {
-  font-size: 0.90em;
-}
-
-.tocify .list-group-item {
-  border-radius: 0px;
-}
-
-
-</style>
-
-
 
 </head>
 
@@ -317,16 +258,6 @@ div.tocify {
 
 
 <div class="container-fluid main-container">
-
-
-<!-- setup 3col/9col grid for toc_float and main content  -->
-<div class="row-fluid">
-<div class="col-xs-12 col-sm-4 col-md-3">
-<div id="TOC" class="tocify">
-</div>
-</div>
-
-<div class="toc-content col-xs-12 col-sm-8 col-md-9">
 
 
 
@@ -385,53 +316,17 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">A Closer Look at Opioids in NYC</h1>
+<h1 class="title toc-ignore">Statistical Learning</h1>
+<h4 class="author">Julia Thompson</h4>
+<h4 class="date">12/3/2019</h4>
 
 </div>
 
 
-<p><img src="opioids-82.jpg" /></p>
-<div id="motivation" class="section level2">
-<h2>Motivation</h2>
-<p>The opioid epidemic is a national crisis. Every day in the U.S., more than 130 people die from an opioid overdose. The importance of finding a solution to the opioid epidemic is indisputable.</p>
-<p>In this project, we aim to explore trends in the opioid crisis from a demographic standpoint, as well as to investigate the effectiveness of different public health and policy efforts. Through this data-grounded exploration, we hope to elucidate the role that public health can play in alleviating the epidemic.</p>
-</div>
-<div id="data" class="section level2">
-<h2>Data</h2>
-<p>We explore 4 datasets, detailed below, for our analyses regarding the opioid crisis in NYC specifically.</p>
-<ul>
-<li><p><a href="https://opioid.amfar.org/about/sources" class="uri">https://opioid.amfar.org/about/sources</a></p></li>
-<li><p><a href="https://health.data.ny.gov" class="uri">https://health.data.ny.gov</a></p></li>
-<li><p><a href="https://catalog.data.gov" class="uri">https://catalog.data.gov</a></p></li>
-</ul>
-</div>
-<div id="research-questions" class="section level2">
-<h2>Research Questions</h2>
-<ul>
-<li><p>Is there a relationship between distance to nearest substance abuse facility and opioid deaths?</p></li>
-<li><p>Is there a relationship between medication collection box locations and opioid overdoses?</p></li>
-<li><p>What is the trend over time in opioid deaths by age and race?</p></li>
-<li><p>Does the higher percent of drug treatment paid by medicare result in lower drug-related death?</p></li>
-</ul>
-</div>
-<div id="findings" class="section level2">
-<h2>Findings</h2>
-<p>We found that there is no distinct relationship between the distance to a treatment facility and the proportion of opioid deaths. This is likely because of the presence of other unmeasured variables, such as the fact that treatment facilities are placed in higher risk areas, or urban areas that have a higher proportion of young people. Additionally, we found that the majority of opioid deaths from 2003 to 2017 are in white males.</p>
-</div>
-<div id="website-overview" class="section level2">
-<h2>Website Overview</h2>
-<ul>
-<li><p>Animated Graphs</p></li>
-<li><p>Plotly &amp; Plots</p></li>
-<li><p>Screencast</p></li>
-<li><p>Report</p></li>
-</ul>
-</div>
+<p>Statistical Learning</p>
 
 
 
-</div>
-</div>
 
 </div>
 
@@ -464,32 +359,6 @@ $(document).ready(function () {
 
 <!-- code folding -->
 
-<script>
-$(document).ready(function ()  {
-
-    // move toc-ignore selectors from section div to header
-    $('div.section.toc-ignore')
-        .removeClass('toc-ignore')
-        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
-
-    // establish options
-    var options = {
-      selectors: "h1,h2,h3",
-      theme: "bootstrap3",
-      context: '.toc-content',
-      hashGenerator: function (text) {
-        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
-      },
-      ignoreSelector: ".toc-ignore",
-      scrollTo: 0
-    };
-    options.showAndHide = true;
-    options.smoothScroll = true;
-
-    // tocify
-    var toc = $("#TOC").tocify(options).data("toc-tocify");
-});
-</script>
 
 <!-- dynamically load mathjax for compatibility with self-contained -->
 <script>
