@@ -1,0 +1,188 @@
+---
+title: "final_project_ha"
+author: "Hana Akbarnejad"
+date: "12/2/2019"
+output: github_document
+---
+
+```{r include=FALSE}
+library(tidyverse)
+library(viridis)
+library(arcos)
+library(plotly)
+
+knitr::opts_chunk$set(
+	echo = TRUE,
+	warning = FALSE,
+	fig.width = 8,
+  fig.height = 6,
+  out.width = "90%"
+)
+options(
+  ggplot2.continuous.colour = "viridis",
+  ggplot2.continuous.fill = "viridis"
+)
+scale_colour_discrete = scale_colour_viridis_d
+scale_fill_discrete = scale_fill_viridis_d
+theme_set(theme_minimal() + theme(legend.position = "bottom"))
+```
+
+```{r}
+# data import
+
+opioid_death_data = janitor::clean_names(read_csv('./opioid_related_deaths.csv'))
+
+opioid_er_data = janitor::clean_names(read_csv('./opioid_related_visits.csv'))
+
+opioid_treatment_distance = janitor::clean_names(read_csv('./distance_to_treatment.csv'))
+
+opioid_demographics = janitor::clean_names(read_csv("./opioid_demographics.csv"))
+```
+
+```{r}
+
+prod_county = arcos::summarized_county_annual(state = "NY", key = "WaPo") %>% 
+  janitor::clean_names()
+
+county_pop = arcos::county_population(state = "NY", key = "WaPo") %>% 
+  janitor::clean_names()
+```
+
+```{r data_cleaning}
+
+# clean opioid death data #
+
+opioid_death_data = opioid_death_data %>% 
+  filter(year >= 2010) 
+
+# clean opioid er data #
+
+opioid_er_data = opioid_er_data %>% 
+  select(year, patient_county_name, rural_urban, payer, er_opioid, inpatient_total_opioid, er_inpatient_total_opioid, outpatient_opioid, overall_opioid) %>%
+  rename(county = patient_county_name)
+
+# clean opioid treatment data #
+# data is only for the year 2017#
+
+opioid_treatment_distance %>% 
+  filter(state == 'New York') %>%
+  select(state, county, value) %>%
+  rename(distance = value) 
+```
+
+```{r dataset_combine}
+
+# Combine Data Sets #
+
+opioid_total_data = left_join(opioid_er_data, opioid_death_data, by = c('county', 'year')) %>% 
+  arrange(county, year) %>% 
+  mutate(county = recode(county, "Kings (Brooklyn)" = "Kings",
+         "New York (Manhattan)" = "New York"))
+
+opioid_total_data %>% arrange(year, county) %>% print()
+```
+
+```{r number_of_pills}
+
+# Number of Perscription Opioids by County #
+prod_county %>% 
+  group_by(buyer_county,year) %>% 
+  summarize(numpills = sum(count)) %>% 
+  arrange(desc(numpills))
+
+# Pills bought by Pharmacies in Each county per Year #
+
+pharma_df = left_join(prod_county, county_pop, by = c("buyer_county", "year")) %>% 
+  select(county_name, year, count, population) %>% 
+  rename(county = county_name,
+         pills_bought = count) %>% 
+  mutate(county = as.factor(county))
+```
+
+```{r county_er}
+
+# spaghetti plot of 
+opioid_er_data %>% 
+  group_by(year, county) %>% 
+  summarize(sum_er_visit = sum(er_opioid)) %>% 
+  ggplot(aes(x= year, y = sum_er_visit, color = county)) +
+  geom_line(alpha = .3) +
+  ylim(0, 1000) +
+   theme(legend.position = "none")
+```
+
+```{r death_sex}
+
+# type: plotly/ focus: summary-introduction
+# looking at #death by sex over years
+opioid_demographics %>% 
+  filter(region == "NYC") %>% 
+  group_by(year, sex) %>% 
+  summarize(
+    count = sum(opioid_poisoning_deaths)
+  ) %>% 
+  plot_ly(x = ~year, y = ~count, type = "bar",
+          color = ~sex, alpha = 0.5)
+```
+
+```{r pillsnum_county}
+
+one = county_pop %>% 
+  select (buyer_county, year, population)
+
+two = prod_county %>% 
+  select(year, buyer_county, count)
+
+joined = left_join(one, two)
+
+joined %>% 
+  group_by(buyer_county, year) %>% 
+  summarize(
+    numpills = sum(count),
+    numpills_adj = numpills/population
+    ) %>% 
+  arrange(desc(numpills)) %>%  
+  plot_ly (x = ~year, y = ~numpills_adj, type = "scatter", mode = "lines",
+           color = ~buyer_county)
+
+# I thought we can pick the highest 10
+```
+
+```{r}
+
+# "total_death df": summing sup the death of all years in each county
+# "total_pop": total opulation in each county
+# "total_death_pop": joining these two df's and adjusting number of death for population of each county
+# creating bar plotly
+
+total_death = opioid_death_data %>% 
+  group_by(county) %>% 
+  summarize(
+    death_sum = sum(opioid_poisoning_deaths)
+  ) %>% 
+  mutate(
+    county = toupper(county)
+  )
+
+total_pop = county_pop %>% 
+  select (buyer_county, year, population) %>% 
+  rename(county = buyer_county) %>% 
+  group_by(county) %>% 
+  summarize(
+    total_pop = sum(population)
+  )
+
+total_death_pop = left_join(total_death, total_pop) %>% 
+  mutate(
+    county = factor(county),
+    death_pop = death_sum/total_pop,
+    county = fct_reorder(county, death_pop)
+  )
+
+total_death_pop %>% 
+  plot_ly(
+    x = ~county, y = ~death_pop, split = ~county,
+    type = 'bar', alpha = 0.5
+  )
+```
+
