@@ -433,6 +433,15 @@ pharma_df = left_join(prod_county, county_pop, by = c(&quot;buyer_county&quot;, 
   rename(county = county_name,
          pills_bought = count) %&gt;% 
   mutate(county = as.factor(county))</code></pre>
+<pre class="r"><code># spaghetti plot of 
+opioid_er_data %&gt;% 
+  group_by(year, county) %&gt;% 
+  summarize(sum_er_visit = sum(er_opioid)) %&gt;% 
+  ggplot(aes(x= year, y = sum_er_visit, color = county)) +
+  geom_line(alpha = .3) +
+  ylim(0, 1000) +
+   theme(legend.position = &quot;none&quot;)</code></pre>
+<p><img src="final_project_ha_files/figure-html/county_er-1.png" width="90%" /></p>
 
 
 
