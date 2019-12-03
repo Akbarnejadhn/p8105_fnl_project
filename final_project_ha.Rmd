@@ -89,5 +89,13 @@ prod_county %>%
   group_by(buyer_county,year) %>% 
   summarize(numpills = sum(count)) %>% 
   arrange(desc(numpills))
+
+# Pills bought by Pharmacies in Each county per Year #
+
+pharma_df = left_join(prod_county, county_pop, by = c("buyer_county", "year")) %>% 
+  select(county_name, year, count, population) %>% 
+  rename(county = county_name,
+         pills_bought = count) %>% 
+  mutate(county = as.factor(county))
 ```
 

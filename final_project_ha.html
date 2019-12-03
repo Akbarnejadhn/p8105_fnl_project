@@ -426,6 +426,13 @@ prod_county %&gt;%
 ##  9 ERIE          2012   109624
 ## 10 ERIE          2010   106673
 ## # ... with 424 more rows</code></pre>
+<pre class="r"><code># Pills bought by Pharmacies in Each county per Year #
+
+pharma_df = left_join(prod_county, county_pop, by = c(&quot;buyer_county&quot;, &quot;year&quot;)) %&gt;% 
+  select(county_name, year, count, population) %&gt;% 
+  rename(county = county_name,
+         pills_bought = count) %&gt;% 
+  mutate(county = as.factor(county))</code></pre>
 
 
 
