@@ -49,25 +49,17 @@ county_pop = arcos::county_population(state = "NY", key = "WaPo") %>%
 
 # clean opioid death data #
 
-opioid_death_data = opioid_death_data %>% 
+opioid_death_data = opioid_death_data %>%
   filter(year >= 2010) %>% 
   mutate(county = recode(county, "Kings (Brooklyn)" = "Kings",
-                         "New York (Manhattan)" = "New York"))
+                         "New York (Manhattan)" = "New York",
+                         "St Lawrence" = "St. Lawrence"))
 
 # clean opioid er data #
 
 opioid_er_data = opioid_er_data %>% 
   select(year, patient_county_name, rural_urban, payer, er_opioid, inpatient_total_opioid, er_inpatient_total_opioid, outpatient_opioid, overall_opioid) %>%
   rename(county = patient_county_name)
-
-# clean opioid treatment data #
-# data is only for the year 2017#
-
-opioid_treatment_distance %>% 
-  filter(state == 'New York') %>%
-  select(state, county, value) %>%
-  rename(distance = value) 
-
 
 # Combine Data Sets #
 
@@ -76,11 +68,17 @@ opioid_total_data = left_join(opioid_er_data, opioid_death_data, by = c('county'
 ```
 
 ```{r number of pills}
-# Number of Perscription Opioids by County #
+# Top 20 Counties by Number of Prescription Opioids, 2006-2012 #
 prod_county %>% 
-  group_by(buyer_county,year) %>% 
+  group_by(buyer_county) %>% 
   summarize(numpills = sum(count)) %>% 
-  arrange(desc(numpills))
+  top_n(20, numpills) %>% 
+  mutate(buyer_county = factor(buyer_county),
+         buyer_county = fct_reorder(buyer_county, numpills)) %>% 
+  ggplot(aes(x = buyer_county, y = numpills)) +
+  geom_col() +
+  xlab("County") +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1))
 ```
 
 ```{r pills per capita}
@@ -92,6 +90,24 @@ pharma_df = left_join(prod_county, county_pop, by = c("buyer_county", "year")) %
   rename(county = county_name,
          pills_bought = count)
 ```
+
+```{r}
+# Top 20 Counties by Number of Pills Bought Per Person in 2012 #
+
+pharma_df %>% 
+  filter(year == 2012) %>% 
+  mutate(ppp = pills_bought/population,
+         county = factor(county),
+         county = fct_reorder(county, ppp)) %>% 
+  top_n(20, ppp) %>% 
+  ggplot(aes(x = county, y = ppp)) +
+  geom_col() +  
+  theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
+  xlab("County") +
+  ylab("Pills Bought per Capita, 2012")
+```
+
+
 ## is there a rural/urban gradient?
 
 ```{r opioid total by year}
@@ -206,7 +222,9 @@ int_slope_df %>%
 left_join(int_slope_dat, int_slope_df) %>% 
   ggplot(aes(x = year, y = ppp, group = county, color = .cluster)) + 
   geom_point() + 
-  geom_path() 
+  geom_path() +
+  scale_x_continuous(breaks = c(0, 1, 2, 3, 4, 5, 6), labels = c("2006", "2007", "2008", "2009", "2010", "2011", "2012")) +
+  theme(legend.position = "none")
 ```
 
 ```{r}
@@ -219,8 +237,6 @@ death_sales_dat <- death_sales_df %>%
                   "2012" = 2)
   )
 ```
-
-## opioid deaths are endemic
 
 ```{r endemic}
 death_sales_dat %>%
