@@ -11,8 +11,6 @@ library(viridis)
 library(arcos)
 library(gganimate)
 library(gifski)
-
-
 ```
 
 ```{r load datasets}
