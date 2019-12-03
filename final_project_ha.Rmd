@@ -125,3 +125,24 @@ opioid_demographics %>%
           color = ~sex, alpha = 0.5)
 ```
 
+```{r pillsnum_county}
+
+one = county_pop %>% 
+  select (buyer_county, year, population)
+
+two = prod_county %>% 
+  select(year, buyer_county, count)
+
+joined = left_join(one, two)
+
+joined %>% 
+  group_by(buyer_county, year) %>% 
+  summarize(
+    numpills = sum(count),
+    numpills_adj = numpills/population
+    ) %>% 
+  arrange(desc(numpills)) %>%  
+  plot_ly (x = ~year, y = ~numpills_adj, type = "scatter", mode = "lines",
+           color = ~buyer_county)
+```
+
