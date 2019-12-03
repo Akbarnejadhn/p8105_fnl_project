@@ -14,7 +14,7 @@
 
 <meta name="date" content="2019-11-29" />
 
-<title>final_project_jsg</title>
+<title>Exploring Opioid Prescriptions</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -288,6 +288,9 @@ $(document).ready(function () {
   <a href="index_screencast.html">Screencast</a>
 </li>
 <li>
+  <a href="final_proj_jsg.html">Exploring Opioid Prescriptions</a>
+</li>
+<li>
   <a href="https://github.com/Akbarnejadhn/p8105_fnl_project">
     <span class="fa fa-github fa-lg"></span>
      
@@ -302,7 +305,7 @@ $(document).ready(function () {
 
 
 
-<h1 class="title toc-ignore">final_project_jsg</h1>
+<h1 class="title toc-ignore">Exploring Opioid Prescriptions</h1>
 <h4 class="author">Jared Garfinkel</h4>
 <h4 class="date">11/29/2019</h4>
 
@@ -380,13 +383,13 @@ prod_county %&gt;%
 pharma_df = left_join(prod_county, county_pop, by = c(&quot;buyer_county&quot;, &quot;year&quot;)) %&gt;% 
   select(county_name, year, count, population) %&gt;% 
   rename(county = county_name,
-         pills_bought = count)</code></pre>
+         pills_bought = count) %&gt;% 
+  mutate(ppp = pills_bought/population)</code></pre>
 <pre class="r"><code># Top 20 Counties by Number of Pills Bought Per Person in 2012 #
 
 pharma_df %&gt;% 
   filter(year == 2012) %&gt;% 
-  mutate(ppp = pills_bought/population,
-         county = factor(county),
+  mutate(county = factor(county),
          county = fct_reorder(county, ppp)) %&gt;% 
   top_n(20, ppp) %&gt;% 
   ggplot(aes(x = county, y = ppp)) +
@@ -406,14 +409,25 @@ pharma_df %&gt;%
             overall_opioid = sum(overall_opioid),
             opioid_poisoning_deaths = sum(opioid_poisoning_deaths)
   )</code></pre>
-<pre class="r"><code>rural_urban_df &lt;- inner_join(sum_df, pharma_df, by = c(&quot;county&quot;, &quot;year&quot;))</code></pre>
-<pre class="r"><code>rural_urban_df %&gt;% 
+<pre class="r"><code>join_df &lt;- inner_join(sum_df, pharma_df, by = c(&quot;county&quot;, &quot;year&quot;))</code></pre>
+<pre class="r"><code>join_df %&gt;% 
   ggplot(aes(x = year, y = opioid_poisoning_deaths/population*10000, color = rural_urban)) +
   geom_point(alpha = 0.3) +
   geom_smooth(method = &quot;lm&quot;, se = FALSE) +
   ylab(&quot;Opioid Deaths per 10,000&quot;) +
-  scale_x_continuous(breaks = c(2010, 2011, 2012), labels = c(&quot;2010&quot;, &quot;2011&quot;, &quot;2012&quot;))</code></pre>
+  scale_x_continuous(breaks = c(2010, 2011, 2012), labels = c(&quot;2010&quot;, &quot;2011&quot;, &quot;2012&quot;)) +
+  labs(color = &quot;Rural/Urban&quot;)</code></pre>
 <p><img src="final_project_jsg_files/figure-html/unnamed-chunk-2-1.png" width="90%" /></p>
+<pre class="r"><code>join_df %&gt;% 
+  ungroup() %&gt;% 
+  mutate(rural_urban = factor(rural_urban),
+         year = factor(year)) %&gt;% 
+  ggplot(aes(x = year, y = opioid_poisoning_deaths/population*10000, fill = rural_urban)) +
+  geom_boxplot(alpha = .5) +
+  ylab(&quot;Opioid Deaths per 10,000&quot;) +
+  scale_x_discrete(breaks = c(2010, 2011, 2012), labels = c(&quot;2010&quot;, &quot;2011&quot;, &quot;2012&quot;)) +
+  labs(fill = &quot;Rural/Urban&quot;)</code></pre>
+<p><img src="final_project_jsg_files/figure-html/unnamed-chunk-3-1.png" width="90%" /></p>
 </div>
 <div id="spaghetti-plots" class="section level2">
 <h2>spaghetti plots</h2>
@@ -445,7 +459,7 @@ pharma_df %&gt;%
   geom_point() +
   geom_line(se = FALSE) +
   theme(legend.position = &quot;none&quot;)</code></pre>
-<p><img src="final_project_jsg_files/figure-html/unnamed-chunk-6-1.png" width="90%" /></p>
+<p><img src="final_project_jsg_files/figure-html/unnamed-chunk-7-1.png" width="90%" /></p>
 <pre class="r"><code>int_slope_df &lt;- int_slope_dat %&gt;% 
   nest(data = year:ppp) %&gt;%
   mutate(
@@ -464,10 +478,10 @@ pharma_df %&gt;%
   ggplot(aes(x = slope, y = int)) +
   geom_point() +
   theme(legend.position = &quot;none&quot;)</code></pre>
-<p><img src="final_project_jsg_files/figure-html/unnamed-chunk-8-1.png" width="90%" /></p>
+<p><img src="final_project_jsg_files/figure-html/unnamed-chunk-9-1.png" width="90%" /></p>
 <pre class="r"><code>km_fit = 
   kmeans(
-    int_slope_df[,c(2,3)] %&gt;% scale, 
+    int_slope_df[,c(2,3)]  %&gt;% scale, 
     centers = 3)
 
 int_slope_df =
@@ -475,7 +489,7 @@ int_slope_df =
 <pre class="r"><code>int_slope_df %&gt;% 
   ggplot(aes(x = slope, y = int, color = .cluster)) +
   geom_point()</code></pre>
-<p><img src="final_project_jsg_files/figure-html/unnamed-chunk-10-1.png" width="90%" /></p>
+<p><img src="final_project_jsg_files/figure-html/unnamed-chunk-11-1.png" width="90%" /></p>
 <pre class="r"><code>left_join(int_slope_dat, int_slope_df) %&gt;% 
   ggplot(aes(x = year, y = ppp, group = county, color = .cluster)) + 
   geom_point() + 
@@ -483,7 +497,7 @@ int_slope_df =
   scale_x_continuous(breaks = c(0, 1, 2, 3, 4, 5, 6), labels = c(&quot;2006&quot;, &quot;2007&quot;, &quot;2008&quot;, &quot;2009&quot;, &quot;2010&quot;, &quot;2011&quot;, &quot;2012&quot;)) +
   theme(legend.position = &quot;none&quot;)</code></pre>
 <pre><code>## Joining, by = &quot;county&quot;</code></pre>
-<p><img src="final_project_jsg_files/figure-html/unnamed-chunk-11-1.png" width="90%" /></p>
+<p><img src="final_project_jsg_files/figure-html/unnamed-chunk-12-1.png" width="90%" /></p>
 <pre class="r"><code>death_sales_dat &lt;- death_sales_df %&gt;%
   ungroup() %&gt;% 
   mutate(
@@ -512,6 +526,121 @@ int_slope_df =
   geom_point() +
   geom_smooth(method = &quot;lm&quot;, se = FALSE)</code></pre>
 <p><img src="final_project_jsg_files/figure-html/pill%20count%20v%20population%20in%202012-1.png" width="90%" /></p>
+<pre class="r"><code>join_df %&gt;% 
+  ggplot(aes(x = ppp, y = opioid_poisoning_deaths/population*10000)) +
+  geom_point() +
+  geom_smooth(method = &quot;lm&quot;, se = FALSE)</code></pre>
+<p><img src="final_project_jsg_files/figure-html/unnamed-chunk-14-1.png" width="90%" /></p>
+</div>
+<div id="clustering-with-opioid-deaths" class="section level2">
+<h2>clustering with opioid deaths</h2>
+<pre class="r"><code>death_sales_dat &lt;- death_sales_df %&gt;% 
+  select(county, year, opioid_poisoning_deaths, population) %&gt;% 
+  mutate(
+    year = recode(year,
+                  &quot;2010&quot; = 0,
+                  &quot;2011&quot; = 1,
+                  &quot;2012&quot; = 2)
+  )</code></pre>
+<pre class="r"><code>death_sales_dat %&gt;% 
+  ggplot(aes(x = year, y = opioid_poisoning_deaths/population*10000, group = county)) +
+  geom_point() +
+  geom_line(se = FALSE) +
+  theme(legend.position = &quot;none&quot;)</code></pre>
+<p><img src="final_project_jsg_files/figure-html/unnamed-chunk-16-1.png" width="90%" /></p>
+<pre class="r"><code>death_int_slope_df &lt;- death_sales_dat %&gt;% 
+  nest(data = year:population) %&gt;%
+  mutate(
+    models = map(data, ~lm(opioid_poisoning_deaths/population*10000 ~ year, data = .x)),
+    result = map(models, broom::tidy)
+  ) %&gt;% 
+  select(county, result) %&gt;% 
+  unnest(result) %&gt;% 
+  select(county, term, estimate) %&gt;% 
+  pivot_wider(
+    names_from = term,
+    values_from = estimate
+  ) %&gt;% 
+  rename(int = &quot;(Intercept)&quot;, slope = year)</code></pre>
+<pre class="r"><code>death_int_slope_df %&gt;% 
+  ggplot(aes(x = slope, y = int)) +
+  geom_point() +
+  theme(legend.position = &quot;none&quot;)</code></pre>
+<p><img src="final_project_jsg_files/figure-html/unnamed-chunk-18-1.png" width="90%" /></p>
+<pre class="r"><code>death_km_fit = 
+  kmeans(
+    death_int_slope_df[,c(2,3)] %&gt;% scale, 
+    centers = 3)
+
+death_int_slope_df =
+  broom::augment(death_km_fit, death_int_slope_df)</code></pre>
+<pre class="r"><code>death_int_slope_df %&gt;% 
+  ggplot(aes(x = slope, y = int, color = .cluster)) +
+  geom_point()</code></pre>
+<p><img src="final_project_jsg_files/figure-html/unnamed-chunk-20-1.png" width="90%" /></p>
+<pre class="r"><code>left_join(death_sales_dat, death_int_slope_df) %&gt;% 
+  ggplot(aes(x = year, y = opioid_poisoning_deaths/population*10000, group = county, color = .cluster)) + 
+  geom_point() + 
+  geom_path() +
+  scale_x_continuous(breaks = c(0, 1, 2), labels = c(&quot;2010&quot;, &quot;2011&quot;, &quot;2012&quot;)) +
+  theme(legend.position = &quot;none&quot;)</code></pre>
+<pre><code>## Joining, by = &quot;county&quot;</code></pre>
+<p><img src="final_project_jsg_files/figure-html/unnamed-chunk-21-1.png" width="90%" /></p>
+</div>
+<div id="clustering-with-er-visits" class="section level2">
+<h2>clustering with ER visits</h2>
+<pre class="r"><code>er_sales_dat &lt;- death_sales_df %&gt;% 
+  select(county, year, er_opioid, population) %&gt;% 
+  mutate(
+    year = recode(year,
+                  &quot;2010&quot; = 0,
+                  &quot;2011&quot; = 1,
+                  &quot;2012&quot; = 2)
+  )</code></pre>
+<pre class="r"><code>er_sales_dat %&gt;% 
+  ggplot(aes(x = year, y = er_opioid/population*10000, group = county)) +
+  geom_point() +
+  geom_line(se = FALSE) +
+  theme(legend.position = &quot;none&quot;)</code></pre>
+<p><img src="final_project_jsg_files/figure-html/unnamed-chunk-23-1.png" width="90%" /></p>
+<pre class="r"><code>er_int_slope_df &lt;- er_sales_dat %&gt;% 
+  nest(data = year:population) %&gt;%
+  mutate(
+    models = map(data, ~lm(er_opioid/population*10000 ~ year, data = .x)),
+    result = map(models, broom::tidy)
+  ) %&gt;% 
+  select(county, result) %&gt;% 
+  unnest(result) %&gt;% 
+  select(county, term, estimate) %&gt;% 
+  pivot_wider(
+    names_from = term,
+    values_from = estimate
+  ) %&gt;% 
+  rename(int = &quot;(Intercept)&quot;, slope = year)</code></pre>
+<pre class="r"><code>er_int_slope_df %&gt;% 
+  ggplot(aes(x = slope, y = int)) +
+  geom_point() +
+  theme(legend.position = &quot;none&quot;)</code></pre>
+<p><img src="final_project_jsg_files/figure-html/unnamed-chunk-25-1.png" width="90%" /></p>
+<pre class="r"><code>er_km_fit = 
+  kmeans(
+    er_int_slope_df[,c(2,3)] %&gt;% scale, 
+    centers = 3)
+
+er_int_slope_df =
+  broom::augment(er_km_fit, er_int_slope_df)</code></pre>
+<pre class="r"><code>er_int_slope_df %&gt;% 
+  ggplot(aes(x = slope, y = int, color = .cluster)) +
+  geom_point()</code></pre>
+<p><img src="final_project_jsg_files/figure-html/unnamed-chunk-27-1.png" width="90%" /></p>
+<pre class="r"><code>left_join(er_sales_dat, er_int_slope_df) %&gt;% 
+  ggplot(aes(x = year, y = er_opioid/population*10000, group = county, color = .cluster)) + 
+  geom_point() + 
+  geom_path() +
+  scale_x_continuous(breaks = c(0, 1, 2), labels = c(&quot;2010&quot;, &quot;2011&quot;, &quot;2012&quot;)) +
+  theme(legend.position = &quot;none&quot;)</code></pre>
+<pre><code>## Joining, by = &quot;county&quot;</code></pre>
+<p><img src="final_project_jsg_files/figure-html/unnamed-chunk-28-1.png" width="90%" /></p>
 </div>
 
 

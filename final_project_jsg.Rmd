@@ -1,5 +1,5 @@
 ---
-title: "final_project_jsg"
+title: "Exploring Opioid Prescriptions"
 author: "Jared Garfinkel"
 date: "11/29/2019"
 output: html_document
@@ -88,7 +88,9 @@ prod_county %>%
 pharma_df = left_join(prod_county, county_pop, by = c("buyer_county", "year")) %>% 
   select(county_name, year, count, population) %>% 
   rename(county = county_name,
-         pills_bought = count)
+         pills_bought = count) %>% 
+  mutate(ppp = pills_bought/population)
+
 ```
 
 ```{r}
@@ -96,8 +98,7 @@ pharma_df = left_join(prod_county, county_pop, by = c("buyer_county", "year")) %
 
 pharma_df %>% 
   filter(year == 2012) %>% 
-  mutate(ppp = pills_bought/population,
-         county = factor(county),
+  mutate(county = factor(county),
          county = fct_reorder(county, ppp)) %>% 
   top_n(20, ppp) %>% 
   ggplot(aes(x = county, y = ppp)) +
@@ -123,18 +124,32 @@ sum_df <- opioid_total_data %>%
 ```
 
 ```{r rural v urban}
-rural_urban_df <- inner_join(sum_df, pharma_df, by = c("county", "year"))
+join_df <- inner_join(sum_df, pharma_df, by = c("county", "year"))
 ```
 
 
 ```{r}
-rural_urban_df %>% 
+join_df %>% 
   ggplot(aes(x = year, y = opioid_poisoning_deaths/population*10000, color = rural_urban)) +
   geom_point(alpha = 0.3) +
   geom_smooth(method = "lm", se = FALSE) +
   ylab("Opioid Deaths per 10,000") +
-  scale_x_continuous(breaks = c(2010, 2011, 2012), labels = c("2010", "2011", "2012"))
+  scale_x_continuous(breaks = c(2010, 2011, 2012), labels = c("2010", "2011", "2012")) +
+  labs(color = "Rural/Urban")
 ```
+
+```{r}
+join_df %>% 
+  ungroup() %>% 
+  mutate(rural_urban = factor(rural_urban),
+         year = factor(year)) %>% 
+  ggplot(aes(x = year, y = opioid_poisoning_deaths/population*10000, fill = rural_urban)) +
+  geom_boxplot(alpha = .5) +
+  ylab("Opioid Deaths per 10,000") +
+  scale_x_discrete(breaks = c(2010, 2011, 2012), labels = c("2010", "2011", "2012")) +
+  labs(fill = "Rural/Urban")
+```
+
 
 ## spaghetti plots
 
@@ -205,7 +220,7 @@ int_slope_df %>%
 ```{r}
 km_fit = 
   kmeans(
-    int_slope_df[,c(2,3)] %>% scale, 
+    int_slope_df[,c(2,3)]  %>% scale, 
     centers = 3)
 
 int_slope_df =
@@ -263,5 +278,152 @@ death_sales_df %>%
   ggplot(aes(x = population, y = pills_bought)) +
   geom_point() +
   geom_smooth(method = "lm", se = FALSE)
+```
+
+```{r}
+join_df %>% 
+  ggplot(aes(x = ppp, y = opioid_poisoning_deaths/population*10000)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE)
+```
+
+## clustering with opioid deaths
+
+```{r}
+death_sales_dat <- death_sales_df %>% 
+  select(county, year, opioid_poisoning_deaths, population) %>% 
+  mutate(
+    year = recode(year,
+                  "2010" = 0,
+                  "2011" = 1,
+                  "2012" = 2)
+  )
+```
+
+```{r}
+death_sales_dat %>% 
+  ggplot(aes(x = year, y = opioid_poisoning_deaths/population*10000, group = county)) +
+  geom_point() +
+  geom_line(se = FALSE) +
+  theme(legend.position = "none")
+```
+
+```{r}
+death_int_slope_df <- death_sales_dat %>% 
+  nest(data = year:population) %>%
+  mutate(
+    models = map(data, ~lm(opioid_poisoning_deaths/population*10000 ~ year, data = .x)),
+    result = map(models, broom::tidy)
+  ) %>% 
+  select(county, result) %>% 
+  unnest(result) %>% 
+  select(county, term, estimate) %>% 
+  pivot_wider(
+    names_from = term,
+    values_from = estimate
+  ) %>% 
+  rename(int = "(Intercept)", slope = year)
+```
+
+```{r}
+death_int_slope_df %>% 
+  ggplot(aes(x = slope, y = int)) +
+  geom_point() +
+  theme(legend.position = "none")
+```
+
+```{r}
+death_km_fit = 
+  kmeans(
+    death_int_slope_df[,c(2,3)] %>% scale, 
+    centers = 3)
+
+death_int_slope_df =
+  broom::augment(death_km_fit, death_int_slope_df)
+```
+
+```{r, results = "hide"}
+death_int_slope_df %>% 
+  ggplot(aes(x = slope, y = int, color = .cluster)) +
+  geom_point()
+```
+
+```{r}
+left_join(death_sales_dat, death_int_slope_df) %>% 
+  ggplot(aes(x = year, y = opioid_poisoning_deaths/population*10000, group = county, color = .cluster)) + 
+  geom_point() + 
+  geom_path() +
+  scale_x_continuous(breaks = c(0, 1, 2), labels = c("2010", "2011", "2012")) +
+  theme(legend.position = "none")
+```
+
+## clustering with ER visits
+
+```{r}
+er_sales_dat <- death_sales_df %>% 
+  select(county, year, er_opioid, population) %>% 
+  mutate(
+    year = recode(year,
+                  "2010" = 0,
+                  "2011" = 1,
+                  "2012" = 2)
+  )
+```
+
+```{r}
+er_sales_dat %>% 
+  ggplot(aes(x = year, y = er_opioid/population*10000, group = county)) +
+  geom_point() +
+  geom_line(se = FALSE) +
+  theme(legend.position = "none")
+```
+
+```{r}
+er_int_slope_df <- er_sales_dat %>% 
+  nest(data = year:population) %>%
+  mutate(
+    models = map(data, ~lm(er_opioid/population*10000 ~ year, data = .x)),
+    result = map(models, broom::tidy)
+  ) %>% 
+  select(county, result) %>% 
+  unnest(result) %>% 
+  select(county, term, estimate) %>% 
+  pivot_wider(
+    names_from = term,
+    values_from = estimate
+  ) %>% 
+  rename(int = "(Intercept)", slope = year)
+```
+
+```{r}
+er_int_slope_df %>% 
+  ggplot(aes(x = slope, y = int)) +
+  geom_point() +
+  theme(legend.position = "none")
+```
+
+```{r}
+er_km_fit = 
+  kmeans(
+    er_int_slope_df[,c(2,3)] %>% scale, 
+    centers = 3)
+
+er_int_slope_df =
+  broom::augment(er_km_fit, er_int_slope_df)
+```
+
+```{r, results = "hide"}
+er_int_slope_df %>% 
+  ggplot(aes(x = slope, y = int, color = .cluster)) +
+  geom_point()
+```
+
+```{r}
+left_join(er_sales_dat, er_int_slope_df) %>% 
+  ggplot(aes(x = year, y = er_opioid/population*10000, group = county, color = .cluster)) + 
+  geom_point() + 
+  geom_path() +
+  scale_x_continuous(breaks = c(0, 1, 2), labels = c("2010", "2011", "2012")) +
+  theme(legend.position = "none")
 ```
 
