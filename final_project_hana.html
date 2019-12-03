@@ -4,626 +4,337 @@
 
 <head>
 
-<meta charset="utf-8">
+<meta charset="utf-8" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="Hana Akbarnejad" />
+
+<meta name="date" content="2019-11-28" />
+
+<title>final_project_hana</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<script src="site_libs/htmlwidgets-1.3/htmlwidgets.js"></script>
+<script src="site_libs/plotly-binding-4.9.0/plotly.js"></script>
+<script src="site_libs/typedarray-0.1/typedarray.min.js"></script>
+<link href="site_libs/crosstalk-1.0.0/css/crosstalk.css" rel="stylesheet" />
+<script src="site_libs/crosstalk-1.0.0/js/crosstalk.min.js"></script>
+<link href="site_libs/plotly-htmlwidgets-css-1.46.1/plotly-htmlwidgets.css" rel="stylesheet" />
+<script src="site_libs/plotly-main-1.46.1/plotly-latest.min.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
 
 <style type="text/css">
-@font-face {
-font-family: octicons-link;
-src: url(data:font/woff;charset=utf-8;base64,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) format('woff');
-}
-body {
--webkit-text-size-adjust: 100%;
-text-size-adjust: 100%;
-color: #333;
-font-family: "Helvetica Neue", Helvetica, "Segoe UI", Arial, freesans, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
-font-size: 16px;
-line-height: 1.6;
-word-wrap: break-word;
-}
-a {
-background-color: transparent;
-}
-a:active,
-a:hover {
-outline: 0;
-}
-strong {
-font-weight: bold;
-}
 h1 {
-font-size: 2em;
-margin: 0.67em 0;
+  font-size: 34px;
 }
-img {
-border: 0;
-}
-hr {
-box-sizing: content-box;
-height: 0;
-}
-pre {
-overflow: auto;
-}
-code,
-kbd,
-pre {
-font-family: monospace, monospace;
-font-size: 1em;
-}
-input {
-color: inherit;
-font: inherit;
-margin: 0;
-}
-html input[disabled] {
-cursor: default;
-}
-input {
-line-height: normal;
-}
-input[type="checkbox"] {
-box-sizing: border-box;
-padding: 0;
-}
-table {
-border-collapse: collapse;
-border-spacing: 0;
-}
-td,
-th {
-padding: 0;
-}
-* {
-box-sizing: border-box;
-}
-input {
-font: 13px / 1.4 Helvetica, arial, nimbussansl, liberationsans, freesans, clean, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
-}
-a {
-color: #4078c0;
-text-decoration: none;
-}
-a:hover,
-a:active {
-text-decoration: underline;
-}
-hr {
-height: 0;
-margin: 15px 0;
-overflow: hidden;
-background: transparent;
-border: 0;
-border-bottom: 1px solid #ddd;
-}
-hr:before {
-display: table;
-content: "";
-}
-hr:after {
-display: table;
-clear: both;
-content: "";
-}
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-margin-top: 15px;
-margin-bottom: 15px;
-line-height: 1.1;
-}
-h1 {
-font-size: 30px;
+h1.title {
+  font-size: 38px;
 }
 h2 {
-font-size: 21px;
+  font-size: 30px;
 }
 h3 {
-font-size: 16px;
+  font-size: 24px;
 }
 h4 {
-font-size: 14px;
+  font-size: 18px;
 }
 h5 {
-font-size: 12px;
+  font-size: 16px;
 }
 h6 {
-font-size: 11px;
+  font-size: 12px;
 }
-blockquote {
-margin: 0;
+.table th:not([align]) {
+  text-align: left;
 }
-ul,
-ol {
-padding: 0;
-margin-top: 0;
-margin-bottom: 0;
-}
-ol ol,
-ul ol {
-list-style-type: lower-roman;
-}
-ul ul ol,
-ul ol ol,
-ol ul ol,
-ol ol ol {
-list-style-type: lower-alpha;
-}
-dd {
-margin-left: 0;
+</style>
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
 }
 code {
-font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace;
-font-size: 12px;
-}
-pre {
-margin-top: 0;
-margin-bottom: 0;
-font: 12px Consolas, "Liberation Mono", Menlo, Courier, monospace;
-}
-.select::-ms-expand {
-opacity: 0;
-}
-.octicon {
-font: normal normal normal 16px/1 octicons-link;
-display: inline-block;
-text-decoration: none;
-text-rendering: auto;
--webkit-font-smoothing: antialiased;
--moz-osx-font-smoothing: grayscale;
--webkit-user-select: none;
--moz-user-select: none;
--ms-user-select: none;
-user-select: none;
-}
-.octicon-link:before {
-content: '\f05c';
-}
-.markdown-body:before {
-display: table;
-content: "";
-}
-.markdown-body:after {
-display: table;
-clear: both;
-content: "";
-}
-.markdown-body>*:first-child {
-margin-top: 0 !important;
-}
-.markdown-body>*:last-child {
-margin-bottom: 0 !important;
-}
-a:not([href]) {
-color: inherit;
-text-decoration: none;
-}
-.anchor {
-display: inline-block;
-padding-right: 2px;
-margin-left: -18px;
-}
-.anchor:focus {
-outline: none;
-}
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-margin-top: 1em;
-margin-bottom: 16px;
-font-weight: bold;
-line-height: 1.4;
-}
-h1 .octicon-link,
-h2 .octicon-link,
-h3 .octicon-link,
-h4 .octicon-link,
-h5 .octicon-link,
-h6 .octicon-link {
-color: #000;
-vertical-align: middle;
-visibility: hidden;
-}
-h1:hover .anchor,
-h2:hover .anchor,
-h3:hover .anchor,
-h4:hover .anchor,
-h5:hover .anchor,
-h6:hover .anchor {
-text-decoration: none;
-}
-h1:hover .anchor .octicon-link,
-h2:hover .anchor .octicon-link,
-h3:hover .anchor .octicon-link,
-h4:hover .anchor .octicon-link,
-h5:hover .anchor .octicon-link,
-h6:hover .anchor .octicon-link {
-visibility: visible;
-}
-h1 {
-padding-bottom: 0.3em;
-font-size: 2.25em;
-line-height: 1.2;
-border-bottom: 1px solid #eee;
-}
-h1 .anchor {
-line-height: 1;
-}
-h2 {
-padding-bottom: 0.3em;
-font-size: 1.75em;
-line-height: 1.225;
-border-bottom: 1px solid #eee;
-}
-h2 .anchor {
-line-height: 1;
-}
-h3 {
-font-size: 1.5em;
-line-height: 1.43;
-}
-h3 .anchor {
-line-height: 1.2;
-}
-h4 {
-font-size: 1.25em;
-}
-h4 .anchor {
-line-height: 1.2;
-}
-h5 {
-font-size: 1em;
-}
-h5 .anchor {
-line-height: 1.1;
-}
-h6 {
-font-size: 1em;
-color: #777;
-}
-h6 .anchor {
-line-height: 1.1;
-}
-p,
-blockquote,
-ul,
-ol,
-dl,
-table,
-pre {
-margin-top: 0;
-margin-bottom: 16px;
-}
-hr {
-height: 4px;
-padding: 0;
-margin: 16px 0;
-background-color: #e7e7e7;
-border: 0 none;
-}
-ul,
-ol {
-padding-left: 2em;
-}
-ul ul,
-ul ol,
-ol ol,
-ol ul {
-margin-top: 0;
-margin-bottom: 0;
-}
-li>p {
-margin-top: 16px;
-}
-dl {
-padding: 0;
-}
-dl dt {
-padding: 0;
-margin-top: 16px;
-font-size: 1em;
-font-style: italic;
-font-weight: bold;
-}
-dl dd {
-padding: 0 16px;
-margin-bottom: 16px;
-}
-blockquote {
-padding: 0 15px;
-color: #777;
-border-left: 4px solid #ddd;
-}
-blockquote>:first-child {
-margin-top: 0;
-}
-blockquote>:last-child {
-margin-bottom: 0;
-}
-table {
-display: block;
-width: 100%;
-overflow: auto;
-word-break: normal;
-word-break: keep-all;
-}
-table th {
-font-weight: bold;
-}
-table th,
-table td {
-padding: 6px 13px;
-border: 1px solid #ddd;
-}
-table tr {
-background-color: #fff;
-border-top: 1px solid #ccc;
-}
-table tr:nth-child(2n) {
-background-color: #f8f8f8;
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
 }
 img {
-max-width: 100%;
-box-sizing: content-box;
-background-color: #fff;
+  max-width:100%;
 }
-code {
-padding: 0;
-padding-top: 0.2em;
-padding-bottom: 0.2em;
-margin: 0;
-font-size: 85%;
-background-color: rgba(0,0,0,0.04);
-border-radius: 3px;
+.tabbed-pane {
+  padding-top: 12px;
 }
-code:before,
-code:after {
-letter-spacing: -0.2em;
-content: "\00a0";
+.html-widget {
+  margin-bottom: 20px;
 }
-pre>code {
-padding: 0;
-margin: 0;
-font-size: 100%;
-word-break: normal;
-white-space: pre;
-background: transparent;
-border: 0;
+button.code-folding-btn:focus {
+  outline: none;
 }
-.highlight {
-margin-bottom: 16px;
+summary {
+  display: list-item;
 }
-.highlight pre,
-pre {
-padding: 16px;
-overflow: auto;
-font-size: 85%;
-line-height: 1.45;
-background-color: #f7f7f7;
-border-radius: 3px;
-}
-.highlight pre {
-margin-bottom: 0;
-word-break: normal;
-}
-pre {
-word-wrap: normal;
-}
-pre code {
-display: inline;
-max-width: initial;
-padding: 0;
-margin: 0;
-overflow: initial;
-line-height: inherit;
-word-wrap: normal;
-background-color: transparent;
-border: 0;
-}
-pre code:before,
-pre code:after {
-content: normal;
-}
-kbd {
-display: inline-block;
-padding: 3px 5px;
-font-size: 11px;
-line-height: 10px;
-color: #555;
-vertical-align: middle;
-background-color: #fcfcfc;
-border: solid 1px #ccc;
-border-bottom-color: #bbb;
-border-radius: 3px;
-box-shadow: inset 0 -1px 0 #bbb;
-}
-.pl-c {
-color: #969896;
-}
-.pl-c1,
-.pl-s .pl-v {
-color: #0086b3;
-}
-.pl-e,
-.pl-en {
-color: #795da3;
-}
-.pl-s .pl-s1,
-.pl-smi {
-color: #333;
-}
-.pl-ent {
-color: #63a35c;
-}
-.pl-k {
-color: #a71d5d;
-}
-.pl-pds,
-.pl-s,
-.pl-s .pl-pse .pl-s1,
-.pl-sr,
-.pl-sr .pl-cce,
-.pl-sr .pl-sra,
-.pl-sr .pl-sre {
-color: #183691;
-}
-.pl-v {
-color: #ed6a43;
-}
-.pl-id {
-color: #b52a1d;
-}
-.pl-ii {
-background-color: #b52a1d;
-color: #f8f8f8;
-}
-.pl-sr .pl-cce {
-color: #63a35c;
-font-weight: bold;
-}
-.pl-ml {
-color: #693a17;
-}
-.pl-mh,
-.pl-mh .pl-en,
-.pl-ms {
-color: #1d3e81;
-font-weight: bold;
-}
-.pl-mq {
-color: #008080;
-}
-.pl-mi {
-color: #333;
-font-style: italic;
-}
-.pl-mb {
-color: #333;
-font-weight: bold;
-}
-.pl-md {
-background-color: #ffecec;
-color: #bd2c00;
-}
-.pl-mi1 {
-background-color: #eaffea;
-color: #55a532;
-}
-.pl-mdr {
-color: #795da3;
-font-weight: bold;
-}
-.pl-mo {
-color: #1d3e81;
-}
-kbd {
-display: inline-block;
-padding: 3px 5px;
-font: 11px Consolas, "Liberation Mono", Menlo, Courier, monospace;
-line-height: 10px;
-color: #555;
-vertical-align: middle;
-background-color: #fcfcfc;
-border: solid 1px #ccc;
-border-bottom-color: #bbb;
-border-radius: 3px;
-box-shadow: inset 0 -1px 0 #bbb;
-}
-.task-list-item {
-list-style-type: none;
-}
-.task-list-item+.task-list-item {
-margin-top: 3px;
-}
-.task-list-item input {
-margin: 0 0.35em 0.25em -1.6em;
-vertical-align: middle;
-}
-:checked+.radio-label {
-z-index: 1;
-position: relative;
-border-color: #4078c0;
-}
-.sourceLine {
-display: inline-block;
-}
-code .kw { color: #000000; }
-code .dt { color: #ed6a43; }
-code .dv { color: #009999; }
-code .bn { color: #009999; }
-code .fl { color: #009999; }
-code .ch { color: #009999; }
-code .st { color: #183691; }
-code .co { color: #969896; }
-code .ot { color: #0086b3; }
-code .al { color: #a61717; }
-code .fu { color: #63a35c; }
-code .er { color: #a61717; background-color: #e3d2d2; }
-code .wa { color: #000000; }
-code .cn { color: #008080; }
-code .sc { color: #008080; }
-code .vs { color: #183691; }
-code .ss { color: #183691; }
-code .im { color: #000000; }
-code .va {color: #008080; }
-code .cf { color: #000000; }
-code .op { color: #000000; }
-code .bu { color: #000000; }
-code .ex { color: #000000; }
-code .pp { color: #999999; }
-code .at { color: #008080; }
-code .do { color: #969896; }
-code .an { color: #008080; }
-code .cv { color: #008080; }
-code .in { color: #008080; }
 </style>
-<style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
 body {
-  box-sizing: border-box;
-  min-width: 200px;
-  max-width: 980px;
-  margin: 0 auto;
-  padding: 45px;
-  padding-top: 0px;
+  padding-top: 60px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h2 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h3 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h4 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h5 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h6 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
 }
 </style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
 
 </head>
 
 <body>
 
-<h1 id="final_project_hana">final_project_hana</h1>
-<p>Hana Akbarnejad 11/28/2019</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" title="1"><span class="co"># data import</span></a>
-<a class="sourceLine" id="cb1-2" title="2"></a>
-<a class="sourceLine" id="cb1-3" title="3">opioid_death_data =<span class="st"> </span>janitor<span class="op">::</span><span class="kw">clean_names</span>(<span class="kw">read_csv</span>(<span class="st">&#39;./opioid_related_deaths.csv&#39;</span>))</a></code></pre></div>
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Home</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="final_proj_jbt.html">Statistical Analysis</a>
+</li>
+<li>
+  <a href="index_report.html">Report</a>
+</li>
+<li>
+  <a href="index_screencast.html">Screencast</a>
+</li>
+<li>
+  <a href="https://github.com/Akbarnejadhn/p8105_fnl_project">
+    <span class="fa fa-github fa-lg"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">final_project_hana</h1>
+<h4 class="author">Hana Akbarnejad</h4>
+<h4 class="date">11/28/2019</h4>
+
+</div>
+
+
+<pre class="r"><code># data import
+
+opioid_death_data = janitor::clean_names(read_csv(&#39;./opioid_related_deaths.csv&#39;))</code></pre>
 <pre><code>## Parsed with column specification:
 ## cols(
 ##   Year = col_double(),
 ##   County = col_character(),
 ##   `Opioid Poisoning Deaths` = col_double()
-## )
-</code></pre>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" title="1">opioid_er_data =<span class="st"> </span>janitor<span class="op">::</span><span class="kw">clean_names</span>(<span class="kw">read_csv</span>(<span class="st">&#39;./opioid_related_visits.csv&#39;</span>))</a></code></pre></div>
+## )</code></pre>
+<pre class="r"><code>opioid_er_data = janitor::clean_names(read_csv(&#39;./opioid_related_visits.csv&#39;))</code></pre>
 <pre><code>## Parsed with column specification:
 ## cols(
 ##   .default = col_double(),
 ##   `Patient County Name` = col_character(),
 ##   `Rural/Urban` = col_character(),
 ##   Payer = col_character()
-## )
-
-## See spec(...) for full column specifications.
-</code></pre>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" title="1">opioid_treatment_distance =<span class="st"> </span>janitor<span class="op">::</span><span class="kw">clean_names</span>(<span class="kw">read_csv</span>(<span class="st">&#39;./distance_to_treatment.csv&#39;</span>))</a></code></pre></div>
+## )</code></pre>
+<pre><code>## See spec(...) for full column specifications.</code></pre>
+<pre class="r"><code>opioid_treatment_distance = janitor::clean_names(read_csv(&#39;./distance_to_treatment.csv&#39;))</code></pre>
 <pre><code>## Parsed with column specification:
 ## cols(
 ##   STATEFP = col_character(),
@@ -634,9 +345,8 @@ body {
 ##   STATE = col_character(),
 ##   STATEABBREVIATION = col_character(),
 ##   COUNTY = col_character()
-## )
-</code></pre>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" title="1">opioid_demographics =<span class="st"> </span>janitor<span class="op">::</span><span class="kw">clean_names</span>(<span class="kw">read_csv</span>(<span class="st">&quot;./opioid_demographics.csv&quot;</span>))</a></code></pre></div>
+## )</code></pre>
+<pre class="r"><code>opioid_demographics = janitor::clean_names(read_csv(&quot;./opioid_demographics.csv&quot;))</code></pre>
 <pre><code>## Parsed with column specification:
 ## cols(
 ##   Year = col_double(),
@@ -645,31 +355,30 @@ body {
 ##   Sex = col_character(),
 ##   `Age Group` = col_character(),
 ##   `Opioid Poisoning Deaths` = col_double()
-## )
-</code></pre>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" title="1">prod_county =<span class="st"> </span>arcos<span class="op">::</span><span class="kw">summarized_county_annual</span>(<span class="dt">state =</span> <span class="st">&quot;NY&quot;</span>, <span class="dt">key =</span> <span class="st">&quot;WaPo&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb9-2" title="2"><span class="st">  </span>janitor<span class="op">::</span><span class="kw">clean_names</span>()</a>
-<a class="sourceLine" id="cb9-3" title="3"></a>
-<a class="sourceLine" id="cb9-4" title="4">county_pop =<span class="st"> </span>arcos<span class="op">::</span><span class="kw">county_population</span>(<span class="dt">state =</span> <span class="st">&quot;NY&quot;</span>, <span class="dt">key =</span> <span class="st">&quot;WaPo&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb9-5" title="5"><span class="st">  </span>janitor<span class="op">::</span><span class="kw">clean_names</span>()</a></code></pre></div>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" title="1"><span class="co"># clean opioid death data #</span></a>
-<a class="sourceLine" id="cb10-2" title="2"></a>
-<a class="sourceLine" id="cb10-3" title="3">opioid_death_data =<span class="st"> </span>opioid_death_data <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb10-4" title="4"><span class="st">  </span><span class="kw">filter</span>(year <span class="op">&gt;=</span><span class="st"> </span><span class="dv">2010</span>) </a>
-<a class="sourceLine" id="cb10-5" title="5"></a>
-<a class="sourceLine" id="cb10-6" title="6"><span class="co"># clean opioid er data #</span></a>
-<a class="sourceLine" id="cb10-7" title="7"></a>
-<a class="sourceLine" id="cb10-8" title="8">opioid_er_data =<span class="st"> </span>opioid_er_data <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb10-9" title="9"><span class="st">  </span><span class="kw">select</span>(year, patient_county_name, rural_urban, payer, er_opioid, inpatient_total_opioid, er_inpatient_total_opioid, outpatient_opioid, overall_opioid) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb10-10" title="10"><span class="st">  </span><span class="kw">rename</span>(<span class="dt">county =</span> patient_county_name)</a>
-<a class="sourceLine" id="cb10-11" title="11"></a>
-<a class="sourceLine" id="cb10-12" title="12"><span class="co"># clean opioid treatment data #</span></a>
-<a class="sourceLine" id="cb10-13" title="13"><span class="co"># data is only for the year 2017#</span></a>
-<a class="sourceLine" id="cb10-14" title="14"></a>
-<a class="sourceLine" id="cb10-15" title="15">opioid_treatment_distance <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb10-16" title="16"><span class="st">  </span><span class="kw">filter</span>(state <span class="op">==</span><span class="st"> &#39;New York&#39;</span>) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb10-17" title="17"><span class="st">  </span><span class="kw">select</span>(state, county, value) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb10-18" title="18"><span class="st">  </span><span class="kw">rename</span>(<span class="dt">distance =</span> value) </a></code></pre></div>
+## )</code></pre>
+<pre class="r"><code>prod_county = arcos::summarized_county_annual(state = &quot;NY&quot;, key = &quot;WaPo&quot;) %&gt;% 
+  janitor::clean_names()
+
+county_pop = arcos::county_population(state = &quot;NY&quot;, key = &quot;WaPo&quot;) %&gt;% 
+  janitor::clean_names()</code></pre>
+<pre class="r"><code># clean opioid death data #
+
+opioid_death_data = opioid_death_data %&gt;% 
+  filter(year &gt;= 2010) 
+
+# clean opioid er data #
+
+opioid_er_data = opioid_er_data %&gt;% 
+  select(year, patient_county_name, rural_urban, payer, er_opioid, inpatient_total_opioid, er_inpatient_total_opioid, outpatient_opioid, overall_opioid) %&gt;%
+  rename(county = patient_county_name)
+
+# clean opioid treatment data #
+# data is only for the year 2017#
+
+opioid_treatment_distance %&gt;% 
+  filter(state == &#39;New York&#39;) %&gt;%
+  select(state, county, value) %&gt;%
+  rename(distance = value) </code></pre>
 <pre><code>## # A tibble: 62 x 3
 ##    state    county             distance
 ##    &lt;chr&gt;    &lt;chr&gt;                 &lt;dbl&gt;
@@ -683,16 +392,15 @@ body {
 ##  8 New York Chemung County         6.53
 ##  9 New York Chenango County       11.6 
 ## 10 New York Clinton County        14.4 
-## # ... with 52 more rows
-</code></pre>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" title="1"><span class="co"># Combine Data Sets #</span></a>
-<a class="sourceLine" id="cb12-2" title="2"></a>
-<a class="sourceLine" id="cb12-3" title="3">opioid_total_data =<span class="st"> </span><span class="kw">left_join</span>(opioid_er_data, opioid_death_data, <span class="dt">by =</span> <span class="kw">c</span>(<span class="st">&#39;county&#39;</span>, <span class="st">&#39;year&#39;</span>)) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb12-4" title="4"><span class="st">  </span><span class="kw">arrange</span>(county, year) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb12-5" title="5"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">county =</span> <span class="kw">recode</span>(county, <span class="st">&quot;Kings (Brooklyn)&quot;</span> =<span class="st"> &quot;Kings&quot;</span>,</a>
-<a class="sourceLine" id="cb12-6" title="6">         <span class="st">&quot;New York (Manhattan)&quot;</span> =<span class="st"> &quot;New York&quot;</span>))</a>
-<a class="sourceLine" id="cb12-7" title="7"></a>
-<a class="sourceLine" id="cb12-8" title="8">opioid_total_data <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">arrange</span>(year, county) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">print</span>()</a></code></pre></div>
+## # ... with 52 more rows</code></pre>
+<pre class="r"><code># Combine Data Sets #
+
+opioid_total_data = left_join(opioid_er_data, opioid_death_data, by = c(&#39;county&#39;, &#39;year&#39;)) %&gt;% 
+  arrange(county, year) %&gt;% 
+  mutate(county = recode(county, &quot;Kings (Brooklyn)&quot; = &quot;Kings&quot;,
+         &quot;New York (Manhattan)&quot; = &quot;New York&quot;))
+
+opioid_total_data %&gt;% arrange(year, county) %&gt;% print()</code></pre>
 <pre><code>## # A tibble: 1,950 x 10
 ##     year county rural_urban payer er_opioid inpatient_total~
 ##    &lt;dbl&gt; &lt;chr&gt;  &lt;chr&gt;       &lt;chr&gt;     &lt;dbl&gt;            &lt;dbl&gt;
@@ -708,13 +416,12 @@ body {
 ## 10  2010 Alleg~ Rural       Unkn~         2                0
 ## # ... with 1,940 more rows, and 4 more variables:
 ## #   er_inpatient_total_opioid &lt;dbl&gt;, outpatient_opioid &lt;dbl&gt;,
-## #   overall_opioid &lt;dbl&gt;, opioid_poisoning_deaths &lt;dbl&gt;
-</code></pre>
-<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" title="1"><span class="co"># Number of Perscription Opioids by County #</span></a>
-<a class="sourceLine" id="cb14-2" title="2">prod_county <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb14-3" title="3"><span class="st">  </span><span class="kw">group_by</span>(buyer_county,year) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb14-4" title="4"><span class="st">  </span><span class="kw">summarize</span>(<span class="dt">numpills =</span> <span class="kw">sum</span>(count)) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb14-5" title="5"><span class="st">  </span><span class="kw">arrange</span>(<span class="kw">desc</span>(numpills))</a></code></pre></div>
+## #   overall_opioid &lt;dbl&gt;, opioid_poisoning_deaths &lt;dbl&gt;</code></pre>
+<pre class="r"><code># Number of Perscription Opioids by County #
+prod_county %&gt;% 
+  group_by(buyer_county,year) %&gt;% 
+  summarize(numpills = sum(count)) %&gt;% 
+  arrange(desc(numpills))</code></pre>
 <pre><code>## # A tibble: 434 x 3
 ## # Groups:   buyer_county [62]
 ##    buyer_county  year numpills
@@ -729,43 +436,99 @@ body {
 ##  8 SUFFOLK       2006   109774
 ##  9 ERIE          2012   109624
 ## 10 ERIE          2010   106673
-## # ... with 424 more rows
-</code></pre>
-<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" title="1"><span class="co"># Pills bought by Pharmacies in Each county per Year #</span></a>
-<a class="sourceLine" id="cb16-2" title="2"></a>
-<a class="sourceLine" id="cb16-3" title="3">pharma_df =<span class="st"> </span><span class="kw">left_join</span>(prod_county, county_pop, <span class="dt">by =</span> <span class="kw">c</span>(<span class="st">&quot;buyer_county&quot;</span>, <span class="st">&quot;year&quot;</span>)) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb16-4" title="4"><span class="st">  </span><span class="kw">select</span>(county_name, year, count, population) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb16-5" title="5"><span class="st">  </span><span class="kw">rename</span>(<span class="dt">county =</span> county_name,</a>
-<a class="sourceLine" id="cb16-6" title="6">         <span class="dt">pills_bought =</span> count) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb16-7" title="7"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">county =</span> <span class="kw">as.factor</span>(county))</a></code></pre></div>
-<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb17-1" title="1"><span class="co"># filter data for NYC</span></a>
-<a class="sourceLine" id="cb17-2" title="2">opioid_demographics <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb17-3" title="3"><span class="st">  </span><span class="kw">filter</span>(region <span class="op">==</span><span class="st"> &quot;NYC&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb17-4" title="4"><span class="st">  </span><span class="kw">rename</span>(<span class="dt">race =</span> race_or_ethnicity)</a></code></pre></div>
-<pre><code>## # A tibble: 1,789 x 6
-##     year region race               sex   age_group opioid_poisoning_deaths
-##    &lt;dbl&gt; &lt;chr&gt;  &lt;chr&gt;              &lt;chr&gt; &lt;chr&gt;                       &lt;dbl&gt;
-##  1  2003 NYC    Black Non Hispanic F     9-Jan                           0
-##  2  2003 NYC    Black Non Hispanic F     19-Oct                          0
-##  3  2003 NYC    Black Non Hispanic F     65-74                           0
-##  4  2003 NYC    Black Non Hispanic F     75-84                           0
-##  5  2003 NYC    Black Non Hispanic F     85+                             0
-##  6  2003 NYC    Black Non Hispanic F     &lt;1                              0
-##  7  2003 NYC    Black Non Hispanic F     20-24                           1
-##  8  2003 NYC    Black Non Hispanic F     25-34                           3
-##  9  2003 NYC    Black Non Hispanic F     55-64                           3
-## 10  2003 NYC    Black Non Hispanic F     35-44                          10
-## # ... with 1,779 more rows
-</code></pre>
-<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb19-1" title="1"><span class="co"># spaghetti plot of </span></a>
-<a class="sourceLine" id="cb19-2" title="2">opioid_er_data <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb19-3" title="3"><span class="st">  </span><span class="kw">group_by</span>(year, county) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb19-4" title="4"><span class="st">  </span><span class="kw">summarize</span>(<span class="dt">sum_er_visit =</span> <span class="kw">sum</span>(er_opioid)) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb19-5" title="5"><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x=</span> year, <span class="dt">y =</span> sum_er_visit, <span class="dt">color =</span> county)) <span class="op">+</span></a>
-<a class="sourceLine" id="cb19-6" title="6"><span class="st">  </span><span class="kw">geom_line</span>(<span class="dt">alpha =</span> <span class="fl">.3</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb19-7" title="7"><span class="st">  </span><span class="kw">ylim</span>(<span class="dv">0</span>, <span class="dv">1000</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb19-8" title="8"><span class="st">   </span><span class="kw">theme</span>(<span class="dt">legend.position =</span> <span class="st">&quot;none&quot;</span>)</a></code></pre></div>
-<img src="data:image/png;base64,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" width="90%" />
+## # ... with 424 more rows</code></pre>
+<pre class="r"><code># Pills bought by Pharmacies in Each county per Year #
+
+pharma_df = left_join(prod_county, county_pop, by = c(&quot;buyer_county&quot;, &quot;year&quot;)) %&gt;% 
+  select(county_name, year, count, population) %&gt;% 
+  rename(county = county_name,
+         pills_bought = count) %&gt;% 
+  mutate(county = as.factor(county))</code></pre>
+<pre class="r"><code># spaghetti plot of 
+opioid_er_data %&gt;% 
+  group_by(year, county) %&gt;% 
+  summarize(sum_er_visit = sum(er_opioid)) %&gt;% 
+  ggplot(aes(x= year, y = sum_er_visit, color = county)) +
+  geom_line(alpha = .3) +
+  ylim(0, 1000) +
+   theme(legend.position = &quot;none&quot;)</code></pre>
+<p><img src="final_project_hana_files/figure-html/county_er-1.png" width="90%" /></p>
+<pre class="r"><code># type: plotly/ focus: summary-introduction
+# looking at #death by sex over years
+opioid_demographics %&gt;% 
+  filter(region == &quot;NYC&quot;) %&gt;% 
+  group_by(year, sex) %&gt;% 
+  summarize(
+    count = sum(opioid_poisoning_deaths)
+  ) %&gt;% 
+  plot_ly(x = ~year, y = ~count, type = &quot;bar&quot;,
+          color = ~sex, alpha = 0.5)</code></pre>
+<div id="htmlwidget-688344356226b044ac4e" style="width:90%;height:576px;" class="plotly html-widget"></div>
+<script type="application/json" data-for="htmlwidget-688344356226b044ac4e">{"x":{"visdat":{"4c2028611f91":["function () ","plotlyVisDat"]},"cur_data":"4c2028611f91","attrs":{"4c2028611f91":{"x":{},"y":{},"color":{},"alpha":0.5,"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"bar"}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"xaxis":{"domain":[0,1],"automargin":true,"title":"year"},"yaxis":{"domain":[0,1],"automargin":true,"title":"count"},"hovermode":"closest","showlegend":true},"source":"A","config":{"showSendToCloud":false},"data":[{"x":[2003,2004,2005,2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017],"y":[238,240,278,270,248,230,246,234,288,274,296,314,356,496,468],"type":"bar","name":"F","marker":{"color":"rgba(102,194,165,0.5)","line":{"color":"rgba(102,194,165,1)"}},"textfont":{"color":"rgba(102,194,165,0.5)"},"error_y":{"color":"rgba(102,194,165,0.5)"},"error_x":{"color":"rgba(102,194,165,0.5)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[2003,2004,2005,2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017],"y":[758,612,720,792,632,654,560,536,612,766,722,778,980,1570,1706],"type":"bar","name":"M","marker":{"color":"rgba(141,160,203,0.5)","line":{"color":"rgba(141,160,203,1)"}},"textfont":{"color":"rgba(141,160,203,0.5)"},"error_y":{"color":"rgba(141,160,203,0.5)"},"error_x":{"color":"rgba(141,160,203,0.5)"},"xaxis":"x","yaxis":"y","frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+<pre class="r"><code>one = county_pop %&gt;% 
+  select (buyer_county, year, population)
+
+two = prod_county %&gt;% 
+  select(year, buyer_county, count)
+
+joined = left_join(one, two)</code></pre>
+<pre><code>## Joining, by = c(&quot;buyer_county&quot;, &quot;year&quot;)</code></pre>
+<pre class="r"><code>joined %&gt;% 
+  group_by(buyer_county, year) %&gt;% 
+  summarize(
+    numpills = sum(count),
+    numpills_adj = numpills/population
+    ) %&gt;% 
+  arrange(desc(numpills)) %&gt;%  
+  plot_ly (x = ~year, y = ~numpills_adj, type = &quot;scatter&quot;, mode = &quot;lines&quot;,
+           color = ~buyer_county)</code></pre>
+<p><div id="htmlwidget-aa333e8ff32dfbb0f879" style="width:90%;height:576px;" class="plotly html-widget"></div>
+<script type="application/json" data-for="htmlwidget-aa333e8ff32dfbb0f879">{"x":{"visdat":{"4c20325232e3":["function () ","plotlyVisDat"]},"cur_data":"4c20325232e3","attrs":{"4c20325232e3":{"x":{},"y":{},"mode":"lines","color":{},"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"scatter"}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"xaxis":{"domain":[0,1],"automargin":true,"title":"year"},"yaxis":{"domain":[0,1],"automargin":true,"title":"numpills_adj"},"hovermode":"closest","showlegend":true},"source":"A","config":{"showSendToCloud":false},"data":[{"x":[2010,2011,2012,2009,2008,2007,2006],"y":[0.0708576728765393,0.0694275835068776,0.0692717176062605,0.0691859315347203,0.0667151732243801,0.0606335854247708,0.0516320884745573],"mode":"lines","type":"scatter","name":"ALBANY","marker":{"color":"rgba(102,194,165,1)","line":{"color":"rgba(102,194,165,1)"}},"textfont":{"color":"rgba(102,194,165,1)"},"error_y":{"color":"rgba(102,194,165,1)"},"error_x":{"color":"rgba(102,194,165,1)"},"line":{"color":"rgba(102,194,165,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[2012,2011,2010,2007,2008,2009,2006],"y":[0.090648483731597,0.0879957543222225,0.0858975664392628,0.08121599869598,0.0799154076092482,0.0766738879552955,0.0759132073178144],"mode":"lines","type":"scatter","name":"ALLEGANY","marker":{"color":"rgba(130,189,157,1)","line":{"color":"rgba(130,189,157,1)"}},"textfont":{"color":"rgba(130,189,157,1)"},"error_y":{"color":"rgba(130,189,157,1)"},"error_x":{"color":"rgba(130,189,157,1)"},"line":{"color":"rgba(130,189,157,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[2012,2011,2010,2009,2008,2007,2006],"y":[0.0427066773228387,0.0426409853680326,0.0402394332680444,0.0355548092005307,0.0331510068295431,0.0297956657627159,0.0257906308134619],"mode":"lines","type":"scatter","name":"BRONX","marker":{"color":"rgba(152,184,149,1)","line":{"color":"rgba(152,184,149,1)"}},"textfont":{"color":"rgba(152,184,149,1)"},"error_y":{"color":"rgba(152,184,149,1)"},"error_x":{"color":"rgba(152,184,149,1)"},"line":{"color":"rgba(152,184,149,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[2012,2011,2010,2008,2009,2007,2006],"y":[0.112715577607939,0.109335089399745,0.10113842353738,0.0985579195041511,0.098627624750908,0.0918870751753561,0.0833528284512581],"mode":"lines","type":"scatter","name":"BROOME","marker":{"color":"rgba(171,179,142,1)","line":{"color":"rgba(171,179,142,1)"}},"textfont":{"color":"rgba(171,179,142,1)"},"error_y":{"color":"rgba(171,179,142,1)"},"error_x":{"color":"rgba(171,179,142,1)"},"line":{"color":"rgba(171,179,142,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[2011,2012,2010,2009,2008,2007,2006],"y":[0.111719973160367,0.1117057106504,0.110280281271665,0.102316145813887,0.0990700957145157,0.0875567508882748,0.0834009490791965],"mode":"lines","type":"scatter","name":"CATTARAUGUS","marker":{"color":"rgba(188,174,134,1)","line":{"color":"rgba(188,174,134,1)"}},"textfont":{"color":"rgba(188,174,134,1)"},"error_y":{"color":"rgba(188,174,134,1)"},"error_x":{"color":"rgba(188,174,134,1)"},"line":{"color":"rgba(188,174,134,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[2011,2012,2010,2009,2008,2007,2006],"y":[0.104296543813276,0.103167658382919,0.0963434496649302,0.0870690301772633,0.0799806167838771,0.0676803631447742,0.0594372743905454],"mode":"lines","type":"scatter","name":"CAYUGA","marker":{"color":"rgba(203,168,126,1)","line":{"color":"rgba(203,168,126,1)"}},"textfont":{"color":"rgba(203,168,126,1)"},"error_y":{"color":"rgba(203,168,126,1)"},"error_x":{"color":"rgba(203,168,126,1)"},"line":{"color":"rgba(203,168,126,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[2012,2011,2010,2009,2008,2007,2006],"y":[0.112289095758512,0.111644373342814,0.109150321965356,0.103111621593401,0.0962811231318726,0.0876801913183398,0.0817605426127986],"mode":"lines","type":"scatter","name":"CHAUTAUQUA","marker":{"color":"rgba(217,161,119,1)","line":{"color":"rgba(217,161,119,1)"}},"textfont":{"color":"rgba(217,161,119,1)"},"error_y":{"color":"rgba(217,161,119,1)"},"error_x":{"color":"rgba(217,161,119,1)"},"line":{"color":"rgba(217,161,119,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[2012,2011,2010,2009,2008,2007,2006],"y":[0.133398664098492,0.126517226223079,0.12224376606394,0.118000022685768,0.0989344993955007,0.0854186880880926,0.0708199972952261],"mode":"lines","type":"scatter","name":"CHEMUNG","marker":{"color":"rgba(231,154,111,1)","line":{"color":"rgba(231,154,111,1)"}},"textfont":{"color":"rgba(231,154,111,1)"},"error_y":{"color":"rgba(231,154,111,1)"},"error_x":{"color":"rgba(231,154,111,1)"},"line":{"color":"rgba(231,154,111,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[2008,2010,2009,2011,2007,2012,2006],"y":[0.0986634454272688,0.0989910862964051,0.0974958787973938,0.0908876112467512,0.0881798573732585,0.0774608833432363,0.0755385184176218],"mode":"lines","type":"scatter","name":"CHENANGO","marker":{"color":"rgba(243,147,103,1)","line":{"color":"rgba(243,147,103,1)"}},"textfont":{"color":"rgba(243,147,103,1)"},"error_y":{"color":"rgba(243,147,103,1)"},"error_x":{"color":"rgba(243,147,103,1)"},"line":{"color":"rgba(243,147,103,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[2012,2011,2010,2009,2008,2007,2006],"y":[0.149511297438272,0.146708806904516,0.132386501578053,0.113803437098648,0.100787611800828,0.0877464993458985,0.0784765042945231],"mode":"lines","type":"scatter","name":"CLINTON","marker":{"color":"rgba(249,142,102,1)","line":{"color":"rgba(249,142,102,1)"}},"textfont":{"color":"rgba(249,142,102,1)"},"error_y":{"color":"rgba(249,142,102,1)"},"error_x":{"color":"rgba(249,142,102,1)"},"line":{"color":"rgba(249,142,102,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[2010,2011,2009,2012,2008,2007,2006],"y":[0.0896728388229155,0.0835778288795496,0.084591028175579,0.0822665033953022,0.0788104912019983,0.070345262494088,0.0640421271698173],"mode":"lines","type":"scatter","name":"COLUMBIA","marker":{"color":"rgba(240,144,114,1)","line":{"color":"rgba(240,144,114,1)"}},"textfont":{"color":"rgba(240,144,114,1)"},"error_y":{"color":"rgba(240,144,114,1)"},"error_x":{"color":"rgba(240,144,114,1)"},"line":{"color":"rgba(240,144,114,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[2010,2011,2008,2009,2012,2007,2006],"y":[0.112776025236593,0.111789810076657,0.107616529059087,0.109029808948908,0.098254908701191,0.0955787522166694,0.0868167202572347],"mode":"lines","type":"scatter","name":"CORTLAND","marker":{"color":"rgba(230,147,126,1)","line":{"color":"rgba(230,147,126,1)"}},"textfont":{"color":"rgba(230,147,126,1)"},"error_y":{"color":"rgba(230,147,126,1)"},"error_x":{"color":"rgba(230,147,126,1)"},"line":{"color":"rgba(230,147,126,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[2008,2010,2011,2007,2009,2012,2006],"y":[0.0966441287761305,0.0950228121111572,0.0943447243079099,0.0929618163054696,0.0910724336493917,0.085891621909678,0.0761326676472416],"mode":"lines","type":"scatter","name":"DELAWARE","marker":{"color":"rgba(219,149,138,1)","line":{"color":"rgba(219,149,138,1)"}},"textfont":{"color":"rgba(219,149,138,1)"},"error_y":{"color":"rgba(219,149,138,1)"},"error_x":{"color":"rgba(219,149,138,1)"},"line":{"color":"rgba(219,149,138,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[2011,2012,2010,2009,2008,2007,2006],"y":[0.0887104924505292,0.0875842188293625,0.086026770037008,0.0813622782670002,0.0793574714699916,0.0767610617671061,0.066512391758734],"mode":"lines","type":"scatter","name":"DUTCHESS","marker":{"color":"rgba(208,151,150,1)","line":{"color":"rgba(208,151,150,1)"}},"textfont":{"color":"rgba(208,151,150,1)"},"error_y":{"color":"rgba(208,151,150,1)"},"error_x":{"color":"rgba(208,151,150,1)"},"line":{"color":"rgba(208,151,150,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[2011,2012,2010,2009,2008,2007,2006],"y":[0.119954681564051,0.119215870509449,0.115797620934388,0.10950448479545,0.108692322482459,0.0990327447941017,0.0907781633684975],"mode":"lines","type":"scatter","name":"ERIE","marker":{"color":"rgba(196,153,162,1)","line":{"color":"rgba(196,153,162,1)"}},"textfont":{"color":"rgba(196,153,162,1)"},"error_y":{"color":"rgba(196,153,162,1)"},"error_x":{"color":"rgba(196,153,162,1)"},"line":{"color":"rgba(196,153,162,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[2011,2012,2010,2009,2008,2007,2006],"y":[0.0865665574103717,0.085552926810654,0.0777095595697179,0.0720594826904316,0.0634715354380626,0.0562822238589897,0.0544948088123576],"mode":"lines","type":"scatter","name":"ESSEX","marker":{"color":"rgba(182,155,174,1)","line":{"color":"rgba(182,155,174,1)"}},"textfont":{"color":"rgba(182,155,174,1)"},"error_y":{"color":"rgba(182,155,174,1)"},"error_x":{"color":"rgba(182,155,174,1)"},"line":{"color":"rgba(182,155,174,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[2011,2012,2010,2009,2008,2007,2006],"y":[0.107346599369573,0.107180161708383,0.101998181712672,0.0923095247548338,0.0815689598705377,0.0774400370785215,0.066840092407447],"mode":"lines","type":"scatter","name":"FRANKLIN","marker":{"color":"rgba(167,157,186,1)","line":{"color":"rgba(167,157,186,1)"}},"textfont":{"color":"rgba(167,157,186,1)"},"error_y":{"color":"rgba(167,157,186,1)"},"error_x":{"color":"rgba(167,157,186,1)"},"line":{"color":"rgba(167,157,186,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[2011,2010,2012,2009,2007,2008,2006],"y":[0.0885747259088286,0.0829954772330036,0.0818129267675855,0.0745943195653359,0.0726810719241651,0.0723229706390328,0.0611625216888375],"mode":"lines","type":"scatter","name":"FULTON","marker":{"color":"rgba(149,159,198,1)","line":{"color":"rgba(149,159,198,1)"}},"textfont":{"color":"rgba(149,159,198,1)"},"error_y":{"color":"rgba(149,159,198,1)"},"error_x":{"color":"rgba(149,159,198,1)"},"line":{"color":"rgba(149,159,198,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[2011,2012,2010,2008,2009,2007,2006],"y":[0.123253176800187,0.119215895452727,0.113841072858287,0.106519742883379,0.10831844420011,0.0914066410812615,0.0837630801582136],"mode":"lines","type":"scatter","name":"GENESEE","marker":{"color":"rgba(148,159,202,1)","line":{"color":"rgba(148,159,202,1)"}},"textfont":{"color":"rgba(148,159,202,1)"},"error_y":{"color":"rgba(148,159,202,1)"},"error_x":{"color":"rgba(148,159,202,1)"},"line":{"color":"rgba(148,159,202,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[2011,2010,2012,2009,2008,2007,2006],"y":[0.122783885756014,0.120643594414086,0.114490452343146,0.112979152656355,0.0987122728283502,0.0880150190766498,0.0731525054026215],"mode":"lines","type":"scatter","name":"GREENE","marker":{"color":"rgba(160,157,202,1)","line":{"color":"rgba(160,157,202,1)"}},"textfont":{"color":"rgba(160,157,202,1)"},"error_y":{"color":"rgba(160,157,202,1)"},"error_x":{"color":"rgba(160,157,202,1)"},"line":{"color":"rgba(160,157,202,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[2008,2006,2007,2012,2009,2010,2011],"y":[0.00122624156958921,0.000802085422097453,0.000804990943851882,0.000827300930713547,0.000598682897625224,0.000611246943765281,0.000410677618069815],"mode":"lines","type":"scatter","name":"HAMILTON","marker":{"color":"rgba(171,155,201,1)","line":{"color":"rgba(171,155,201,1)"}},"textfont":{"color":"rgba(171,155,201,1)"},"error_y":{"color":"rgba(171,155,201,1)"},"error_x":{"color":"rgba(171,155,201,1)"},"line":{"color":"rgba(171,155,201,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[2011,2010,2012,2008,2009,2007,2006],"y":[0.105214905056407,0.101597960579494,0.101233036060489,0.0988292652630271,0.100594179919602,0.0819825000388543,0.0693435786909057],"mode":"lines","type":"scatter","name":"HERKIMER","marker":{"color":"rgba(182,153,200,1)","line":{"color":"rgba(182,153,200,1)"}},"textfont":{"color":"rgba(182,153,200,1)"},"error_y":{"color":"rgba(182,153,200,1)"},"error_x":{"color":"rgba(182,153,200,1)"},"line":{"color":"rgba(182,153,200,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[2011,2012,2010,2009,2008,2007,2006],"y":[0.0977307423603384,0.0960337062327473,0.0897113905569702,0.0812024320761937,0.0732746255422357,0.0572228161204252,0.0498988121425429],"mode":"lines","type":"scatter","name":"JEFFERSON","marker":{"color":"rgba(192,150,199,1)","line":{"color":"rgba(192,150,199,1)"}},"textfont":{"color":"rgba(192,150,199,1)"},"error_y":{"color":"rgba(192,150,199,1)"},"error_x":{"color":"rgba(192,150,199,1)"},"line":{"color":"rgba(192,150,199,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[2011,2012,2010,2009,2008,2007,2006],"y":[0.0400656605737698,0.0378678255609414,0.0381869982835938,0.0341545383627381,0.0332012253486379,0.0309242034240437,0.0276791241197111],"mode":"lines","type":"scatter","name":"KINGS","marker":{"color":"rgba(202,148,198,1)","line":{"color":"rgba(202,148,198,1)"}},"textfont":{"color":"rgba(202,148,198,1)"},"error_y":{"color":"rgba(202,148,198,1)"},"error_x":{"color":"rgba(202,148,198,1)"},"line":{"color":"rgba(202,148,198,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[2012,2011,2010,2009,2008,2007,2006],"y":[0.070652575567216,0.0678699559862411,0.067735129733131,0.0682312535775615,0.0604211622888608,0.0464446577567747,0.0392207696011259],"mode":"lines","type":"scatter","name":"LEWIS","marker":{"color":"rgba(211,145,197,1)","line":{"color":"rgba(211,145,197,1)"}},"textfont":{"color":"rgba(211,145,197,1)"},"error_y":{"color":"rgba(211,145,197,1)"},"error_x":{"color":"rgba(211,145,197,1)"},"line":{"color":"rgba(211,145,197,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[2011,2010,2012,2009,2008,2007,2006],"y":[0.0827381589612614,0.0806222398801974,0.0753660967568811,0.0765808555777208,0.0712403065344242,0.062985029025359,0.0527104977278639],"mode":"lines","type":"scatter","name":"LIVINGSTON","marker":{"color":"rgba(221,142,196,1)","line":{"color":"rgba(221,142,196,1)"}},"textfont":{"color":"rgba(221,142,196,1)"},"error_y":{"color":"rgba(221,142,196,1)"},"error_x":{"color":"rgba(221,142,196,1)"},"line":{"color":"rgba(221,142,196,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[2011,2012,2010,2009,2008,2007,2006],"y":[0.100388211493247,0.0994559929840909,0.0925816675127252,0.0902845365546459,0.0858433116660965,0.0779408326341993,0.0695288859276533],"mode":"lines","type":"scatter","name":"MADISON","marker":{"color":"rgba(230,138,195,1)","line":{"color":"rgba(230,138,195,1)"}},"textfont":{"color":"rgba(230,138,195,1)"},"error_y":{"color":"rgba(230,138,195,1)"},"error_x":{"color":"rgba(230,138,195,1)"},"line":{"color":"rgba(230,138,195,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[2011,2012,2010,2009,2008,2007,2006],"y":[0.0899966746681063,0.089704409288536,0.0891141467257721,0.0822557034311481,0.0794420648351322,0.0730795712946517,0.0670595357896006],"mode":"lines","type":"scatter","name":"MONROE","marker":{"color":"rgba(227,147,185,1)","line":{"color":"rgba(227,147,185,1)"}},"textfont":{"color":"rgba(227,147,185,1)"},"error_y":{"color":"rgba(227,147,185,1)"},"error_x":{"color":"rgba(227,147,185,1)"},"line":{"color":"rgba(227,147,185,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[2012,2011,2010,2009,2008,2007,2006],"y":[0.128295852073963,0.123737121136341,0.117669436380018,0.102134397104787,0.0973353886809073,0.0938792722599301,0.0789357252031212],"mode":"lines","type":"scatter","name":"MONTGOMERY","marker":{"color":"rgba(221,157,174,1)","line":{"color":"rgba(221,157,174,1)"}},"textfont":{"color":"rgba(221,157,174,1)"},"error_y":{"color":"rgba(221,157,174,1)"},"error_x":{"color":"rgba(221,157,174,1)"},"line":{"color":"rgba(221,157,174,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[2010,2011,2009,2008,2007,2012,2006],"y":[0.0730631570789785,0.0727343247706023,0.0682233238636154,0.0694981394264257,0.0663410103112746,0.0644335749586169,0.0606881248089486],"mode":"lines","type":"scatter","name":"NASSAU","marker":{"color":"rgba(215,167,162,1)","line":{"color":"rgba(215,167,162,1)"}},"textfont":{"color":"rgba(215,167,162,1)"},"error_y":{"color":"rgba(215,167,162,1)"},"error_x":{"color":"rgba(215,167,162,1)"},"line":{"color":"rgba(215,167,162,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[2011,2012,2010,2009,2008,2007,2006],"y":[0.0625786632767871,0.0618167698459669,0.0597361914175369,0.0536687473241199,0.0510106350132512,0.0477645785195668,0.0430656753925905],"mode":"lines","type":"scatter","name":"NEW YORK","marker":{"color":"rgba(209,176,150,1)","line":{"color":"rgba(209,176,150,1)"}},"textfont":{"color":"rgba(209,176,150,1)"},"error_y":{"color":"rgba(209,176,150,1)"},"error_x":{"color":"rgba(209,176,150,1)"},"line":{"color":"rgba(209,176,150,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[2010,2012,2011,2008,2009,2007,2006],"y":[0.11776603228673,0.116014805275422,0.115388176044733,0.115499575982539,0.113236383630069,0.107608751060053,0.0989229601939412],"mode":"lines","type":"scatter","name":"NIAGARA","marker":{"color":"rgba(202,185,138,1)","line":{"color":"rgba(202,185,138,1)"}},"textfont":{"color":"rgba(202,185,138,1)"},"error_y":{"color":"rgba(202,185,138,1)"},"error_x":{"color":"rgba(202,185,138,1)"},"line":{"color":"rgba(202,185,138,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[2011,2012,2010,2009,2008,2007,2006],"y":[0.115617632136568,0.112227741362829,0.108824770927759,0.100840154266348,0.0957685451335284,0.0835607792296408,0.07247608110012],"mode":"lines","type":"scatter","name":"ONEIDA","marker":{"color":"rgba(194,193,125,1)","line":{"color":"rgba(194,193,125,1)"}},"textfont":{"color":"rgba(194,193,125,1)"},"error_y":{"color":"rgba(194,193,125,1)"},"error_x":{"color":"rgba(194,193,125,1)"},"line":{"color":"rgba(194,193,125,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[2011,2012,2010,2008,2009,2007,2006],"y":[0.115477683305336,0.112720650222339,0.112548091023584,0.105801429212552,0.107492409319461,0.0946308913973297,0.084974778977057],"mode":"lines","type":"scatter","name":"ONONDAGA","marker":{"color":"rgba(185,201,112,1)","line":{"color":"rgba(185,201,112,1)"}},"textfont":{"color":"rgba(185,201,112,1)"},"error_y":{"color":"rgba(185,201,112,1)"},"error_x":{"color":"rgba(185,201,112,1)"},"line":{"color":"rgba(185,201,112,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[2011,2010,2009,2012,2008,2007,2006],"y":[0.102689829083777,0.101347156108299,0.0967324024758889,0.0919259616812713,0.0912212376060657,0.0836659823600973,0.0789916287603685],"mode":"lines","type":"scatter","name":"ONTARIO","marker":{"color":"rgba(175,209,97,1)","line":{"color":"rgba(175,209,97,1)"}},"textfont":{"color":"rgba(175,209,97,1)"},"error_y":{"color":"rgba(175,209,97,1)"},"error_x":{"color":"rgba(175,209,97,1)"},"line":{"color":"rgba(175,209,97,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[2010,2011,2012,2009,2008,2007,2006],"y":[0.095318489145086,0.0946365707185753,0.0914865491713389,0.089738891190499,0.0863422843266226,0.0826159407703331,0.0720562102761455],"mode":"lines","type":"scatter","name":"ORANGE","marker":{"color":"rgba(168,216,84,1)","line":{"color":"rgba(168,216,84,1)"}},"textfont":{"color":"rgba(168,216,84,1)"},"error_y":{"color":"rgba(168,216,84,1)"},"error_x":{"color":"rgba(168,216,84,1)"},"line":{"color":"rgba(168,216,84,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[2012,2011,2010,2008,2009,2007,2006],"y":[0.102965461100128,0.102624909906768,0.0979869813986889,0.0926157118416794,0.0926852288815479,0.0891975451063633,0.0787885766927683],"mode":"lines","type":"scatter","name":"ORLEANS","marker":{"color":"rgba(179,216,80,1)","line":{"color":"rgba(179,216,80,1)"}},"textfont":{"color":"rgba(179,216,80,1)"},"error_y":{"color":"rgba(179,216,80,1)"},"error_x":{"color":"rgba(179,216,80,1)"},"line":{"color":"rgba(179,216,80,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[2011,2010,2012,2009,2008,2007,2006],"y":[0.120918776492153,0.120749468172149,0.110704190733686,0.107453038128763,0.104146576663452,0.0884275813538658,0.0732137894960524],"mode":"lines","type":"scatter","name":"OSWEGO","marker":{"color":"rgba(190,217,76,1)","line":{"color":"rgba(190,217,76,1)"}},"textfont":{"color":"rgba(190,217,76,1)"},"error_y":{"color":"rgba(190,217,76,1)"},"error_x":{"color":"rgba(190,217,76,1)"},"line":{"color":"rgba(190,217,76,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[2011,2012,2010,2008,2009,2007,2006],"y":[0.132237896761783,0.130126957053438,0.128889527825698,0.119962916193795,0.112891795251748,0.108608576787361,0.0984737910902399],"mode":"lines","type":"scatter","name":"OTSEGO","marker":{"color":"rgba(200,217,73,1)","line":{"color":"rgba(200,217,73,1)"}},"textfont":{"color":"rgba(200,217,73,1)"},"error_y":{"color":"rgba(200,217,73,1)"},"error_x":{"color":"rgba(200,217,73,1)"},"line":{"color":"rgba(200,217,73,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[2008,2007,2010,2011,2012,2009,2006],"y":[0.0710790962154777,0.0702334747722565,0.0676879803104124,0.0671770584575866,0.0664078955286755,0.0659462622715945,0.0619986513280393],"mode":"lines","type":"scatter","name":"PUTNAM","marker":{"color":"rgba(211,217,69,1)","line":{"color":"rgba(211,217,69,1)"}},"textfont":{"color":"rgba(211,217,69,1)"},"error_y":{"color":"rgba(211,217,69,1)"},"error_x":{"color":"rgba(211,217,69,1)"},"line":{"color":"rgba(211,217,69,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[2011,2012,2010,2009,2008,2007,2006],"y":[0.0414268079569029,0.0397430344768341,0.039049750155627,0.0340012111318817,0.0330772425343826,0.0313743627003639,0.0276356088840966],"mode":"lines","type":"scatter","name":"QUEENS","marker":{"color":"rgba(221,217,64,1)","line":{"color":"rgba(221,217,64,1)"}},"textfont":{"color":"rgba(221,217,64,1)"},"error_y":{"color":"rgba(221,217,64,1)"},"error_x":{"color":"rgba(221,217,64,1)"},"line":{"color":"rgba(221,217,64,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[2011,2010,2012,2008,2009,2007,2006],"y":[0.0847516236726123,0.083030215156119,0.079579089951337,0.0775669607762985,0.0793199305998981,0.0672130836751073,0.0549036310008137],"mode":"lines","type":"scatter","name":"RENSSELAER","marker":{"color":"rgba(230,217,60,1)","line":{"color":"rgba(230,217,60,1)"}},"textfont":{"color":"rgba(230,217,60,1)"},"error_y":{"color":"rgba(230,217,60,1)"},"error_x":{"color":"rgba(230,217,60,1)"},"line":{"color":"rgba(230,217,60,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[2008,2011,2009,2010,2007,2012,2006],"y":[0.0746989978455945,0.0738744383457001,0.0710601695476522,0.0738137878951343,0.0722257757124023,0.0685605947383928,0.0627828758875555],"mode":"lines","type":"scatter","name":"RICHMOND","marker":{"color":"rgba(240,217,55,1)","line":{"color":"rgba(240,217,55,1)"}},"textfont":{"color":"rgba(240,217,55,1)"},"error_y":{"color":"rgba(240,217,55,1)"},"error_x":{"color":"rgba(240,217,55,1)"},"line":{"color":"rgba(240,217,55,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[2009,2010,2011,2008,2012,2007,2006],"y":[0.0588130428055352,0.0572315287385296,0.0558957114441399,0.0558686107009197,0.0542256523007202,0.0520605433788138,0.047102441631317],"mode":"lines","type":"scatter","name":"ROCKLAND","marker":{"color":"rgba(250,217,50,1)","line":{"color":"rgba(250,217,50,1)"}},"textfont":{"color":"rgba(250,217,50,1)"},"error_y":{"color":"rgba(250,217,50,1)"},"error_x":{"color":"rgba(250,217,50,1)"},"line":{"color":"rgba(250,217,50,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[2011,2012,2010,2009,2008,2007,2006],"y":[0.102210018871468,0.0952971622345172,0.093005779312566,0.0914417451841592,0.0818828122201927,0.0670514222214256,0.058992792857399],"mode":"lines","type":"scatter","name":"SAINT LAWRENCE","marker":{"color":"rgba(254,216,55,1)","line":{"color":"rgba(254,216,55,1)"}},"textfont":{"color":"rgba(254,216,55,1)"},"error_y":{"color":"rgba(254,216,55,1)"},"error_x":{"color":"rgba(254,216,55,1)"},"line":{"color":"rgba(254,216,55,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[2011,2012,2010,2009,2008,2007,2006],"y":[0.07166392092257,0.0696077004257797,0.0684881066352456,0.0634067928920833,0.0628492005780506,0.0545000417056692,0.0463501796139349],"mode":"lines","type":"scatter","name":"SARATOGA","marker":{"color":"rgba(252,213,70,1)","line":{"color":"rgba(252,213,70,1)"}},"textfont":{"color":"rgba(252,213,70,1)"},"error_y":{"color":"rgba(252,213,70,1)"},"error_x":{"color":"rgba(252,213,70,1)"},"line":{"color":"rgba(252,213,70,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[2012,2011,2010,2008,2009,2007,2006],"y":[0.0746766278663266,0.0731412609218176,0.072291672103766,0.0673839332290037,0.0652737349974082,0.0619668363158759,0.0515128353803173],"mode":"lines","type":"scatter","name":"SCHENECTADY","marker":{"color":"rgba(249,211,83,1)","line":{"color":"rgba(249,211,83,1)"}},"textfont":{"color":"rgba(249,211,83,1)"},"error_y":{"color":"rgba(249,211,83,1)"},"error_x":{"color":"rgba(249,211,83,1)"},"line":{"color":"rgba(249,211,83,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[2010,2011,2008,2007,2012,2009,2006],"y":[0.0968007563512154,0.0947628639443325,0.0899057464274856,0.0894084027482216,0.0869485237759451,0.0876371294753717,0.0839533388444934],"mode":"lines","type":"scatter","name":"SCHOHARIE","marker":{"color":"rgba(246,209,95,1)","line":{"color":"rgba(246,209,95,1)"}},"textfont":{"color":"rgba(246,209,95,1)"},"error_y":{"color":"rgba(246,209,95,1)"},"error_x":{"color":"rgba(246,209,95,1)"},"line":{"color":"rgba(246,209,95,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[2010,2011,2008,2007,2009,2006,2012],"y":[0.136055154583648,0.131206057328286,0.127976829006651,0.124231571069653,0.122565622353937,0.112681313993174,0.0873213512343006],"mode":"lines","type":"scatter","name":"SCHUYLER","marker":{"color":"rgba(243,206,106,1)","line":{"color":"rgba(243,206,106,1)"}},"textfont":{"color":"rgba(243,206,106,1)"},"error_y":{"color":"rgba(243,206,106,1)"},"error_x":{"color":"rgba(243,206,106,1)"},"line":{"color":"rgba(243,206,106,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[2011,2012,2010,2006,2008,2007,2009],"y":[0.086132668668215,0.0782869767178383,0.0775439689597553,0.0709763506799534,0.0701441899915182,0.0677211085736841,0.0675228928352008],"mode":"lines","type":"scatter","name":"SENECA","marker":{"color":"rgba(240,204,116,1)","line":{"color":"rgba(240,204,116,1)"}},"textfont":{"color":"rgba(240,204,116,1)"},"error_y":{"color":"rgba(240,204,116,1)"},"error_x":{"color":"rgba(240,204,116,1)"},"line":{"color":"rgba(240,204,116,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[2012,2011,2010,2008,2009,2007,2006],"y":[0.10477614352675,0.10444469176523,0.100421376767554,0.0966918542227985,0.0987132010675052,0.093311413523305,0.088095213916505],"mode":"lines","type":"scatter","name":"STEUBEN","marker":{"color":"rgba(237,201,126,1)","line":{"color":"rgba(237,201,126,1)"}},"textfont":{"color":"rgba(237,201,126,1)"},"error_y":{"color":"rgba(237,201,126,1)"},"error_x":{"color":"rgba(237,201,126,1)"},"line":{"color":"rgba(237,201,126,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[2011,2010,2008,2009,2012,2007,2006],"y":[0.0904303926163463,0.0893819289493494,0.0856292789305359,0.0830990557421835,0.0810916936932108,0.0816069086361341,0.074391478599591],"mode":"lines","type":"scatter","name":"SUFFOLK","marker":{"color":"rgba(234,199,136,1)","line":{"color":"rgba(234,199,136,1)"}},"textfont":{"color":"rgba(234,199,136,1)"},"error_y":{"color":"rgba(234,199,136,1)"},"error_x":{"color":"rgba(234,199,136,1)"},"line":{"color":"rgba(234,199,136,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[2011,2010,2008,2009,2012,2007,2006],"y":[0.132967132154784,0.129481481481481,0.117432962510449,0.119738159211843,0.116369278510473,0.112936108012463,0.105152076238816],"mode":"lines","type":"scatter","name":"SULLIVAN","marker":{"color":"rgba(230,197,145,1)","line":{"color":"rgba(230,197,145,1)"}},"textfont":{"color":"rgba(230,197,145,1)"},"error_y":{"color":"rgba(230,197,145,1)"},"error_x":{"color":"rgba(230,197,145,1)"},"line":{"color":"rgba(230,197,145,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[2007,2008,2012,2011,2009,2010,2006],"y":[0.0545718995442645,0.0506621616373451,0.049856071435565,0.049583715171486,0.0503107193201898,0.0487961539210152,0.0470544861844148],"mode":"lines","type":"scatter","name":"TIOGA","marker":{"color":"rgba(225,195,151,1)","line":{"color":"rgba(225,195,151,1)"}},"textfont":{"color":"rgba(225,195,151,1)"},"error_y":{"color":"rgba(225,195,151,1)"},"error_x":{"color":"rgba(225,195,151,1)"},"line":{"color":"rgba(225,195,151,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[2011,2010,2012,2009,2008,2007,2006],"y":[0.0957508932724951,0.0949886693436171,0.0900167372255587,0.0892198482845014,0.0848251197911997,0.0755179661695526,0.0690309179034832],"mode":"lines","type":"scatter","name":"TOMPKINS","marker":{"color":"rgba(220,193,154,1)","line":{"color":"rgba(220,193,154,1)"}},"textfont":{"color":"rgba(220,193,154,1)"},"error_y":{"color":"rgba(220,193,154,1)"},"error_x":{"color":"rgba(220,193,154,1)"},"line":{"color":"rgba(220,193,154,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[2011,2012,2010,2009,2008,2007,2006],"y":[0.107071315198949,0.100676105108593,0.0974220656300949,0.0912291333810809,0.0885278478386671,0.0834162938003916,0.0768629166780607],"mode":"lines","type":"scatter","name":"ULSTER","marker":{"color":"rgba(214,191,158,1)","line":{"color":"rgba(214,191,158,1)"}},"textfont":{"color":"rgba(214,191,158,1)"},"error_y":{"color":"rgba(214,191,158,1)"},"error_x":{"color":"rgba(214,191,158,1)"},"line":{"color":"rgba(214,191,158,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[2011,2010,2012,2009,2008,2007,2006],"y":[0.133167089877902,0.127490221741976,0.126133942161339,0.109821577962673,0.106077633337383,0.10442652874962,0.0879122555450468],"mode":"lines","type":"scatter","name":"WARREN","marker":{"color":"rgba(209,189,162,1)","line":{"color":"rgba(209,189,162,1)"}},"textfont":{"color":"rgba(209,189,162,1)"},"error_y":{"color":"rgba(209,189,162,1)"},"error_x":{"color":"rgba(209,189,162,1)"},"line":{"color":"rgba(209,189,162,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[2011,2012,2010,2009,2008,2007,2006],"y":[0.0792889479849305,0.0781042023198327,0.075148998224702,0.0704637838875908,0.0690254853601467,0.06172487074571,0.0504373038505042],"mode":"lines","type":"scatter","name":"WASHINGTON","marker":{"color":"rgba(203,187,165,1)","line":{"color":"rgba(203,187,165,1)"}},"textfont":{"color":"rgba(203,187,165,1)"},"error_y":{"color":"rgba(203,187,165,1)"},"error_x":{"color":"rgba(203,187,165,1)"},"line":{"color":"rgba(203,187,165,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[2011,2010,2012,2008,2009,2007,2006],"y":[0.094587089332251,0.0919127853588741,0.0871346655826094,0.0838925100545131,0.0821423116367366,0.0723441559135762,0.0648218387734388],"mode":"lines","type":"scatter","name":"WAYNE","marker":{"color":"rgba(197,185,169,1)","line":{"color":"rgba(197,185,169,1)"}},"textfont":{"color":"rgba(197,185,169,1)"},"error_y":{"color":"rgba(197,185,169,1)"},"error_x":{"color":"rgba(197,185,169,1)"},"line":{"color":"rgba(197,185,169,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[2011,2010,2012,2009,2008,2007,2006],"y":[0.0590172719272141,0.0578865793916581,0.0563012837985029,0.0549992097360518,0.0544157602173558,0.0517465990439398,0.0458973659743232],"mode":"lines","type":"scatter","name":"WESTCHESTER","marker":{"color":"rgba(191,183,172,1)","line":{"color":"rgba(191,183,172,1)"}},"textfont":{"color":"rgba(191,183,172,1)"},"error_y":{"color":"rgba(191,183,172,1)"},"error_x":{"color":"rgba(191,183,172,1)"},"line":{"color":"rgba(191,183,172,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[2011,2012,2009,2010,2008,2007,2006],"y":[0.0778485659474694,0.0774731540435237,0.0763032042085127,0.0749167984516251,0.0692982663607767,0.058967423262378,0.0582569774799053],"mode":"lines","type":"scatter","name":"WYOMING","marker":{"color":"rgba(185,181,176,1)","line":{"color":"rgba(185,181,176,1)"}},"textfont":{"color":"rgba(185,181,176,1)"},"error_y":{"color":"rgba(185,181,176,1)"},"error_x":{"color":"rgba(185,181,176,1)"},"line":{"color":"rgba(185,181,176,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[2011,2012,2010,2009,2008,2007,2006],"y":[0.0858259016652198,0.0846120468620567,0.0813069306930693,0.0798744189839354,0.0709608709372042,0.0697867955932472,0.0648151848151848],"mode":"lines","type":"scatter","name":"YATES","marker":{"color":"rgba(179,179,179,1)","line":{"color":"rgba(179,179,179,1)"}},"textfont":{"color":"rgba(179,179,179,1)"},"error_y":{"color":"rgba(179,179,179,1)"},"error_x":{"color":"rgba(179,179,179,1)"},"line":{"color":"rgba(179,179,179,1)"},"xaxis":"x","yaxis":"y","frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script> Not very informative! I want to divide the numpills by county population, and just plot the top 10.</p>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
 
 </body>
 </html>

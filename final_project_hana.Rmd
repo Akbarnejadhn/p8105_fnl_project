@@ -2,7 +2,7 @@
 title: "final_project_hana"
 author: "Hana Akbarnejad"
 date: "11/28/2019"
-output: github_document
+output: html_document
 ---
 
 ```{r setup, include=FALSE}
@@ -10,6 +10,7 @@ output: github_document
 library(tidyverse)
 library(viridis)
 library(arcos)
+library(plotly)
 knitr::opts_chunk$set(
 	echo = TRUE,
 	warning = FALSE,
@@ -37,6 +38,7 @@ opioid_er_data = janitor::clean_names(read_csv('./opioid_related_visits.csv'))
 opioid_treatment_distance = janitor::clean_names(read_csv('./distance_to_treatment.csv'))
 
 opioid_demographics = janitor::clean_names(read_csv("./opioid_demographics.csv"))
+
 ```
 
 
@@ -102,15 +104,7 @@ pharma_df = left_join(prod_county, county_pop, by = c("buyer_county", "year")) %
 ```
 
 
-```{r demographics}
-
-# filter data for NYC
-opioid_demographics %>% 
-  filter(region == "NYC") %>% 
-  rename(race = race_or_ethnicity)
-```
-
-```{r er_visits}
+```{r county_er}
 
 # spaghetti plot of 
 opioid_er_data %>% 
@@ -121,4 +115,42 @@ opioid_er_data %>%
   ylim(0, 1000) +
    theme(legend.position = "none")
 ```
+
+
+```{r sex_plotly}
+
+# type: plotly/ focus: summary-introduction
+# looking at #death by sex over years
+opioid_demographics %>% 
+  filter(region == "NYC") %>% 
+  group_by(year, sex) %>% 
+  summarize(
+    count = sum(opioid_poisoning_deaths)
+  ) %>% 
+  plot_ly(x = ~year, y = ~count, type = "bar",
+          color = ~sex, alpha = 0.5)
+```
+
+```{r county_numpills}
+
+
+one = county_pop %>% 
+  select (buyer_county, year, population)
+
+two = prod_county %>% 
+  select(year, buyer_county, count)
+
+joined = left_join(one, two)
+
+joined %>% 
+  group_by(buyer_county, year) %>% 
+  summarize(
+    numpills = sum(count),
+    numpills_adj = numpills/population
+    ) %>% 
+  arrange(desc(numpills)) %>%  
+  plot_ly (x = ~year, y = ~numpills_adj, type = "scatter", mode = "lines",
+           color = ~buyer_county)
+```
+Not very informative! I want to divide the numpills by county population, and just plot the top 10.
 
