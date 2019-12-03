@@ -146,3 +146,41 @@ joined %>%
            color = ~buyer_county)
 ```
 
+```{r}
+
+# "total_death df": summing sup the death of all years in each county
+# "total_pop": total opulation in each county
+# "total_death_pop": joining these two df's and adjusting number of death for population of each county
+# creating bar plotly
+
+total_death = opioid_death_data %>% 
+  group_by(county) %>% 
+  summarize(
+    death_sum = sum(opioid_poisoning_deaths)
+  ) %>% 
+  mutate(
+    county = toupper(county)
+  )
+
+total_pop = county_pop %>% 
+  select (buyer_county, year, population) %>% 
+  rename(county = buyer_county) %>% 
+  group_by(county) %>% 
+  summarize(
+    total_pop = sum(population)
+  )
+
+total_death_pop = left_join(total_death, total_pop) %>% 
+  mutate(
+    county = factor(county),
+    death_pop = death_sum/total_pop,
+    county = fct_reorder(county, death_pop)
+  )
+
+total_death_pop %>% 
+  plot_ly(
+    x = ~county, y = ~death_pop, split = ~county,
+    type = 'bar', alpha = 0.5
+  )
+```
+
