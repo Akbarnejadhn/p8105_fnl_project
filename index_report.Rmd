@@ -37,8 +37,6 @@ Visualizations, summaries, and exploratory statistical analyses. Justify the ste
 
 
 # Additional analysis
-If you undertake formal statistical analyses, describe these in detail
-Discussion: What were your findings? Are they what you expect? What insights into the data can you make?
 
 We conducted additional analysis on our data using model building techniques and clustering. The process
 
@@ -67,3 +65,6 @@ have similar trends, for instance in order to apply available public health trea
 populations. Basically, there were some counties that started low and didn't change much, some that
 
 started high and didn't change much, and some started in the middle and rose higher with time.
+
+# Discussion: What were your findings? Are they what you expect? What insights into the data can you make?
+
