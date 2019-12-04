@@ -6,15 +6,9 @@ output:
 
 ```{r Setup, include=FALSE}
 
-<<<<<<< HEAD
-Here is a quick 2 minutes overview of our project!
-
-[![IMAGE ALT TEXT HERE](http://img.youtube.com/vi/IwAR1JvnQY_8zlsYJpxGwnyNWNjii3Jk7ILRHXOyj9-tOHFIzRZFYgUfbdvi0/0.jpg)](https://www.youtube.com/watch?v=728b9EqHmo4&feature=youtu.be&hd=1&fbclid=IwAR1JvnQY_8zlsYJpxGwnyNWNjii3Jk7ILRHXOyj9-tOHFIzRZFYgUfbdvi0)
-=======
 library("htmltools")
 library("vembedr")
 ```
->>>>>>> 518999f10adadadc88819af8c0aae689b7c9b9a1
 
 Here is a quick 2 minutes overview of our project!
 
