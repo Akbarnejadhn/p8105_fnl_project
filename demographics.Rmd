@@ -7,7 +7,8 @@ To better understand the opioid epidemic in New York, we investigate different d
 
 ## Age Group
 
-Count of deaths by age group:
+The plot below shows death count by age group from 2003 to 2017. 45-54 year olds had the largest number of deaths from 2003 to 2013. However, from 2014 to 2017, 25-34 year olds surpass 45-54 year olds by a large margain. From about 2010 onward, 25-34 year olds death counts have increased dramatically. 35-44 and 55-64 year olds follow a smiliar trend to 25-34 year olds, increasing sharply around 2011. Prior to around 2010 or 2011, deaths were relatively constant among all age groups. 
+
 
 ```{r setup, include=FALSE}
 library(tidyverse)
@@ -65,7 +66,7 @@ deaths_by_age %>%
 
 ## Race/Ethnicity
 
-Count of deaths by race/ethnicity:
+We now break down death counts by race. We find that death counts by race/ethnicity have maintained a very similar distribution from 2003 to 2013. Whites have by far the largest number of deaths, followed by Hispanic and Black populations. It is interesting to note that whites appear to be increasing the distance between the next highest race demographic.
 
 ```{r load2, include=FALSE}
 deaths_age_grp = read_csv("./data/deaths_age_group.csv") %>% 
@@ -96,7 +97,7 @@ deaths_by_year %>%
 
 ## Gender
 
-Couth of deaths by sex
+Looking at the count of deaths by gender, we see that males always have a much higher number of deaths than females. Death counts among men have grown exponentially since 2014, while female numbers have remained relatively similar. 
 
 ```{r death_sex, echo = FALSE, message = FALSE}
 
@@ -114,8 +115,7 @@ opioid_demographics %>%
 
 ## Rural vs Urban
 
-Deaths per 10,000 by rural vs urban
-
+The boxplots do not show a distinct difference between opioid death rate per 10,000 in rural vs urban communities. It is somewhat surprising that, when adjusting for population, there is not more of a difference in rural and urban areas. However, we do see a slight increasng trend in urban deaths between 2010 and 2012.
 
 ```{r pharma data, include=FALSE}
 prod_county = arcos::summarized_county_annual(state = "NY", key = "WaPo") %>% 
@@ -230,6 +230,6 @@ join_df %>%
 
 ## Insurance Provider 
 
-Animated boxplot of the number of opioid treatments by insurance provider:
+We see that the number of opioid treatments paid for by commercial and medicaid insurance is larger and more spread than that of medicare. However, in 2015, noticably more opioid related treatments are paid by medicaid compared to medicare and commerical insurance.
 
 ![](boxplot_insurance.gif)

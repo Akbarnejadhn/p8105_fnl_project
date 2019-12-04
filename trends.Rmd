@@ -5,13 +5,7 @@ date: "12/3/2019"
 output: html_document
 ---
 
-Number of opioid related treatments by county in 2010
-
-![](county_opioid_treatment.gif)
-
-Number of pills perscribed by county from 2006 to 2013
-
-![](time_plot_perscribed.gif)
+## Death Rate by County
 
 ```{r, include=FALSE}
 library(tidyverse)
@@ -117,6 +111,16 @@ total_death_pop %>%
   )
 ```
 
+## Opioid Related Treatments by County
 
+Number of opioid related treatments by county in 2010
+
+![](county_opioid_treatment.gif)
+
+## Pills Prescribed by County
+
+Number of pills prescribed by county from 2006 to 2013
+
+![](time_plot_perscribed.gif)
 
 
