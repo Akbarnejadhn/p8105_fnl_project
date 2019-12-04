@@ -58,6 +58,8 @@ Suffolk county consistently has the highest number of opioid related treatment v
 
 ## Website Overview
 
+Interested in knowing more about the analysis e have erformed? You can find more detailed information [here](trends.html).
+
 * Analysis
 
   * Demographics
