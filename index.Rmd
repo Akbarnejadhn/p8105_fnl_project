@@ -58,18 +58,16 @@ Suffolk county consistently has the highest number of opioid related treatment v
 
 ## Website Overview
 
-Interested in knowing more about the analysis e have erformed? You can find more detailed information [here](trends.html).
+Interested in knowing more about the analysis we have performed? You can find more detailed information about Opioid use demographics on this [link](demographics.html), and you can see some related trends [here](trends.html).
 
-* Analysis
 
-  * Demographics
-  
-  * Trends
-  
-  * Statistical Learning
+If you are interested in some statistical learning and clustering related to opioid death, Er visits, and number of pills in different counties, you can navigate to this [page](stat_learning.Rmd)
 
-* Report
 
-* Screencast
+We have also provided a report of our study [here](index_report.html).
 
-* Github Repository
+
+OR
+
+You can just take a look at our 2 minutes [project screencast](index_screencast.html) and not look any further!
+
