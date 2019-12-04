@@ -28,8 +28,19 @@ embed_url("https://www.youtube.com/watch?v=ph0zvETOnmA")
 What questions are you trying to answer? How did these questions evolve over the course of the project? What new questions did you consider in the course of your analysis?
 
 
-# Data
-Source, scraping method, cleaning, etc.
+# Data #
+  
+  **amfAR Data: [Distance to Treatment Facility](<https://opioid.amfar.org/about/sources>)**
+    amfAR is a non-profit which publishes data related to the HIV epidemic. The data set we utilized contains the average distance from each county to an opioid related treatment facility. 
+    
+  **New York State Health Data: [Opioid related Treatments and Deaths](<https://health.data.ny.gov>)**
+    This data set details opioid related treatments from, including both inpatient and outpatient treatment for opioid diagnoses from 2010 to 2015. The data is then categorized by county, year, whether the county is urban or rural, and the insurance of the patient. An additional data set in the New York health data which included the number of opioid related deaths from 2003 to 2017 was also utilized. 
+  
+  **ARCOS Data: [Pills Perscribed by County](<https://github.com/wpinvestigative/arcos-api>)**
+    The ARCOS data set is published by the Washington Post as part of a database which tracks opioid perscriptions from manufacturer to patient between 2006 and 2012. We utilized the data related to the number of pills perscribed to patients in each U.S. county, filtering for the counties in New York state. 
+    
+  **Government Data: [Medication Take-Back Facilites](<https://catalog.data.gov/>)**
+    Finally, we used govenment data which provided the location of medication take-back facilities. This data was limited to counties in New York state, and the distance was mapped against opioid related deaths and treatments. The medication take-back facility data was collected in 2017.  
 
 
 # Exploratory analysis
@@ -38,7 +49,7 @@ Visualizations, summaries, and exploratory statistical analyses. Justify the ste
 
 # Additional analysis
 
-We conducted additional analysis on our data using model building techniques and clustering. The process
+  We conducted additional analysis on our data using model building techniques and clustering. The process
 
 of model building included a stepwise regression on the parameters included in our data. VIF scores were
 
@@ -48,7 +59,7 @@ regression was conducted to check for significance of the variables. A simple mo
 
 complex model and determined to be preferable. 
 
-Model building is a useful tool for prediction and inference. The types of models we used in this
+  Model building is a useful tool for prediction and inference. The types of models we used in this
 
 analysis can be used for inference. Further analysis including cross validation or bootstrapping could
 
