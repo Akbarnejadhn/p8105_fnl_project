@@ -6,12 +6,6 @@ output:
     toc_float: true
 ---
 
-```{r Setup, include=FALSE}
-
-library("htmltools")
-library("vembedr")
-```
-
 # Motivation
 **Provide an overview of the project goals and motivation.**
 Given this, our goal in this project was to find out whether there is any meaningful information about demographics of people who were affected by opioid overdose. For instance, if certain age groups, gender, racial groups, or living condition accompanies with higher rates of opioid-related death in New York City. Also, we were interested in learning more about how these trends change over the years. We also look for any significant and meaningful information about the number of Emergency Room visits, the number of opioid-related death, and the number of pills prescribed to see if there is any meaningful and significant relationship between the different counties of New York City.
@@ -20,11 +14,14 @@ Given this, our goal in this project was to find out whether there is any meanin
 # Related work
 Anything that inspired you, such as a paper, a web site, or something we discussed in class.
 
+```{r include=FALSE}
 
-```{r echo=FALSE}
+library("htmltools")
+library("vembedr")
 
 embed_url("https://www.youtube.com/watch?v=ph0zvETOnmA")
 ```
+
 
 # Initial questions
 
@@ -120,7 +117,6 @@ county. So, this could be evidence that different interventions may be necessary
 
 related injuries in counties outside the five boroughs. 
 
-<<<<<<< HEAD
 There were also statistical learning methods included. So, there was a search for trends in the data
 
 that were not known. While there is an association between the pills bought per capita and the 
@@ -132,6 +128,5 @@ decrease opioid injuries. Clustering counties by trends in the number of opioid 
 opioid overdoses, and pills prescribed can reveal patterns that may be useful for deciding where and
 
 how to distribute public health resources.
-=======
-Additionally, as discussed in the 
->>>>>>> 04195c703612d43882b57b7e17bd1461ef1735b0
+
+Additionally, as discussed in the _Exploratory Analysis_ section, we looked at the relationship between gross number of deaths and distance to the nearest treatment facility. We see a decreasing relationship between number of deaths and distance to nearest treatment facility. In other words, the closer a county is to a treatment facility, the more deaths occur in that county. However, when we adjust for population and look at a rate of deaths, this relationship no longer holds. This makes sense, because places with a larger population probably have a shorter distance to treatment facility. 
