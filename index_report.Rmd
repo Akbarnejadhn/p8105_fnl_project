@@ -64,84 +64,55 @@ _Our final research questions were as follows:_
     Finally, we used govenment data which provided the location of medication take-back facilities. This data was limited to counties in New York state, and the distance was mapped against opioid related deaths and treatments. The medication take-back facility data was collected in 2017.  
 
 
-# Exploratory analysis
-Visualizations, summaries, and exploratory statistical analyses. Justify the steps you took, and show any major changes to your ideas.
+# Exploratory analysis  
+
+In our analysis, we created a series of graphs and animations which detail how the opioid crisis is affecting New Yorkers in different areas of the state over time. The information below is synthesised from the results of our analysis. To view these charts use the links to navigate to the appropriate page.
+
+  **[Demographics](<https://akbarnejadhn.github.io/p8105_fnl_project/demographics.html>)**  <br />
+    Initially, we were interested in how demographics altered opioid addicition over time. We broke down the death count by age, race and gender. The plots, which are included under the demographics tab in analysis, show the following trends related to opioid overdosing.   
+  <br />
+  
+  
+ * There are signficiantly more men than women who die of opioid related deaths. In recent years that differential has only increased.
+
+  
+ *  Non-hispanic white people are more likely to die of opioid poisioning. Though there has been an increase in opioid related deaths for all ethnicities, white non-hispanic people continually extend their lead in opioid poisionings.
+     
+
+ * We see an exponential increase of opioid poisoning deaths between the ages of 20 and 64 from 2004 and 2016. All other ages  remained relatively stable at low levels of opioid related deaths between those years.
+    
+  
+ * Finally, between the years 2010 and 2015 we notice that the distribution of opioid related treatment is relatively even between commerical insurance and medicaid with medicare paying for far fewer cases on average. This seems to change in 2015 when medicaid outpaces commerical insurance in the distribution of the number of opioid treatments paid for by county.
+
+**[Trends](<https://akbarnejadhn.github.io/p8105_fnl_project/trends.html>)**  <br />
+
+Having looked at who the opioid crisis affects in New York state, we were interested in the areas where people were most affected. Therefore, we looked at the death, treatment and perscription trends by county. From our analysis we were able to glean the following information:<br />
+
+* Suffolk county has the third highest death rate related to opioid poisioning and has the highest number of opioid related treatments        and number of pills perscribed by doctors.
+
+
+* The counties with the greatest number of opioid related treatments also had a large amount of perscribed opioids, but deaths were not        so clearly correlated. 
+
+
+*  The counties with the highest death rates were also heavily urban counties, with the exception of Sullivan and Green county.
 
 
 # Additional analysis
 
-  We conducted additional analysis on our data using model building techniques and clustering. The process
-
-of model building included a stepwise regression on the parameters included in our data. VIF scores were
-
-checked for multicollinearity in our variables. Finally, a simple model was proposed and then stepwise
-
-regression was conducted to check for significance of the variables. A simple model was compared to the
-
+  We conducted additional analysis on our data using model building techniques and clustering. The process of model building included a stepwise regression on the parameters included in our data. VIF scores were checked for multicollinearity in our variables. Finally, a simple model was proposed and then stepwise regression was conducted to check for significance of the variables. A simple model was compared to the
 complex model and determined to be preferable. 
 
-  Model building is a useful tool for prediction and inference. The types of models we used in this
+  Model building is a useful tool for prediction and inference. The types of models we used in this analysis can be used for inference. Further analysis including cross validation or bootstrapping could test the final model against future random samples to determine its predictive ability.
 
-analysis can be used for inference. Further analysis including cross validation or bootstrapping could
+Clustering is a statistical tool that groups observations by location. For the purposes of this project counties were grouped by the intercepts and slopes collected from linear models of various opioid-related data adjusted for county population over time. These graphs indicate which counties might have similar trends, for instance in order to apply available public health treatments in groups of populations. Basically, there were some counties that started low and didn't change much, some that started high and didn't change much, and some started in the middle and rose higher with time.
 
-test the final model against future random samples to determine its predictive ability.
+# Discussion
 
-Clustering is a statistical tool that groups observations by location. For the purposes of this project
+Opioid related injuries included in our data sets were measured by emergency room visits, deaths, and inpatient treatment. The number of opioids bought by pharmacies in each county was used as a proxy for the number of pills sold in each county. There were demographic data available for deaths by opioid overdose in New York City including the age group, race/ethnicity and gender of each subject.A rural/urban variable was included in one dataset. We drew on this information to make our findings. Opioid overdose in New York City affect white people more than people of other races/ethnicities, and more men as compared to women. Opioid overdose also tends to affect young adults (ages 25-34) more than any other age group.
 
-counties were grouped by the intercepts and slopes collected from linear models of various
+One finding that was not expected was that there was no apparent difference between rural and urban areas. This indicates that indicators associated with the urban/rural gradient, such as population density, may not have much effect on the prevalence of opioid related injuries. However, there was an association between the number of opioid related deaths in New York City as compared with the rest of New York State when adjusting for the number of pills bought in each county. So, this could be evidence that different interventions may be necessary to prevent opioid related injuries in counties outside the five boroughs. 
 
-opioid-related data adjusted for county population over time. These graphs indicate which counties might
-
-have similar trends, for instance in order to apply available public health treatments in groups of
-
-populations. Basically, there were some counties that started low and didn't change much, some that
-
-started high and didn't change much, and some started in the middle and rose higher with time.
-
-# Discussion: What were your findings? Are they what you expect? What insights into the data can you make?
-
-Opioid related injuries included in our data sets were measured by emergency room visits, deaths, and
-
-inpatient treatment. The number of opioids bought by pharmacies in each county was used as a proxy for
-
-the number of pills sold in each county. There were demographic data available for deaths by opioid
-
-overdose in New York City including the age group, race/ethnicity and gender of each subject.
-
-A rural/urban variable was included in one dataset. We drew on this information to make our findings. 
-
-Opioid overdose in New York City affect white people more than people of other races/ethnicities, and
-
-more men as compared to women. Opioid overdose also tends to affect young adults (ages 25-34) more than
-
-any other age group.
-
-One finding that was not expected was that there was no apparent difference between rural and urban 
-
-areas. This indicates that indicators associated with the urban/rural gradient, such as population 
-
-density, may not have much effect on the prevalence of opioid related injuries. 
-
-However, there was an association between the number of opioid related deaths in New York City
-
-as compared with the rest of New York State when adjusting for the number of pills bought in each
-
-county. So, this could be evidence that different interventions may be necessary to prevent opioid 
-
-related injuries in counties outside the five boroughs. 
-
-There were also statistical learning methods included. So, there was a search for trends in the data
-
-that were not known. While there is an association between the pills bought per capita and the 
-
-opioid deaths per 10,000 people, it may not be safe to assume that reducing opioid prescriptions would
-
-decrease opioid injuries. Clustering counties by trends in the number of opioid related emergency room visits, 
-
-opioid overdoses, and pills prescribed can reveal patterns that may be useful for deciding where and
-
-how to distribute public health resources.
-
+There were also statistical learning methods included. So, there was a search for trends in the data that were not known. While there is an association between the pills bought per capita and the opioid deaths per 10,000 people, it may not be safe to assume that reducing opioid prescriptions would decrease opioid injuries. Clustering counties by trends in the number of opioid related emergency room visits, opioid overdoses, and pills prescribed can reveal patterns that may be useful for deciding where and how to distribute public health resources.
 
 Additionally, as discussed in the _Exploratory Analysis_ section, we looked at the relationship between gross number of deaths and distance to the nearest treatment facility. We see a decreasing relationship between number of deaths and distance to nearest treatment facility. In other words, the closer a county is to a treatment facility, the more deaths occur in that county. However, when we adjust for population and look at a rate of deaths, this relationship no longer holds. This makes sense, because places with a larger population probably have a shorter distance to treatment facility. 
 
