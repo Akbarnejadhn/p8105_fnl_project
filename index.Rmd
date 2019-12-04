@@ -24,7 +24,7 @@ We explore 4 datasets, detailed below, for our analyses regarding the opioid cri
 
 * https://catalog.data.gov
 
-* https://www.washingtonpost.com/graphics/2019/investigations/dea-pain-pill-database/
+* https://github.com/wpinvestigative/arcos-api
 
 ## Research Questions
 
