@@ -14,7 +14,7 @@ Given this, our goal in this project was to find out whether there is any meanin
 # Related work
 Anything that inspired you, such as a paper, a web site, or something we discussed in class.
 
-```{r include=FALSE}
+```{r}
 
 library("htmltools")
 library("vembedr")
