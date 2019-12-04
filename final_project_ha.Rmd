@@ -169,6 +169,7 @@ total_pop = county_pop %>%
   rename(county = buyer_county) %>% 
   group_by(county) %>% 
   summarize(
+    
     total_pop = sum(population)
   )
 

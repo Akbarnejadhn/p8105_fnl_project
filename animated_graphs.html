@@ -278,14 +278,32 @@ $(document).ready(function () {
         
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        <li>
-  <a href="final_proj_jbt.html">Statistical Analysis</a>
+        <li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Analysis
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="demographics.html">Demographics</a>
+    </li>
+    <li>
+      <a href="trends.html">Trends</a>
+    </li>
+    <li>
+      <a href="stat_learning.html">Statistical Learning</a>
+    </li>
+  </ul>
 </li>
 <li>
   <a href="index_report.html">Report</a>
 </li>
 <li>
   <a href="index_screencast.html">Screencast</a>
+</li>
+<li>
+  <a href="https://findtreatment.samhsa.gov/locator?sAddr=New%20York%2C%20United%20States&amp;submit=Go">Find Treatment</a>
 </li>
 <li>
   <a href="https://github.com/Akbarnejadhn/p8105_fnl_project">
@@ -377,7 +395,7 @@ opioid_treatment_distance %&gt;%
 ##  8 New York Chemung County         6.53
 ##  9 New York Chenango County       11.6 
 ## 10 New York Clinton County        14.4 
-## # … with 52 more rows</code></pre>
+## # ... with 52 more rows</code></pre>
 <pre class="r"><code># Combine Data Sets #
 
 opioid_total_data = left_join(opioid_er_data, opioid_death_data, by = c(&#39;county&#39;, &#39;year&#39;)) %&gt;% 
@@ -448,7 +466,7 @@ print(prod_county)</code></pre>
 ##  8 ALLEGANY  2006     3747
 ##  9 ALLEGANY  2007     3986
 ## 10 ALLEGANY  2008     3930
-## # … with 424 more rows</code></pre>
+## # ... with 424 more rows</code></pre>
 <pre class="r"><code>#data = prod_county #
 
 time_plot = ggplot(data = prod_county, aes(x = year, y = numpills, group = county)) +
@@ -458,7 +476,7 @@ time_plot = ggplot(data = prod_county, aes(x = year, y = numpills, group = count
   geom_text(aes(x = max(year)+1, label = county), hjust = 1) +
   transition_reveal(year)+
   coord_cartesian(clip = &#39;off&#39;) +
-  labs(title = &#39;Number of Pills Perscribed by County&#39;, x = &#39;Year&#39;, y = &#39;Number of Pills Perscribed&#39;) +
+  labs(title = &#39;Number of Pills Prescribed by County&#39;, x = &#39;Year&#39;, y = &#39;Number of Pills Prescribed&#39;) +
   theme(plot.margin = margin(5.5, 40, 5.5, 5.5)) +
   scale_x_continuous(limits = c(2006, 2014))
 

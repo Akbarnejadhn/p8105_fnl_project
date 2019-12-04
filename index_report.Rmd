@@ -37,5 +37,34 @@ Visualizations, summaries, and exploratory statistical analyses. Justify the ste
 
 
 # Additional analysis
-If you undertake formal statistical analyses, describe these in detail
-Discussion: What were your findings? Are they what you expect? What insights into the data can you make?
+
+We conducted additional analysis on our data using model building techniques and clustering. The process
+
+of model building included a stepwise regression on the parameters included in our data. VIF scores were
+
+checked for multicollinearity in our variables. Finally, a simple model was proposed and then stepwise
+
+regression was conducted to check for significance of the variables. A simple model was compared to the
+
+complex model and determined to be preferable. 
+
+Model building is a useful tool for prediction and inference. The types of models we used in this
+
+analysis can be used for inference. Further analysis including cross validation or bootstrapping could
+
+test the final model against future random samples to determine its predictive ability.
+
+Clustering is a statistical tool that groups observations by location. For the purposes of this project
+
+counties were grouped by the intercepts and slopes collected from linear models of various
+
+opioid-related data adjusted for county population over time. These graphs indicate which counties might
+
+have similar trends, for instance in order to apply available public health treatments in groups of
+
+populations. Basically, there were some counties that started low and didn't change much, some that
+
+started high and didn't change much, and some started in the middle and rose higher with time.
+
+# Discussion: What were your findings? Are they what you expect? What insights into the data can you make?
+

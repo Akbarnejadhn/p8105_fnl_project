@@ -3,12 +3,20 @@ output_dir: "."
 navbar:
   title: "Home"
   right:
-    - text: "Statistical Analysis"
-      href: final_proj_jbt.html
+    - text: "Analysis"
+      menu: 
+      - text: "Demographics"
+        href: demographics.html
+      - text: "Trends"
+        href: trends.html
+      - text: "Statistical Learning"
+        href: stat_learning.html
     - text: "Report"
       href: index_report.html
     - text: "Screencast"
       href: index_screencast.html
+    - text: "Find Treatment"
+      href: https://findtreatment.samhsa.gov/locator?sAddr=New%20York%2C%20United%20States&submit=Go
     - icon: fa-github fa-lg
       href: https://github.com/Akbarnejadhn/p8105_fnl_project
 output:
