@@ -115,12 +115,12 @@ total_death_pop %>%
 
 Number of opioid related treatments by county in 2010
 
-![](county_opioid_treatment.gif)
+![](opioid_inf.gif)
 
 ## Pills Prescribed by County
 
 Number of pills prescribed by county from 2006 to 2013
 
-![](prescribed_inf.gif)
+![](pills_prescribed_inf.gif)
 
 

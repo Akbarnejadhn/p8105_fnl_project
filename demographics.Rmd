@@ -232,4 +232,4 @@ join_df %>%
 
 We see that the number of opioid treatments paid for by commercial and medicaid insurance is larger and more spread than that of medicare. However, in 2015, noticably more opioid related treatments are paid by medicaid compared to medicare and commerical insurance.
 
-![](boxplot_insurance.gif)
+![](insurance_inf.gif)
