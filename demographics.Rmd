@@ -7,7 +7,7 @@ output: html_document
 
 Animated boxplot of the number of opioid treatments by insurance provider:
 
-![](barchart_county_treatment.gif)
+![](boxplot_insurance.gif)
 
 Count of deaths by age group:
 
