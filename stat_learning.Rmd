@@ -286,9 +286,7 @@ death_sales_df %>%
   geom_smooth(method = "lm", se = FALSE)
 ```
 
-
-
-## clustering with opioid deaths
+## Clustering with Opioid Deaths
 
 ```{r}
 death_sales_dat <- death_sales_df %>% 
@@ -364,7 +362,7 @@ deaths_plot <- left_join(death_sales_dat, death_int_slope_df) %>%
 ggplotly(deaths_plot, tooltip = "text")
 ```
 
-## clustering with ER visits
+## Clustering with ER Visits
 
 ```{r}
 er_sales_dat <- death_sales_df %>% 
@@ -441,6 +439,7 @@ er_plot <- left_join(er_sales_dat, er_int_slope_df) %>%
 ggplotly(er_plot, tooltip = "text")
 ```
 
+## Linear Model
 
 ```{r, include = TRUE}
 join_df %>% 
