@@ -93,6 +93,8 @@ by the intercepts and slopes. This involved joining our population data with opi
 
 interventions in hospitals. The intercepts and slopes were extracted from linear models.
 
+## Clustering with Pills Bought
+
 ```{r opioid total by year, include = TRUE}
 sum_df <- opioid_total_data %>% 
   group_by(county, year, rural_urban) %>% 

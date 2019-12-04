@@ -64,4 +64,6 @@ opioid-related data adjusted for county population over time. These graphs indic
 
 have similar trends, for instance in order to apply available public health treatments in groups of
 
-populations.
+populations. Basically, there were some counties that started low and didn't change much, some that
+
+started high and didn't change much, and some started in the middle and rose higher with time.
