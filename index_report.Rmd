@@ -6,8 +6,6 @@ output:
     toc_float: true
 ---
 
-# We can include the report here (?)
-
 # Motivation
 Provide an overview of the project goals and motivation.
 
@@ -25,8 +23,28 @@ embed_url("https://www.youtube.com/watch?v=ph0zvETOnmA")
 
 
 # Initial questions
-What questions are you trying to answer? How did these questions evolve over the course of the project? What new questions did you consider in the course of your analysis?
 
+When investigating our datasets described below, we were primarily interested in urban vs rural communities as they related to opioid deaths. We were also interested in the county-level differences within New York, particularly because the state has such variety. Manhattan is very different from somewhere upstate, like Albany. We thought it would be interesting to consider the trends in pill prescription of different counties. Additionally, we wanted to look into opioid-related treatment visits in the counties in New York.
+
+As the project evolved, we became curious about more individual-level data as well as the county level data described above. We thought that investigating demographics could provide insight into the opioid epidemic in New York. This led to questions about whether or not opioid deaths change over time with respect to race, age, or gender. Finally, we wanted to know if the type of insurance a person had related to the number of opioid-related facility visits. For example, were there more visits paid for by Medicare vs Medicaid? 
+
+_Our final research questions were as follows:_
+
+* How do opioid deaths change over time in the following categories:
+
+  * Race
+  
+  * Age
+  
+  * Gender
+  
+  * Rural/Urban
+
+* How does the type of insurance a person has relate to the number of opioid-related facility visits?
+
+* How do opioid related treatment visits and deaths differ by county?
+
+* How do the number of pills prescribed differ by county over time?
 
 # Data
 Source, scraping method, cleaning, etc.
