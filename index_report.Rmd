@@ -104,7 +104,7 @@ that were not known. While there is an association between the pills bought per 
 
 opioid deaths per 10,000 people, it may not be safe to assume that reducing opioid prescriptions would
 
-decrease opioid injuries. Clustering counties by the number of opioid related emergency room visits, 
+decrease opioid injuries. Clustering counties by trends in the number of opioid related emergency room visits, 
 
 opioid overdoses, and pills prescribed can reveal patterns that may be useful for deciding where and
 
