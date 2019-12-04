@@ -1,5 +1,5 @@
 ---
-title: "A Closer Look at Opioids in NYC"
+title: "A Closer Look at Opioids in New York"
 output: 
   html_document:
     toc: true
@@ -16,7 +16,7 @@ In this project, we aim to explore trends in the opioid crisis from a demographi
 
 ## Data
 
-We explore 4 datasets, detailed below, for our analyses regarding the opioid crisis in NYC specifically.
+We explore 4 datasets, detailed below, for our analyses regarding the opioid crisis in NY specifically.
 
 * https://opioid.amfar.org/about/sources
 
@@ -24,26 +24,50 @@ We explore 4 datasets, detailed below, for our analyses regarding the opioid cri
 
 * https://catalog.data.gov
 
+* https://www.washingtonpost.com/graphics/2019/investigations/dea-pain-pill-database/
+
 ## Research Questions
 
-* Is there a relationship between distance to nearest substance abuse facility and opioid deaths?
+* How do opioid deaths change over time in the following categories:
 
-* Is there a relationship between medication collection box locations and opioid overdoses?
+  * Race
+  
+  * Age
+  
+  * Gender
+  
+  * Rural/Urban
 
-* What is the trend over time in opioid deaths by age and race?
+* How does the type of insurance a person has relate to the number of opioid-related facility visits?
 
-* Does the higher percent of drug treatment paid by medicare result in lower drug-related death?
+* How do opioid related treatment visits and deaths differ by county?
+
+* How do the number of pills prescribed differ by county over time?
 
 ## Findings
 
-We found that there is no distinct relationship between the distance to a treatment facility and the proportion of opioid deaths. This is likely because of the presence of other unmeasured variables, such as the fact that treatment facilities are placed in higher risk areas, or urban areas that have a higher proportion of young people. Additionally, we found that the majority of opioid deaths from 2003 to 2017 are in white males. 
+We found several interesting demographic patterns and other trends in our data. 45-54 year olds had the largest number of deaths from 2003 to 2013. However, from 2014 to 2017, 25-34 year olds have seen a sharp increase in death count, surpassing 45-54 year olds by a large margain. 
+
+We find that death counts by race/ethnicity have maintained a very similar distribution from 2003 to 2013. Whites have by far the largest number of deaths, followed by Hispanic and Black populations. 
+
+From 2003 to 2013, men have double or more the number of deaths as compared to females. Death counts among men have grown exponentially since 2014, while female numbers have remained relatively similar. 
+
+There is not a distinct difference between opioid death rate per 10,000 in rural vs urban communities. However, we do see a slight increasng trend in urban deaths between 2010 and 2012.
+
+Suffolk county consistently has the highest number of opioid related treatment visits, and number of pills prescribed. When adjusted for population size, Sullivan county has the highest rate of opioid-related death. 
 
 ## Website Overview
 
-* Animated Graphs
+* Analysis
 
-* Plotly & Plots
+  * Demographics
+  
+  * Trends
+  
+  * Statistical Learning
+
+* Report
 
 * Screencast
 
-* Report
+* Github Repository

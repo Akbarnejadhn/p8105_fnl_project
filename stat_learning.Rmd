@@ -438,6 +438,7 @@ er_plot <- left_join(er_sales_dat, er_int_slope_df) %>%
   xlab("Year") +
   ylab("Opioid Related ER Visits per 10000")
 ```
+
 ```{r, include = TRUE}
 ggplotly(er_plot, tooltip = "text")
 ```
