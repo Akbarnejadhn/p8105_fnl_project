@@ -198,7 +198,7 @@ pills_plot <- left_join(int_slope_dat, int_slope_df) %>%
   ylab("Pills Bought Per Person")
 ```
 
-```{r}
+```{r, include = TRUE}
 ggplotly(pills_plot, tooltip = "text")
 ```
 
