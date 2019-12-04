@@ -3,6 +3,7 @@ title: "Statistical Learning"
 output: 
   html_document:
     toc: true
+    toc_float: true
     code_folding: hide
 ---
 
@@ -318,6 +319,7 @@ pills prescribed adjusted by population.
 
 ```{r, include = TRUE}
 join_df %>% 
+  filter(year == 2012) %>% 
   ggplot(aes(x = ppp, y = opioid_poisoning_deaths/population*10000)) +
   geom_point() +
   geom_smooth(method = "lm", se = FALSE) +
@@ -336,11 +338,11 @@ For the purposes of this model I created a region variable that measures whether
 
 New York City or the rest of New York State. I tested two nested stepwise models to determine 
 
-which model would be best at predicting the raw number of opioid poisoning deaths. Then, variables
+which model would be best at accounting for variability in the raw number of opioid poisoning deaths.
 
-in the larger model were removed starting with the highest VIF until no variables had a VIF score
+Then, variables in the larger model were removed starting with the highest VIF until no variables 
 
-greater than 10.
+had a VIF score greater than 10.
 
 ```{r}
 join_dat <- join_df %>%
@@ -348,6 +350,10 @@ join_dat <- join_df %>%
   mutate(year = factor(year),
          region = ifelse(county %in% c("New York", "Kings", "Bronx", "Queens", "Richmond"), "NYC", "ROS")) %>% 
   select(-county)
+```
+
+
+```{r, include = FALSE}
 fit1 <- lm(opioid_poisoning_deaths ~ . -pills_bought 
            -inpatient_total_opioid -er_inpatient_total_opioid -overall_opioid, data = join_dat)
 fit2 <- lm(opioid_poisoning_deaths ~ region + pills_bought + rural_urban, data = join_dat)
