@@ -5,6 +5,8 @@ output: html_document
 
 ## Death Rate by County
 
+We observe 
+
 ```{r, include=FALSE}
 library(tidyverse)
 library(viridis)
@@ -119,6 +121,6 @@ Number of opioid related treatments by county in 2010
 
 Number of pills prescribed by county from 2006 to 2013
 
-![](time_plot_perscribed.gif)
+![](prescribed_inf.gif)
 
 

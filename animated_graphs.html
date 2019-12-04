@@ -473,7 +473,7 @@ time_plot = ggplot(data = prod_county, aes(x = year, y = numpills, group = count
   geom_text(aes(x = max(year)+1, label = county), hjust = 1) +
   transition_reveal(year)+
   coord_cartesian(clip = &#39;off&#39;) +
-  labs(title = &#39;Number of Pills Perscribed by County&#39;, x = &#39;Year&#39;, y = &#39;Number of Pills Perscribed&#39;) +
+  labs(title = &#39;Number of Pills Prescribed by County&#39;, x = &#39;Year&#39;, y = &#39;Number of Pills Prescribed&#39;) +
   theme(plot.margin = margin(5.5, 40, 5.5, 5.5)) +
   scale_x_continuous(limits = c(2006, 2014))
 
