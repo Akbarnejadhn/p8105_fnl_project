@@ -440,12 +440,12 @@ model1 <- step(fit1)
 model2 <- step(fit2)
 ```
 
-```{r, include = TRUE}
+```{r, include = TRUE, comment=""}
 summary(model1)
 summary(model2)
 ```
 
-```{r, include = TRUE}
+```{r, include = TRUE, comment=""}
 anova(model1, model2)
 ```
  
