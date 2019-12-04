@@ -3,9 +3,11 @@ title: "Trends"
 output: html_document
 ---
 
-## Death Rate by County
+We observe county-specific trends to better understand how the opioid epidemic differs by area in New York.
 
-We observe 
+## Death Rate by County (2010 to 2017)
+
+Looking at the death rate by county from 2010 to 2017, we see that Sullivan county has the highest rate of opioid related deaths. Schuyler county, which is very far upstate, has the lowest rate of opioid related deaths. 
 
 ```{r, include=FALSE}
 library(tidyverse)
@@ -111,15 +113,15 @@ total_death_pop %>%
   )
 ```
 
-## Opioid Related Treatments by County
+## Opioid Related Treatments by County (2010 to 2012)
 
-Number of opioid related treatments by county in 2010
+We can observe the number of opioid related treatments by county from 2010 to 2012. Suffolk, Kings, and Bronx counties remain the top 3 between 2010 and 2012. However, we do see movement between other counties. In particular, in 2011, Erie county surpasses New York county, and there is a lot of exchange between the lower counties.
 
 ![](opioid_inf.gif)
 
-## Pills Prescribed by County
+## Pills Prescribed by County (2006 to 2013)
 
-Number of pills prescribed by county from 2006 to 2013
+We can see the trend in number of pills prescribed by county from 2006 to 2013. Suffolk and Erie counties remain the highest throughout the time period observed, while Nassau, New York, and Queens counties exchange places as the next highest. It is interesting to notice that we see Suffolk, New York, and Erie as having high number of opioid related treatments in the graph above. This suggests that there may be some relationship between number of pills prescribed and number of opioid related treatments. 
 
 ![](pills_prescribed_inf.gif)
 
