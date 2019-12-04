@@ -4,10 +4,17 @@ output:
   html_document
 ---
 
+```{r Setup, include=FALSE}
+
+library("htmltools")
+library("vembedr")
+```
 
 Here is a quick 2 minutes overview of our project!
 
 
+```{r echo=FALSE}
 
-
+embed_url("https://www.youtube.com/watch?v=728b9EqHmo4&feature=youtu.be&hd=1&fbclid=IwAR2BD7MgG7rDUCj8bNjWk4DY7EZJpoNr5wdOdEqUEUV6OwuyGz9nhbLEUdk")
+```
 

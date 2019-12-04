@@ -3,7 +3,7 @@ title: "Statistical Learning"
 output: 
   html_document:
     toc: true
-    code_folding: hide
+    toc_float: true
 ---
 
 ```{r setup, include=FALSE}
@@ -12,9 +12,10 @@ library(viridis)
 library(arcos)
 library(plotly)
 knitr::opts_chunk$set(
-	echo = TRUE,
+	echo = FALSE,
 	warning = FALSE,
 	message = FALSE,
+	include = FALSE,
 	fig.width = 8, 
   fig.height = 6,
   out.width = "90%"
@@ -95,7 +96,7 @@ interventions in hospitals. The intercepts and slopes were extracted from linear
 
 ## Clustering with Pills Bought
 
-```{r opioid total by year, include = TRUE}
+```{r opioid total by year}
 sum_df <- opioid_total_data %>% 
   group_by(county, year, rural_urban) %>% 
   summarize(er_opioid = sum(er_opioid),
@@ -107,11 +108,11 @@ sum_df <- opioid_total_data %>%
   )
 ```
 
-```{r rural v urban, include = TRUE}
+```{r rural v urban}
 join_df <- inner_join(sum_df, pharma_df, by = c("county", "year"))
 ```
 
-```{r, include = TRUE}
+```{r}
 sum_total_df <- opioid_total_data %>% 
   group_by(county, year) %>% 
   summarize(er_opioid = sum(er_opioid),
@@ -123,12 +124,12 @@ sum_total_df <- opioid_total_data %>%
   )
 ```
 
-```{r, include = TRUE}
+```{r}
 death_sales_df <- inner_join(sum_total_df, pharma_df, by = c("county", "year"))
 ```
 
 
-```{r, include = TRUE}
+```{r}
 int_slope_dat <- pharma_df %>% 
   mutate(
     year = recode(year, 
@@ -318,6 +319,7 @@ pills prescribed adjusted by population.
 
 ```{r, include = TRUE}
 join_df %>% 
+  filter(year == 2012) %>% 
   ggplot(aes(x = ppp, y = opioid_poisoning_deaths/population*10000)) +
   geom_point() +
   geom_smooth(method = "lm", se = FALSE) +
@@ -336,11 +338,11 @@ For the purposes of this model I created a region variable that measures whether
 
 New York City or the rest of New York State. I tested two nested stepwise models to determine 
 
-which model would be best at predicting the raw number of opioid poisoning deaths. Then, variables
+which model would be best at accounting for variability in the raw number of opioid poisoning deaths.
 
-in the larger model were removed starting with the highest VIF until no variables had a VIF score
+Then, variables in the larger model were removed starting with the highest VIF until no variables 
 
-greater than 10.
+had a VIF score greater than 10.
 
 ```{r}
 join_dat <- join_df %>%
@@ -348,6 +350,10 @@ join_dat <- join_df %>%
   mutate(year = factor(year),
          region = ifelse(county %in% c("New York", "Kings", "Bronx", "Queens", "Richmond"), "NYC", "ROS")) %>% 
   select(-county)
+```
+
+
+```{r, include = FALSE}
 fit1 <- lm(opioid_poisoning_deaths ~ . -pills_bought 
            -inpatient_total_opioid -er_inpatient_total_opioid -overall_opioid, data = join_dat)
 fit2 <- lm(opioid_poisoning_deaths ~ region + pills_bought + rural_urban, data = join_dat)
