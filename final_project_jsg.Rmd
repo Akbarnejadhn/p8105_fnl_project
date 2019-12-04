@@ -114,7 +114,7 @@ pharma_df %>%
 ```
 
 
-## is there a rural/urban gradient?
+## Is there a rural/urban gradient?
 
 ```{r opioid total by year}
 sum_df <- opioid_total_data %>% 
@@ -156,7 +156,13 @@ join_df %>%
 ```
 
 
-## spaghetti plots
+## Spaghetti Plots
+
+This exploratory analysis clusters opioid related data adjusted for population in each county 
+
+by the intercepts and slopes. This involved joining our population data with opioid related
+
+interventions in hospitals. The intercepts and slopes were extracted from linear models.
 
 ```{r}
 sum_total_df <- opioid_total_data %>% 
@@ -293,7 +299,7 @@ death_sales_df %>%
 
 
 
-## clustering with opioid deaths
+## Clustering With Opioid Deaths
 
 ```{r}
 death_sales_dat <- death_sales_df %>% 

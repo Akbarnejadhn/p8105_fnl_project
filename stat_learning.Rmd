@@ -70,20 +70,6 @@ opioid_total_data = left_join(opioid_er_data, opioid_death_data, by = c('county'
   arrange(county, year)
 ```
 
-```{r number of pills}
-# Top 20 Counties by Number of Prescription Opioids, 2006-2012 #
-prod_county %>% 
-  group_by(buyer_county) %>% 
-  summarize(numpills = sum(count)) %>% 
-  top_n(20, numpills) %>% 
-  mutate(buyer_county = factor(buyer_county),
-         buyer_county = fct_reorder(buyer_county, numpills)) %>% 
-  ggplot(aes(x = buyer_county, y = numpills)) +
-  geom_col() +
-  xlab("County") +
-  theme(axis.text.x = element_text(angle = 90, hjust = 1))
-```
-
 ```{r pills per capita}
 
 # Pills bought by Pharmacies in Each county per Year #
@@ -96,21 +82,13 @@ pharma_df = left_join(prod_county, county_pop, by = c("buyer_county", "year")) %
 
 ```
 
-```{r}
-# Top 20 Counties by Number of Pills Bought Per Person in 2012 #
+## Spaghetti Plots
 
-pharma_df %>% 
-  filter(year == 2012) %>% 
-  mutate(county = factor(county),
-         county = fct_reorder(county, ppp)) %>% 
-  top_n(20, ppp) %>% 
-  ggplot(aes(x = county, y = ppp)) +
-  geom_col() +  
-  theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
-  xlab("County") +
-  ylab("Pills Bought per Capita, 2012")
-```
+This exploratory analysis clusters opioid related data adjusted for population in each county 
 
+by the intercepts and slopes. This involved joining our population data with opioid related
+
+interventions in hospitals. The intercepts and slopes were extracted from linear models.
 
 ```{r opioid total by year}
 sum_df <- opioid_total_data %>% 
@@ -127,30 +105,6 @@ sum_df <- opioid_total_data %>%
 ```{r rural v urban}
 join_df <- inner_join(sum_df, pharma_df, by = c("county", "year"))
 ```
-
-
-```{r}
-join_df %>% 
-  ggplot(aes(x = year, y = opioid_poisoning_deaths/population*10000, color = rural_urban)) +
-  geom_point(alpha = 0.3) +
-  geom_smooth(method = "lm", se = FALSE) +
-  ylab("Opioid Deaths per 10,000") +
-  scale_x_continuous(breaks = c(2010, 2011, 2012), labels = c("2010", "2011", "2012")) +
-  labs(color = "Rural/Urban")
-```
-
-```{r}
-join_df %>% 
-  ungroup() %>% 
-  mutate(rural_urban = factor(rural_urban),
-         year = factor(year)) %>% 
-  ggplot(aes(x = year, y = opioid_poisoning_deaths/population*10000, fill = rural_urban)) +
-  geom_boxplot(alpha = .5) +
-  ylab("Opioid Deaths per 10,000") +
-  scale_x_discrete(breaks = c(2010, 2011, 2012), labels = c("2010", "2011", "2012")) +
-  labs(fill = "Rural/Urban")
-```
-
 
 ```{r}
 sum_total_df <- opioid_total_data %>% 
@@ -358,6 +312,7 @@ deaths_plot <- left_join(death_sales_dat, death_int_slope_df) %>%
   xlab("Year") +
   ylab("Opioid Related Deaths per 10000")
 ```
+
 ```{r, include = TRUE}
 ggplotly(deaths_plot, tooltip = "text")
 ```
@@ -439,7 +394,11 @@ er_plot <- left_join(er_sales_dat, er_int_slope_df) %>%
 ggplotly(er_plot, tooltip = "text")
 ```
 
-## Linear Model
+## Scatter Plots
+
+This scatter plot shows the number of opioid-related deaths per 10000 people versus the number of 
+
+pills prescribed adjusted by population.
 
 ```{r, include = TRUE}
 join_df %>% 
@@ -450,7 +409,22 @@ join_df %>%
   ylab("Opioid Related Deaths per 10000")
 ```
 
+```{r}
+fit <- lm(opioid_poisoning_deaths/population*10000 ~ ppp, data = join_df)
+summary(fit)
+```
 
+## Model Building
+
+For the purposes of this model I created a region variable that measures whether a county is in 
+
+New York City or the rest of New York State. I tested two nested stepwise models to determine 
+
+which model would be best at predicting the raw number of opioid poisoning deaths. Then, variables
+
+in the larger model were removed starting with the highest VIF until no variables had a VIF score
+
+greater than 10.
 
 ```{r}
 join_dat <- join_df %>%
@@ -458,19 +432,20 @@ join_dat <- join_df %>%
   mutate(year = factor(year),
          region = ifelse(county %in% c("New York", "Kings", "Bronx", "Queens", "Richmond"), "NYC", "ROS")) %>% 
   select(-county)
-fit1 <- lm(opioid_poisoning_deaths ~ ., data = join_dat)
+fit1 <- lm(opioid_poisoning_deaths ~ . -pills_bought 
+           -inpatient_total_opioid -er_inpatient_total_opioid -overall_opioid, data = join_dat)
 fit2 <- lm(opioid_poisoning_deaths ~ region + pills_bought + rural_urban, data = join_dat)
 
 model1 <- step(fit1)
 model2 <- step(fit2)
 ```
 
-```{r}
+```{r, include = TRUE}
 summary(model1)
 summary(model2)
 ```
 
-```{r}
+```{r, include = TRUE}
 anova(model1, model2)
 ```
  
