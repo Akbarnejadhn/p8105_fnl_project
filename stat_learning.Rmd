@@ -4,7 +4,6 @@ output:
   html_document:
     toc: true
     toc_float: true
-    code_folding: hide
 ---
 
 ```{r setup, include=FALSE}
@@ -13,9 +12,10 @@ library(viridis)
 library(arcos)
 library(plotly)
 knitr::opts_chunk$set(
-	echo = TRUE,
+	echo = FALSE,
 	warning = FALSE,
 	message = FALSE,
+	include = FALSE,
 	fig.width = 8, 
   fig.height = 6,
   out.width = "90%"
@@ -96,7 +96,7 @@ interventions in hospitals. The intercepts and slopes were extracted from linear
 
 ## Clustering with Pills Bought
 
-```{r opioid total by year, include = TRUE}
+```{r opioid total by year}
 sum_df <- opioid_total_data %>% 
   group_by(county, year, rural_urban) %>% 
   summarize(er_opioid = sum(er_opioid),
@@ -108,11 +108,11 @@ sum_df <- opioid_total_data %>%
   )
 ```
 
-```{r rural v urban, include = TRUE}
+```{r rural v urban}
 join_df <- inner_join(sum_df, pharma_df, by = c("county", "year"))
 ```
 
-```{r, include = TRUE}
+```{r}
 sum_total_df <- opioid_total_data %>% 
   group_by(county, year) %>% 
   summarize(er_opioid = sum(er_opioid),
@@ -124,12 +124,12 @@ sum_total_df <- opioid_total_data %>%
   )
 ```
 
-```{r, include = TRUE}
+```{r}
 death_sales_df <- inner_join(sum_total_df, pharma_df, by = c("county", "year"))
 ```
 
 
-```{r, include = TRUE}
+```{r}
 int_slope_dat <- pharma_df %>% 
   mutate(
     year = recode(year, 
