@@ -99,6 +99,7 @@ bargraph = perscriptions_data %>% group_by(year) %>%
   ungroup()
 
 # gganimate, bar chart top 25 counties #
+
 bar = ggplot(bargraph, aes(x = rank,
                           y = as.numeric(opioids),
                           group = county, 
@@ -120,8 +121,6 @@ bar = ggplot(bargraph, aes(x = rank,
   ease_aes('linear')
  
   print(bar)
-  
-
 
 ```
 
@@ -129,20 +128,18 @@ bar = ggplot(bargraph, aes(x = rank,
 # animated graph that shows how many pills were perscribed in each county as time passes#
 # NY state instituted restrictions on opioids perscribed #
 
-print(prod_county)
-
 #data = prod_county #
 
 time_plot = ggplot(data = prod_county, aes(x = year, y = numpills, group = county)) +
   geom_line()+
   geom_segment(aes(xend = 2013 , yend = numpills), linetype = 'dotted' , color = 'grey') +
   geom_point(size = 2) +
-  geom_text(aes(x = max(year)+1, label = county), hjust = 1) +
+  geom_text(aes(x = max(year)+1, label = county), hjust = 0, vjust = 0) +
   transition_reveal(year)+
   coord_cartesian(clip = 'off') +
   labs(title = 'Number of Pills Perscribed by County', x = 'Year', y = 'Number of Pills Perscribed') +
   theme(plot.margin = margin(5.5, 40, 5.5, 5.5)) +
-  scale_x_continuous(limits = c(2006, 2014))
+  scale_x_continuous(limits = c(2006, 2014)) 
 
 print(time_plot)
 
@@ -168,7 +165,8 @@ boxplot_treatment = ggplot(data = insurance_data, aes(x = payer, y = opioid_trea
   exit_shrink()+
   ease_aes('sine-in-out')+
   labs(title = 'Distribution of Opioid Treatment by Insurance Payer: {closest_state}', x = 'Insurance Payer', y = 'Number of Opioid Related Treatments')+
-  theme(legend.position = 'none')
+  theme(legend.position = 'none') +
+  scale_fill_brewer(palette = 'Spectral')
 
 print(boxplot_treatment)
 ```
