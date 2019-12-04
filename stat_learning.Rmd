@@ -1,6 +1,9 @@
 ---
 title: "Statistical Learning"
-output: html_document
+output: 
+  html_document:
+    toc: true
+    code_folding: hide
 ---
 
 ```{r setup, include=FALSE}
@@ -9,9 +12,9 @@ library(viridis)
 library(arcos)
 library(plotly)
 knitr::opts_chunk$set(
-	echo = FALSE,
+	echo = TRUE,
 	warning = FALSE,
-	include = FALSE,
+	message = FALSE,
 	fig.width = 8, 
   fig.height = 6,
   out.width = "90%"
@@ -70,7 +73,7 @@ opioid_total_data = left_join(opioid_er_data, opioid_death_data, by = c('county'
   arrange(county, year)
 ```
 
-```{r pills per capita}
+```{r pills per capita, results = "hide"}
 
 # Pills bought by Pharmacies in Each county per Year #
 
@@ -90,7 +93,7 @@ by the intercepts and slopes. This involved joining our population data with opi
 
 interventions in hospitals. The intercepts and slopes were extracted from linear models.
 
-```{r opioid total by year}
+```{r opioid total by year, include = TRUE}
 sum_df <- opioid_total_data %>% 
   group_by(county, year, rural_urban) %>% 
   summarize(er_opioid = sum(er_opioid),
@@ -102,11 +105,11 @@ sum_df <- opioid_total_data %>%
   )
 ```
 
-```{r rural v urban}
+```{r rural v urban, include = TRUE}
 join_df <- inner_join(sum_df, pharma_df, by = c("county", "year"))
 ```
 
-```{r}
+```{r, include = TRUE}
 sum_total_df <- opioid_total_data %>% 
   group_by(county, year) %>% 
   summarize(er_opioid = sum(er_opioid),
@@ -118,12 +121,12 @@ sum_total_df <- opioid_total_data %>%
   )
 ```
 
-```{r}
+```{r, include = TRUE}
 death_sales_df <- inner_join(sum_total_df, pharma_df, by = c("county", "year"))
 ```
 
 
-```{r}
+```{r, include = TRUE}
 int_slope_dat <- pharma_df %>% 
   mutate(
     year = recode(year, 
@@ -137,14 +140,6 @@ int_slope_dat <- pharma_df %>%
   ) %>% 
   group_by(county, year) %>% 
   summarize(ppp = pills_bought/population)
-```
-
-```{r}
-int_slope_dat %>% 
-  ggplot(aes(x = year, y = ppp, group = county)) +
-  geom_point() +
-  geom_line(se = FALSE) +
-  theme(legend.position = "none")
 ```
 
 ```{r}
@@ -165,12 +160,6 @@ int_slope_df <- int_slope_dat %>%
 ```
 
 ```{r}
-int_slope_df %>% 
-  ggplot(aes(x = slope, y = int)) +
-  geom_point() +
-  theme(legend.position = "none")
-```
-```{r}
 km_fit = 
   kmeans(
     int_slope_df[,c(2,3)]  %>% scale, 
@@ -178,12 +167,6 @@ km_fit =
 
 int_slope_df =
   broom::augment(km_fit, int_slope_df)
-```
-
-```{r}
-int_slope_df %>% 
-  ggplot(aes(x = slope, y = int, color = .cluster)) +
-  geom_point()
 ```
 
 ```{r}
@@ -213,33 +196,6 @@ death_sales_dat <- death_sales_df %>%
   )
 ```
 
-```{r endemic}
-death_sales_dat %>%
-  filter(year == 2) %>% 
-  ggplot(aes(x = population, y = opioid_poisoning_deaths)) +
-  geom_point(alpha = 0.3) +
-  geom_smooth(method = "lm", se = FALSE) +
-  theme(legend.position = "none")
-```
-
-```{r pill count v opioid deaths in 2012}
-death_sales_dat %>%
-  filter(year == 2) %>% 
-  ggplot(aes(x = pills_bought, y = opioid_poisoning_deaths)) +
-  geom_point() +
-  geom_smooth(method = "lm", se = FALSE) +
-  theme(legend.position = "none")
-```
-
-
-```{r pill count v population in 2012}
-death_sales_df %>% 
-  filter(year == 2012) %>% 
-  ggplot(aes(x = population, y = pills_bought)) +
-  geom_point() +
-  geom_smooth(method = "lm", se = FALSE)
-```
-
 ## Clustering with Opioid Deaths
 
 ```{r}
@@ -251,14 +207,6 @@ death_sales_dat <- death_sales_df %>%
                   "2011" = 1,
                   "2012" = 2)
   )
-```
-
-```{r}
-death_sales_dat %>% 
-  ggplot(aes(x = year, y = opioid_poisoning_deaths/population*10000, group = county)) +
-  geom_point() +
-  geom_line(se = FALSE) +
-  theme(legend.position = "none")
 ```
 
 ```{r}
@@ -279,13 +227,6 @@ death_int_slope_df <- death_sales_dat %>%
 ```
 
 ```{r}
-death_int_slope_df %>% 
-  ggplot(aes(x = slope, y = int)) +
-  geom_point() +
-  theme(legend.position = "none")
-```
-
-```{r}
 death_km_fit = 
   kmeans(
     death_int_slope_df[,c(2,3)] %>% scale, 
@@ -293,12 +234,6 @@ death_km_fit =
 
 death_int_slope_df =
   broom::augment(death_km_fit, death_int_slope_df)
-```
-
-```{r, results = "hide"}
-death_int_slope_df %>% 
-  ggplot(aes(x = slope, y = int, color = .cluster)) +
-  geom_point()
 ```
 
 ```{r}
@@ -331,14 +266,6 @@ er_sales_dat <- death_sales_df %>%
 ```
 
 ```{r}
-er_sales_dat %>% 
-  ggplot(aes(x = year, y = er_opioid/population*10000, group = county)) +
-  geom_point() +
-  geom_line(se = FALSE) +
-  theme(legend.position = "none")
-```
-
-```{r}
 er_int_slope_df <- er_sales_dat %>% 
   nest(data = year:population) %>%
   mutate(
@@ -356,13 +283,6 @@ er_int_slope_df <- er_sales_dat %>%
 ```
 
 ```{r}
-er_int_slope_df %>% 
-  ggplot(aes(x = slope, y = int)) +
-  geom_point() +
-  theme(legend.position = "none")
-```
-
-```{r}
 er_km_fit = 
   kmeans(
     er_int_slope_df[,c(2,3)] %>% scale, 
@@ -370,12 +290,6 @@ er_km_fit =
 
 er_int_slope_df =
   broom::augment(er_km_fit, er_int_slope_df)
-```
-
-```{r, results = "hide"}
-er_int_slope_df %>% 
-  ggplot(aes(x = slope, y = int, color = .cluster)) +
-  geom_point()
 ```
 
 ```{r}
