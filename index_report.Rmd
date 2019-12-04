@@ -17,7 +17,7 @@ Given this, our goal in this project was to find out whether there is any meanin
 
 ![](maps.png)
 
-# Related work
+# Related Work
 
 Anything that inspired you, such as a paper, a web site, or something we discussed in class.
 
@@ -27,7 +27,7 @@ embed_url("https://www.youtube.com/watch?v=ph0zvETOnmA")
 ```
 
 
-# Initial questions
+# Initial Questions
 
 When investigating our datasets described below, we were primarily interested in urban vs rural communities as they related to opioid deaths. We were also interested in the county-level differences within New York, particularly because the state has such variety. Manhattan is very different from somewhere upstate, like Albany. We thought it would be interesting to consider the trends in pill prescription of different counties. Additionally, we wanted to look into opioid-related treatment visits in the counties in New York.
 
@@ -66,11 +66,11 @@ _Our final research questions were as follows:_
     Finally, we used govenment data which provided the location of medication take-back facilities. This data was limited to counties in New York state, and the distance was mapped against opioid related deaths and treatments. The medication take-back facility data was collected in 2017.  
 
 
-# Exploratory analysis
+# Exploratory Analysis
 Visualizations, summaries, and exploratory statistical analyses. Justify the steps you took, and show any major changes to your ideas.
 
 
-# Additional analysis
+# Additional Analysis
 
 We conducted additional analysis on our data using model building techniques and clustering. The process of model building included a stepwise regression on the parameters included in our data. VIF scores were checked for multicollinearity in our variables. Finally, a simple model was proposed and then stepwise regression was conducted to check for significance of the variables. A simple model was compared to the complex model and determined to be preferable. 
 
@@ -84,4 +84,4 @@ One finding that was not expected was that there was no apparent difference betw
 
 Additionally, as discussed in the _Exploratory Analysis_ section, we looked at the relationship between gross number of deaths and distance to the nearest treatment facility. We see a decreasing relationship between number of deaths and distance to nearest treatment facility. In other words, the closer a county is to a treatment facility, the more deaths occur in that county. However, when we adjust for population and look at a rate of deaths, this relationship no longer holds. This makes sense, because places with a larger population probably have a shorter distance to treatment facility. 
 
-
+As mentioned in the _Aditional Analysis_ section, there are some public health implications that can be taken from our findings. The information for which populations have the most deaths could provide insight for different initiatives. For instance, programs may benefit from targeting men specifically as they are in a higher risk group. Additionally, there appears to be a slight linear relationship between pills bought per person and opioid-related deaths. This may suggest that prescribing fewer pills could help decrease the number of opioid-related deaths in NY. 
