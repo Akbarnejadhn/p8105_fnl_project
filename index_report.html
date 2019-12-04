@@ -423,7 +423,10 @@ div.tocify {
 </div>
 <div id="data" class="section level1">
 <h1>Data</h1>
-<p>Source, scraping method, cleaning, etc.</p>
+<p><strong>amfAR Data: <a href="https://opioid.amfar.org/about/sources">Distance to Treatment Facility</a></strong> amfAR is a non-profit which publishes data related to the HIV epidemic. The data set we utilized contains the average distance from each county to an opioid related treatment facility.</p>
+<p><strong>New York State Health Data: <a href="https://health.data.ny.gov">Opioid related Treatments and Deaths</a></strong> This data set details opioid related treatments from, including both inpatient and outpatient treatment for opioid diagnoses from 2010 to 2015. The data is then categorized by county, year, whether the county is urban or rural, and the insurance of the patient. An additional data set in the New York health data which included the number of opioid related deaths from 2003 to 2017 was also utilized.</p>
+<p><strong>ARCOS Data: <a href="https://github.com/wpinvestigative/arcos-api">Pills Perscribed by County</a></strong> The ARCOS data set is published by the Washington Post as part of a database which tracks opioid perscriptions from manufacturer to patient between 2006 and 2012. We utilized the data related to the number of pills perscribed to patients in each U.S. county, filtering for the counties in New York state.</p>
+<p><strong>Government Data: <a href="https://catalog.data.gov/">Medication Take-Back Facilites</a></strong> Finally, we used govenment data which provided the location of medication take-back facilities. This data was limited to counties in New York state, and the distance was mapped against opioid related deaths and treatments. The medication take-back facility data was collected in 2017.</p>
 </div>
 <div id="exploratory-analysis" class="section level1">
 <h1>Exploratory analysis</h1>
@@ -431,44 +434,13 @@ div.tocify {
 </div>
 <div id="additional-analysis" class="section level1">
 <h1>Additional analysis</h1>
-<p>We conducted additional analysis on our data using model building techniques and clustering. The process</p>
-<p>of model building included a stepwise regression on the parameters included in our data. VIF scores were</p>
-<p>checked for multicollinearity in our variables. Finally, a simple model was proposed and then stepwise</p>
-<p>regression was conducted to check for significance of the variables. A simple model was compared to the</p>
-<p>complex model and determined to be preferable.</p>
-<p>Model building is a useful tool for prediction and inference. The types of models we used in this</p>
-<p>analysis can be used for inference. Further analysis including cross validation or bootstrapping could</p>
-<p>test the final model against future random samples to determine its predictive ability.</p>
-<p>Clustering is a statistical tool that groups observations by location. For the purposes of this project</p>
-<p>counties were grouped by the intercepts and slopes collected from linear models of various</p>
-<p>opioid-related data adjusted for county population over time. These graphs indicate which counties might</p>
-<p>have similar trends, for instance in order to apply available public health treatments in groups of</p>
-<p>populations. Basically, there were some counties that started low and didn’t change much, some that</p>
-<p>started high and didn’t change much, and some started in the middle and rose higher with time.</p>
+<p>We conducted additional analysis on our data using model building techniques and clustering. The process of model building included a stepwise regression on the parameters included in our data. VIF scores were checked for multicollinearity in our variables. Finally, a simple model was proposed and then stepwise regression was conducted to check for significance of the variables. A simple model was compared to the complex model and determined to be preferable.</p>
+<p>Model building is a useful tool for prediction and inference. The types of models we used in this analysis can be used for inference. Further analysis including cross validation or bootstrapping could test the final model against future random samples to determine its predictive ability. Clustering is a statistical tool that groups observations by location. For the purposes of this project counties were grouped by the intercepts and slopes collected from linear models of various opioid-related data adjusted for county population over time. These graphs indicate which counties might have similar trends, for instance in order to apply available public health treatments in groups of populations. Basically, there were some counties that started low and didn’t change much, some that started high and didn’t change much, and some started in the middle and rose higher with time.</p>
 </div>
-<div id="discussion-what-were-your-findings-are-they-what-you-expect-what-insights-into-the-data-can-you-make" class="section level1">
-<h1>Discussion: What were your findings? Are they what you expect? What insights into the data can you make?</h1>
-<p>Opioid related injuries included in our data sets were measured by emergency room visits, deaths, and</p>
-<p>inpatient treatment. The number of opioids bought by pharmacies in each county was used as a proxy for</p>
-<p>the number of pills sold in each county. There were demographic data available for deaths by opioid</p>
-<p>overdose in New York City including the age group, race/ethnicity and gender of each subject.</p>
-<p>A rural/urban variable was included in one dataset. We drew on this information to make our findings.</p>
-<p>Opioid overdose in New York City affect white people more than people of other races/ethnicities, and</p>
-<p>more men as compared to women. Opioid overdose also tends to affect young adults (ages 25-34) more than</p>
-<p>any other age group.</p>
-<p>One finding that was not expected was that there was no apparent difference between rural and urban</p>
-<p>areas. This indicates that indicators associated with the urban/rural gradient, such as population</p>
-<p>density, may not have much effect on the prevalence of opioid related injuries.</p>
-<p>However, there was an association between the number of opioid related deaths in New York City</p>
-<p>as compared with the rest of New York State when adjusting for the number of pills bought in each</p>
-<p>county. So, this could be evidence that different interventions may be necessary to prevent opioid</p>
-<p>related injuries in counties outside the five boroughs.</p>
-<p>There were also statistical learning methods included. So, there was a search for trends in the data</p>
-<p>that were not known. While there is an association between the pills bought per capita and the</p>
-<p>opioid deaths per 10,000 people, it may not be safe to assume that reducing opioid prescriptions would</p>
-<p>decrease opioid injuries. Clustering counties by trends in the number of opioid related emergency room visits,</p>
-<p>opioid overdoses, and pills prescribed can reveal patterns that may be useful for deciding where and</p>
-<p>how to distribute public health resources.</p>
+<div id="discussion" class="section level1">
+<h1>Discussion</h1>
+<p>Opioid related injuries included in our data sets were measured by emergency room visits, deaths, and inpatient treatment. The number of opioids bought by pharmacies in each county was used as a proxy for the number of pills sold in each county. There were demographic data available for deaths by opioid overdose in New York City including the age group, race/ethnicity and gender of each subject. A rural/urban variable was included in one dataset. We drew on this information to make our findings. Opioid overdose in New York City affect white people more than people of other races/ethnicities, and more men as compared to women. Opioid overdose also tends to affect young adults (ages 25-34) more than any other age group.</p>
+<p>One finding that was not expected was that there was no apparent difference between rural and urban areas. This indicates that indicators associated with the urban/rural gradient, such as population density, may not have much effect on the prevalence of opioid related injuries. However, there was an association between the number of opioid related deaths in New York City as compared with the rest of New York State when adjusting for the number of pills bought in each county. So, this could be evidence that different interventions may be necessary to prevent opioid related injuries in counties outside the five boroughs. There were also statistical learning methods included. So, there was a search for trends in the data that were not known. While there is an association between the pills bought per capita and the opioid deaths per 10,000 people, it may not be safe to assume that reducing opioid prescriptions would decrease opioid injuries. Clustering counties by trends in the number of opioid related emergency room visits, opioid overdoses, and pills prescribed can reveal patterns that may be useful for deciding where and how to distribute public health resources.</p>
 <p>Additionally, as discussed in the <em>Exploratory Analysis</em> section, we looked at the relationship between gross number of deaths and distance to the nearest treatment facility. We see a decreasing relationship between number of deaths and distance to nearest treatment facility. In other words, the closer a county is to a treatment facility, the more deaths occur in that county. However, when we adjust for population and look at a rate of deaths, this relationship no longer holds. This makes sense, because places with a larger population probably have a shorter distance to treatment facility.</p>
 </div>
 
