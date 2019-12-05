@@ -31,7 +31,7 @@ In this project, we aim to explore trends in the opioid crisis from a demographi
   **Government Data: [Medication Take-Back Facilites](<https://catalog.data.gov/>)**
     Finally, we used govenment data which provided the location of medication take-back facilities. This data was limited to counties in New York state, and the distance was mapped against opioid related deaths and treatments. The medication take-back facility data was collected in 2017.
 
-## Research Questions
+## Research Questions 
 
 * How do opioid deaths change over time in the following categories:
 
