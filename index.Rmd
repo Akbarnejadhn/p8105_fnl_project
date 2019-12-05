@@ -6,7 +6,7 @@ output:
     toc_float: true
 ---
 
-**Julia Thomspson** (jt3175) | **Hana Akbarnejad** (ha2546) | **Olivia Wagner** (oew2106) | **Jared Garfinkle** (Jsg2145) | **Alison Elgass** (are2132)
+**Julia Thomspson** (jt3175) | **Hana Akbarnejad** (ha2546) | **Olivia Wagner** (oew2106) | **Jared Garfinkel** (jsg2145) | **Alison Elgass** (are2132)
 
 ![](opioids-82.jpg) 
 
