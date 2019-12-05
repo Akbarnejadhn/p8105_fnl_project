@@ -1,0 +1,763 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Project Report</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<script src="site_libs/htmlwidgets-1.3/htmlwidgets.js"></script>
+<script src="site_libs/plotly-binding-4.9.0/plotly.js"></script>
+<script src="site_libs/typedarray-0.1/typedarray.min.js"></script>
+<link href="site_libs/crosstalk-1.0.0/css/crosstalk.css" rel="stylesheet" />
+<script src="site_libs/crosstalk-1.0.0/js/crosstalk.min.js"></script>
+<link href="site_libs/plotly-htmlwidgets-css-1.46.1/plotly-htmlwidgets.css" rel="stylesheet" />
+<script src="site_libs/plotly-main-1.46.1/plotly-latest.min.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 60px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h2 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h3 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h4 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h5 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h6 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Home</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Analysis
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="demographics.html">Demographics</a>
+    </li>
+    <li>
+      <a href="trends.html">Trends</a>
+    </li>
+    <li>
+      <a href="stat_learning.html">Statistical Learning</a>
+    </li>
+  </ul>
+</li>
+<li>
+  <a href="index_report.html">Report</a>
+</li>
+<li>
+  <a href="index_screencast.html">Screencast</a>
+</li>
+<li>
+  <a href="https://findtreatment.samhsa.gov/locator?sAddr=New%20York%2C%20United%20States&amp;submit=Go">Find Treatment</a>
+</li>
+<li>
+  <a href="https://github.com/Akbarnejadhn/p8105_fnl_project">
+    <span class="fa fa-github fa-lg"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+<div class="btn-group pull-right">
+<button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+</ul>
+</div>
+
+
+
+<h1 class="title toc-ignore">Project Report</h1>
+
+</div>
+
+
+<p><strong>Julia Thomspson</strong> (jt3175) | <strong>Hana Akbarnejad</strong> (ha2546) | <strong>Olivia Wagner</strong> (oew2106) | <strong>Jared Garfinkle</strong> (Jsg2145) | <strong>Alison Elgass</strong> (are2132)</p>
+<div id="motivation" class="section level1">
+<h1>Motivation</h1>
+<p><em>“Opioids kill more people each year than traffic accidents, than guns. Increasingly, they’re killing children. New synthetic drugs are emerging – cocktails so potent even touching them can lead to injury or death…”</em></p>
+<p>The United States is experiencing a drug overdose epidemic fueled by prescription painkillers and an increase in the use of street drugs such as heroin and fentanyl. This crisis affects not only adolescents, but increasingly harms newborn babies and the elderly. According to the White House, <em>“The number of babies born drug-dependent increased by 500 percent between 2000 and 2014. Almost a third of all children placed in foster care are from families with parental drug abuse”</em>.</p>
+<p>Comparing data from New York City, we can see that in 2017, the rate of opioid-involving deaths was 16.1 deaths per 100,000 persons compared to the average national rate of 14.6 deaths per 100,000 persons. Someone dies of a drug overdose every 7 hours, and 82 percent of the 1,374 overdose deaths in 2016 were from an opioid. As an overview, the following maps show the number of drug related deaths, as well as the number of opioid prescriptions in different counties.</p>
+<p><img src="maps.png" /></p>
+<p>The aforementioned figures lead us to focus on the aspects of this crisis in NYC counties. Our goal is to find out any meaningful trends in demographics of people who were affected by opioid overdose in New York City. For instance, can we see any alerting trends in certain age groups, gender, or racial groups? How do these trends change over the years? Also, historically, we know that drug epidemics have been mostly limited to cities, but it is interesting to know that there have been opioid overdoses spikes taking place in suburban and rural areas, recently. So, we also want to investigate the difference of opioid-related death in urban and rural areas. We also wanted to explore the number of emergency room visits, the number of opioid-related death, and the number of pills prescribed to see if there is any meaningful and significant relationship between the different counties of New York City. We hope that through this exploration, we can elucidate the role that public health can play in allaying this deadly, fast-growing epidemic.</p>
+</div>
+<div id="related-work" class="section level1">
+<h1>Related Work</h1>
+<p>In October 2017, the U.S. government declared the opioid crisis a public health emergency, and there have been actions taken to alleviate this epidemic, including $6 billion funding to stop the crisis. This highlights the importance of combating opioid abuse in every level, and inspired us to take a closer look at different aspects of this crisis. Inspiration was drawn from a variety of background sources including:</p>
+<ul>
+<li><p><a href="https://www.nbcnewyork.com/news/local/Americas-Deadly-Opioid-Epidemic-By-the-Numbers-458709663.html" class="uri">https://www.nbcnewyork.com/news/local/Americas-Deadly-Opioid-Epidemic-By-the-Numbers-458709663.html</a></p></li>
+<li><p><a href="https://www.drugabuse.gov/opioid-summaries-by-state/new-york-opioid-summary" class="uri">https://www.drugabuse.gov/opioid-summaries-by-state/new-york-opioid-summary</a></p></li>
+<li><p><a href="https://www.nytimes.com/2019/07/16/nyregion/nyc-port-authority-opioids.html" class="uri">https://www.nytimes.com/2019/07/16/nyregion/nyc-port-authority-opioids.html</a></p></li>
+</ul>
+<iframe src="https://www.youtube.com/embed/ph0zvETOnmA" width="420" height="315" frameborder="0" allowfullscreen=""></iframe>
+<blockquote class="twitter-tweet">
+<p lang="en" dir="ltr">
+Prom Queen, Most Likely to Succeed, Most Talkative: They were in high school when painkillers hit their small Ohio town two decades ago. Today, their yearbook reflects the devastating toll of the opioid crisis. <a href="https://t.co/OqSZ5gONMY">https://t.co/OqSZ5gONMY</a>
+</p>
+— The New York Times (<span class="citation">@nytimes</span>) <a href="https://twitter.com/nytimes/status/1201488294250532864?ref_src=twsrc%5Etfw">December 2, 2019</a>
+</blockquote>
+<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+</div>
+<div id="initial-questions" class="section level1">
+<h1>Initial Questions</h1>
+<p>When investigating our datasets described below, we were primarily interested in urban vs rural communities as they related to opioid deaths. We were also interested in the county-level differences within New York, particularly because the state has a wide variety of types of development. Manhattan is very different from somewhere upstate, like Albany. We thought it would be interesting to consider the trends in pill prescription of different counties. Additionally, we wanted to look into opioid-related treatment visits in the counties in New York.</p>
+<p>As the project evolved, we became curious about more individual-level data as well as the county level data described above. We thought that investigating demographics could provide insight into the opioid epidemic in New York. This led to questions about whether or not opioid deaths change over time with respect to race, age, or gender. Finally, we wanted to know if the type of insurance a person had related to the number of opioid-related facility visits. For example, were there more visits paid for by Medicare vs Medicaid?</p>
+<p><em>Our final research questions were as follows:</em></p>
+<ul>
+<li><p>How do opioid deaths change over time in the following categories:</p>
+<ul>
+<li><p>Race</p></li>
+<li><p>Age</p></li>
+<li><p>Gender</p></li>
+<li><p>Rural/Urban</p></li>
+</ul></li>
+<li><p>How does the type of insurance a person has relate to the number of opioid-related facility visits?</p></li>
+<li><p>How do opioid related treatment visits and deaths differ by county?</p></li>
+<li><p>How do the number of pills prescribed differ by county over time?</p></li>
+</ul>
+</div>
+<div id="data" class="section level1">
+<h1>Data</h1>
+<p><strong>amfAR Data: <a href="https://opioid.amfar.org/about/sources">Distance to Treatment Facility</a></strong> amfAR is a non-profit which publishes data related to the HIV epidemic. The data set we utilized contains the average distance from each county to an opioid related treatment facility.</p>
+<p><strong>New York State Health Data: <a href="https://health.data.ny.gov">Opioid related Treatments and Deaths</a></strong> This data set details opioid related treatments from, including both inpatient and outpatient treatment for opioid diagnoses from 2010 to 2015. The data is then categorized by county, year, whether the county is urban or rural, and the insurance of the patient. An additional data set in the New York health data which included the number of opioid related deaths from 2003 to 2017 was also utilized.</p>
+<p><strong>ARCOS Data: <a href="https://github.com/wpinvestigative/arcos-api">Pills Prescribed by County</a></strong> The ARCOS data set is published by the Washington Post as part of a database which tracks opioid prescriptions from manufacturer to patient between 2006 and 2012. We utilized the data related to the number of pills prescribed to patients in each U.S. county, filtering for the counties in New York state.</p>
+<p><strong>Government Data: <a href="https://catalog.data.gov/">Medication Take-Back Facilities</a></strong> Finally, we used government data which provided the location of medication take-back facilities. This data was limited to counties in New York state, and the distance was mapped against opioid related deaths and treatments. The medication take-back facility data was collected in 2017.</p>
+</div>
+<div id="exploratory-analysis" class="section level1">
+<h1>Exploratory Analysis</h1>
+<p>We loaded and cleaned the data, filtering by relevant years and joining appropriate datasets. For code on how the animated graphics were generated, you can view the <em>animated_graphs.rmd</em> file <a href="https://github.com/Akbarnejadhn/p8105_fnl_project/blob/master/animated_graphs.Rmd">here</a> on our GitHub repository.</p>
+<pre class="r"><code>opioid_death_data = janitor::clean_names(read_csv(&#39;./data/opioid_related_deaths_2.csv&#39;))
+
+opioid_treatment_distance = janitor::clean_names(read_csv(&#39;./data/distance_to_treatment.csv&#39;))
+
+opioid_demographics = janitor::clean_names(read_csv(&quot;./data/opioid_demographics.csv&quot;))
+
+opioid_er_data = read_csv(&#39;./data/opioid_related_visits.csv&#39;) %&gt;% 
+  janitor::clean_names()
+
+prod_county = arcos::summarized_county_annual(state = &quot;NY&quot;, key = &quot;WaPo&quot;) %&gt;% 
+  janitor::clean_names()
+
+county_pop = arcos::county_population(state = &quot;NY&quot;, key = &quot;WaPo&quot;) %&gt;% 
+  janitor::clean_names()
+
+# clean opioid death data #
+
+opioid_death_data = opioid_death_data %&gt;%
+  filter(year &gt;= 2010) %&gt;% 
+  mutate(county = recode(county, &quot;Kings (Brooklyn)&quot; = &quot;Kings&quot;,
+                         &quot;New York (Manhattan)&quot; = &quot;New York&quot;,
+                         &quot;St Lawrence&quot; = &quot;St. Lawrence&quot;))
+
+# clean opioid er data #
+
+opioid_er_data = opioid_er_data %&gt;% 
+  select(year, patient_county_name, rural_urban, payer, er_opioid, inpatient_total_opioid, er_inpatient_total_opioid, outpatient_opioid, overall_opioid) %&gt;%
+  rename(county = patient_county_name)
+
+# Combine Data Sets #
+
+opioid_total_data = left_join(opioid_er_data, opioid_death_data, by = c(&#39;county&#39;, &#39;year&#39;)) %&gt;% 
+  arrange(county, year)</code></pre>
+<p>In our analysis, we created a series of graphs and animations which detail how the opioid crisis is affecting New Yorkers in different areas of the state over time. The information below is synthesized from the results of our analysis. You can use the links to navigate to the appropriate page in our website, and view code by clicking <em>code</em> on the right side.</p>
+<p><strong><a href="https://akbarnejadhn.github.io/p8105_fnl_project/demographics.html">Demographics</a></strong> <br /> Initially, we were interested in how demographics altered opioid addiction over time. We broke down the death count by age, race and gender. The plots, which are included under the demographics tab in analysis, show the following trends related to opioid overdosing.<br />
+<br /></p>
+<ul>
+<li>There are significantly more men than women who die of opioid related deaths. In recent years that differential has only increased.</li>
+</ul>
+<pre class="r"><code>opioid_demographics %&gt;% 
+  filter(region == &quot;NYC&quot;) %&gt;% 
+  group_by(year, sex) %&gt;% 
+  summarize(
+    count = sum(opioid_poisoning_deaths)
+  ) %&gt;% 
+  plot_ly(x = ~year, y = ~count, type = &quot;bar&quot;,
+          color = ~sex, alpha = 0.5)</code></pre>
+<div id="htmlwidget-f309cd7ea6a67140b287" style="width:90%;height:576px;" class="plotly html-widget"></div>
+<script type="application/json" data-for="htmlwidget-f309cd7ea6a67140b287">{"x":{"visdat":{"58841484430c":["function () ","plotlyVisDat"]},"cur_data":"58841484430c","attrs":{"58841484430c":{"x":{},"y":{},"color":{},"alpha":0.5,"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"bar"}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"xaxis":{"domain":[0,1],"automargin":true,"title":"year"},"yaxis":{"domain":[0,1],"automargin":true,"title":"count"},"hovermode":"closest","showlegend":true},"source":"A","config":{"showSendToCloud":false},"data":[{"x":[2003,2004,2005,2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017],"y":[238,240,278,270,248,230,246,234,288,274,296,314,356,496,468],"type":"bar","name":"F","marker":{"color":"rgba(102,194,165,0.5)","line":{"color":"rgba(102,194,165,1)"}},"textfont":{"color":"rgba(102,194,165,0.5)"},"error_y":{"color":"rgba(102,194,165,0.5)"},"error_x":{"color":"rgba(102,194,165,0.5)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[2003,2004,2005,2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017],"y":[758,612,720,792,632,654,560,536,612,766,722,778,980,1570,1706],"type":"bar","name":"M","marker":{"color":"rgba(141,160,203,0.5)","line":{"color":"rgba(141,160,203,1)"}},"textfont":{"color":"rgba(141,160,203,0.5)"},"error_y":{"color":"rgba(141,160,203,0.5)"},"error_x":{"color":"rgba(141,160,203,0.5)"},"xaxis":"x","yaxis":"y","frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+<ul>
+<li>Non-Hispanic white people are more likely to die of opioid poisoning compared to people of other races/ethnicities, on average. Though there has been an increase in opioid related deaths for all ethnicities, white non-Hispanic people continue to be at higher risk for opioid poisoning.</li>
+</ul>
+<pre class="r"><code>deaths_age_grp = read_csv(&quot;./data/deaths_age_group.csv&quot;) %&gt;% 
+  janitor::clean_names() %&gt;% 
+  pivot_wider(
+    names_from = age_group,
+    values_from = opioid_poisoning_deaths
+  ) %&gt;% 
+  janitor::clean_names()
+
+
+deaths_by_year = deaths_age_grp %&gt;% 
+  select(year, region, race_or_ethnicity, sex, total) %&gt;% 
+  group_by(year, race_or_ethnicity) %&gt;% 
+  summarize(
+    count = sum(total)
+  ) %&gt;% 
+  mutate(
+    race_or_ethnicity = factor(race_or_ethnicity, levels = c(&quot;Not Stated&quot;, &quot;Other Non Hispanic&quot;, &quot;Black Non Hispanic&quot;, &quot;Hispanic&quot;, &quot;White Non Hispanic&quot;))
+  )
+
+deaths_by_year %&gt;% 
+  plot_ly(x = ~year, y = ~count, type = &quot;bar&quot;,
+    color = ~race_or_ethnicity, alpha = 0.5)</code></pre>
+<div id="htmlwidget-4f36530d910988969b50" style="width:90%;height:576px;" class="plotly html-widget"></div>
+<script type="application/json" data-for="htmlwidget-4f36530d910988969b50">{"x":{"visdat":{"5884632a540c":["function () ","plotlyVisDat"]},"cur_data":"5884632a540c","attrs":{"5884632a540c":{"x":{},"y":{},"color":{},"alpha":0.5,"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"bar"}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"xaxis":{"domain":[0,1],"automargin":true,"title":"year"},"yaxis":{"domain":[0,1],"automargin":true,"title":"count"},"hovermode":"closest","showlegend":true},"source":"A","config":{"showSendToCloud":false},"data":[{"x":[2003,2004,2005,2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017],"y":[15,13,10,5,2,5,6,4,9,10,19,15,34,26,18],"type":"bar","name":"Not Stated","marker":{"color":"rgba(102,194,165,0.5)","line":{"color":"rgba(102,194,165,1)"}},"textfont":{"color":"rgba(102,194,165,0.5)"},"error_y":{"color":"rgba(102,194,165,0.5)"},"error_x":{"color":"rgba(102,194,165,0.5)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[2003,2004,2005,2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017],"y":[5,8,10,11,9,7,5,8,7,12,15,19,32,43,57],"type":"bar","name":"Other Non Hispanic","marker":{"color":"rgba(252,141,98,0.5)","line":{"color":"rgba(252,141,98,1)"}},"textfont":{"color":"rgba(252,141,98,0.5)"},"error_y":{"color":"rgba(252,141,98,0.5)"},"error_x":{"color":"rgba(252,141,98,0.5)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[2003,2004,2005,2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017],"y":[116,87,133,148,115,107,95,91,118,134,140,148,186,349,394],"type":"bar","name":"Black Non Hispanic","marker":{"color":"rgba(141,160,203,0.5)","line":{"color":"rgba(141,160,203,1)"}},"textfont":{"color":"rgba(141,160,203,0.5)"},"error_y":{"color":"rgba(141,160,203,0.5)"},"error_x":{"color":"rgba(141,160,203,0.5)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[2003,2004,2005,2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017],"y":[187,131,164,171,154,179,147,118,171,186,232,205,308,483,521],"type":"bar","name":"Hispanic","marker":{"color":"rgba(231,138,195,0.5)","line":{"color":"rgba(231,138,195,1)"}},"textfont":{"color":"rgba(231,138,195,0.5)"},"error_y":{"color":"rgba(231,138,195,0.5)"},"error_x":{"color":"rgba(231,138,195,0.5)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[2003,2004,2005,2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017],"y":[444,360,578,662,731,814,776,747,973,1032,1198,1312,1587,2167,2267],"type":"bar","name":"White Non Hispanic","marker":{"color":"rgba(166,216,84,0.5)","line":{"color":"rgba(166,216,84,1)"}},"textfont":{"color":"rgba(166,216,84,0.5)"},"error_y":{"color":"rgba(166,216,84,0.5)"},"error_x":{"color":"rgba(166,216,84,0.5)"},"xaxis":"x","yaxis":"y","frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+<ul>
+<li>We see an exponential increase of opioid poisoning deaths between the ages of 20 and 64 from 2004 and 2016. All other ages remained relatively stable at low levels of opioid related deaths between those years.</li>
+</ul>
+<pre class="r"><code>deaths_by_age = read_csv(&quot;./data/deaths_age_group.csv&quot;) %&gt;% 
+  janitor::clean_names() %&gt;% 
+  select(-region, -race_or_ethnicity, -sex) %&gt;% 
+  filter(age_group != &quot;Total&quot;) %&gt;% 
+  group_by(year, age_group) %&gt;% 
+  summarize(
+    count = sum(opioid_poisoning_deaths)
+  ) %&gt;% 
+  ungroup()
+
+deaths_by_age %&gt;% 
+  plot_ly(x = ~year, y = ~count, type = &quot;scatter&quot;, mode = &quot;lines+markers&quot;,
+    color = ~factor(age_group), alpha = 0.5)</code></pre>
+<div id="htmlwidget-1ec72fb92c27640c020b" style="width:90%;height:576px;" class="plotly html-widget"></div>
+<script type="application/json" data-for="htmlwidget-1ec72fb92c27640c020b">{"x":{"visdat":{"58845de57952":["function () ","plotlyVisDat"]},"cur_data":"58845de57952","attrs":{"58845de57952":{"x":{},"y":{},"mode":"lines+markers","color":{},"alpha":0.5,"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"scatter"}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"xaxis":{"domain":[0,1],"automargin":true,"title":"year"},"yaxis":{"domain":[0,1],"automargin":true,"title":"count"},"hovermode":"closest","showlegend":true},"source":"A","config":{"showSendToCloud":false},"data":[{"x":[2003,2004,2005,2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017],"y":[0,0,1,0,0,0,0,0,0,2,1,0,1,0,0],"mode":"lines+markers","type":"scatter","name":"<1","marker":{"color":"rgba(102,194,165,0.5)","line":{"color":"rgba(102,194,165,1)"}},"textfont":{"color":"rgba(102,194,165,0.5)"},"error_y":{"color":"rgba(102,194,165,0.5)"},"error_x":{"color":"rgba(102,194,165,0.5)"},"line":{"color":"rgba(102,194,165,0.5)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[2003,2004,2005,2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017],"y":[0,0,1,1,1,2,2,2,3,2,2,1,2,2,3],"mode":"lines+markers","type":"scatter","name":"1-9","marker":{"color":"rgba(219,161,118,0.5)","line":{"color":"rgba(219,161,118,1)"}},"textfont":{"color":"rgba(219,161,118,0.5)"},"error_y":{"color":"rgba(219,161,118,0.5)"},"error_x":{"color":"rgba(219,161,118,0.5)"},"line":{"color":"rgba(219,161,118,0.5)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[2003,2004,2005,2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017],"y":[21,12,27,25,16,41,28,25,23,19,30,26,40,43,35],"mode":"lines+markers","type":"scatter","name":"10-19","marker":{"color":"rgba(217,150,141,0.5)","line":{"color":"rgba(217,150,141,1)"}},"textfont":{"color":"rgba(217,150,141,0.5)"},"error_y":{"color":"rgba(217,150,141,0.5)"},"error_x":{"color":"rgba(217,150,141,0.5)"},"line":{"color":"rgba(217,150,141,0.5)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[2003,2004,2005,2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017],"y":[34,39,70,66,67,73,82,87,137,131,160,164,204,282,232],"mode":"lines+markers","type":"scatter","name":"20-24","marker":{"color":"rgba(152,158,202,0.5)","line":{"color":"rgba(152,158,202,1)"}},"textfont":{"color":"rgba(152,158,202,0.5)"},"error_y":{"color":"rgba(152,158,202,0.5)"},"error_x":{"color":"rgba(152,158,202,0.5)"},"line":{"color":"rgba(152,158,202,0.5)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[2003,2004,2005,2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017],"y":[133,80,145,163,207,189,193,175,303,328,379,432,588,873,924],"mode":"lines+markers","type":"scatter","name":"25-34","marker":{"color":"rgba(215,144,197,0.5)","line":{"color":"rgba(215,144,197,1)"}},"textfont":{"color":"rgba(215,144,197,0.5)"},"error_y":{"color":"rgba(215,144,197,0.5)"},"error_x":{"color":"rgba(215,144,197,0.5)"},"line":{"color":"rgba(215,144,197,0.5)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[2003,2004,2005,2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017],"y":[248,210,252,290,254,255,244,218,255,277,299,348,439,646,712],"mode":"lines+markers","type":"scatter","name":"35-44","marker":{"color":"rgba(205,181,144,0.5)","line":{"color":"rgba(205,181,144,1)"}},"textfont":{"color":"rgba(205,181,144,0.5)"},"error_y":{"color":"rgba(205,181,144,0.5)"},"error_x":{"color":"rgba(205,181,144,0.5)"},"line":{"color":"rgba(205,181,144,0.5)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[2003,2004,2005,2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017],"y":[264,194,292,332,321,377,325,303,367,370,409,420,508,674,741],"mode":"lines+markers","type":"scatter","name":"45-54","marker":{"color":"rgba(186,217,78,0.5)","line":{"color":"rgba(186,217,78,1)"}},"textfont":{"color":"rgba(186,217,78,0.5)"},"error_y":{"color":"rgba(186,217,78,0.5)"},"error_x":{"color":"rgba(186,217,78,0.5)"},"line":{"color":"rgba(186,217,78,0.5)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[2003,2004,2005,2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017],"y":[52,52,85,93,125,147,135,133,168,207,263,254,298,440,489],"mode":"lines+markers","type":"scatter","name":"55-64","marker":{"color":"rgba(247,217,52,0.5)","line":{"color":"rgba(247,217,52,1)"}},"textfont":{"color":"rgba(247,217,52,0.5)"},"error_y":{"color":"rgba(247,217,52,0.5)"},"error_x":{"color":"rgba(247,217,52,0.5)"},"line":{"color":"rgba(247,217,52,0.5)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[2003,2004,2005,2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017],"y":[10,7,15,16,9,21,15,19,17,27,48,43,57,87,108],"mode":"lines+markers","type":"scatter","name":"65-74","marker":{"color":"rgba(241,204,114,0.5)","line":{"color":"rgba(241,204,114,1)"}},"textfont":{"color":"rgba(241,204,114,0.5)"},"error_y":{"color":"rgba(241,204,114,0.5)"},"error_x":{"color":"rgba(241,204,114,0.5)"},"line":{"color":"rgba(241,204,114,0.5)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[2003,2004,2005,2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017],"y":[4,4,4,8,5,5,4,5,3,6,11,6,8,17,10],"mode":"lines+markers","type":"scatter","name":"75-84","marker":{"color":"rgba(215,191,158,0.5)","line":{"color":"rgba(215,191,158,1)"}},"textfont":{"color":"rgba(215,191,158,0.5)"},"error_y":{"color":"rgba(215,191,158,0.5)"},"error_x":{"color":"rgba(215,191,158,0.5)"},"line":{"color":"rgba(215,191,158,0.5)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[2003,2004,2005,2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017],"y":[1,1,3,3,6,2,1,1,2,5,2,5,2,4,3],"mode":"lines+markers","type":"scatter","name":"85+","marker":{"color":"rgba(179,179,179,0.5)","line":{"color":"rgba(179,179,179,1)"}},"textfont":{"color":"rgba(179,179,179,0.5)"},"error_y":{"color":"rgba(179,179,179,0.5)"},"error_x":{"color":"rgba(179,179,179,0.5)"},"line":{"color":"rgba(179,179,179,0.5)"},"xaxis":"x","yaxis":"y","frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+<ul>
+<li>Finally, between the years 2010 and 2015 we notice that the distribution of opioid related treatment is relatively even between commercial insurance and Medicaid with Medicare paying for far fewer cases on average. This seems to change in 2015 when Medicaid outpaces commercial insurance in the distribution of the number of opioid treatments paid for by county.</li>
+</ul>
+<p><img src="insurance_inf.gif" /></p>
+<p><strong><a href="https://akbarnejadhn.github.io/p8105_fnl_project/trends.html">Trends</a></strong> <br /></p>
+<p>Having looked at who the opioid crisis affects in New York state, we were interested in the areas where people were most affected. Therefore, we looked at the death, treatment and perscription trends by county. From our analysis we were able to glean the following information:<br /></p>
+<ul>
+<li><p>Suffolk county has the third highest death rate related to opioid poisioning and has the highest number of opioid related treatments and number of pills prescribed by doctors.</p></li>
+<li><p>The counties with the greatest number of opioid related treatments also had a large amount of prescribed opioids, but deaths were not so clearly correlated.</p></li>
+<li><p>The counties with the highest death rates were also heavily urban counties, with the exception of Sullivan and Green county.</p></li>
+</ul>
+<pre class="r"><code>total_death = opioid_death_data %&gt;% 
+  group_by(county) %&gt;% 
+  summarize(
+    death_sum = sum(opioid_poisoning_deaths)
+  ) %&gt;% 
+  mutate(
+    county = toupper(county)
+  )
+
+total_pop = county_pop %&gt;% 
+  select (buyer_county, year, population) %&gt;% 
+  rename(county = buyer_county) %&gt;% 
+  group_by(county) %&gt;% 
+  summarize(
+    
+    total_pop = sum(population)
+  )
+
+total_death_pop = left_join(total_death, total_pop) %&gt;% 
+  mutate(
+    county = factor(county),
+    death_pop = death_sum/total_pop* 1000000,
+    county = fct_reorder(county, death_pop)
+  )
+
+total_death_pop %&gt;% 
+  plot_ly(
+    x = ~county, y = ~death_pop, split = ~county,
+    type = &#39;bar&#39;, alpha = 0.5
+  ) %&gt;% 
+    layout(
+    xaxis = list(
+      title = &quot;County&quot;),
+    yaxis = list(
+      title = &quot;Death per 1 Million People&quot;
+    )
+  )</code></pre>
+<div id="htmlwidget-d918651e762966ea30ba" style="width:90%;height:576px;" class="plotly html-widget"></div>
+<script type="application/json" data-for="htmlwidget-d918651e762966ea30ba">{"x":{"visdat":{"588467c83242":["function () ","plotlyVisDat"]},"cur_data":"588467c83242","attrs":{"588467c83242":{"x":{},"y":{},"split":{},"alpha":0.5,"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"bar"}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"xaxis":{"domain":[0,1],"automargin":true,"title":"County","type":"category","categoryorder":"array","categoryarray":["SCHUYLER","SCHOHARIE","WASHINGTON","WARREN","WAYNE","FRANKLIN","HAMILTON","SARATOGA","ALLEGANY","MONTGOMERY","CATTARAUGUS","QUEENS","FULTON","ORLEANS","SENECA","STEUBEN","ESSEX","ROCKLAND","NEW YORK","KINGS","RENSSELAER","ONTARIO","HERKIMER","WYOMING","CLINTON","WESTCHESTER","OTSEGO","ALBANY","SCHENECTADY","CHENANGO","YATES","LIVINGSTON","MADISON","TIOGA","DELAWARE","CHEMUNG","JEFFERSON","CORTLAND","TOMPKINS","CHAUTAUQUA","NASSAU","LEWIS","GENESEE","BRONX","ONEIDA","COLUMBIA","PUTNAM","MONROE","OSWEGO","ONONDAGA","CAYUGA","BROOME","NIAGARA","ORANGE","ULSTER","ERIE","RICHMOND","DUTCHESS","SUFFOLK","GREENE","SULLIVAN","ST. LAWRENCE"]},"yaxis":{"domain":[0,1],"automargin":true,"title":"Death per 1 Million People"},"hovermode":"closest","showlegend":true},"source":"A","config":{"showSendToCloud":false},"data":[{"x":["SCHUYLER"],"y":[30.6450006512063],"type":"bar","name":"SCHUYLER","marker":{"color":"rgba(31,119,180,0.5)","line":{"color":"rgba(31,119,180,1)"}},"error_y":{"color":"rgba(31,119,180,0.5)"},"error_x":{"color":"rgba(31,119,180,0.5)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["SCHOHARIE"],"y":[43.7770870726262],"type":"bar","name":"SCHOHARIE","marker":{"color":"rgba(255,127,14,0.5)","line":{"color":"rgba(255,127,14,1)"}},"error_y":{"color":"rgba(255,127,14,0.5)"},"error_x":{"color":"rgba(255,127,14,0.5)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["WASHINGTON"],"y":[45.3583651030882],"type":"bar","name":"WASHINGTON","marker":{"color":"rgba(44,160,44,0.5)","line":{"color":"rgba(44,160,44,1)"}},"error_y":{"color":"rgba(44,160,44,0.5)"},"error_x":{"color":"rgba(44,160,44,0.5)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["WARREN"],"y":[45.6463192764406],"type":"bar","name":"WARREN","marker":{"color":"rgba(214,39,40,0.5)","line":{"color":"rgba(214,39,40,1)"}},"error_y":{"color":"rgba(214,39,40,0.5)"},"error_x":{"color":"rgba(214,39,40,0.5)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["WAYNE"],"y":[45.9214834476013],"type":"bar","name":"WAYNE","marker":{"color":"rgba(148,103,189,0.5)","line":{"color":"rgba(148,103,189,1)"}},"error_y":{"color":"rgba(148,103,189,0.5)"},"error_x":{"color":"rgba(148,103,189,0.5)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["FRANKLIN"],"y":[55.4508151269824],"type":"bar","name":"FRANKLIN","marker":{"color":"rgba(140,86,75,0.5)","line":{"color":"rgba(140,86,75,1)"}},"error_y":{"color":"rgba(140,86,75,0.5)"},"error_x":{"color":"rgba(140,86,75,0.5)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["HAMILTON"],"y":[58.016418646477],"type":"bar","name":"HAMILTON","marker":{"color":"rgba(227,119,194,0.5)","line":{"color":"rgba(227,119,194,1)"}},"error_y":{"color":"rgba(227,119,194,0.5)"},"error_x":{"color":"rgba(227,119,194,0.5)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["SARATOGA"],"y":[59.2177727011332],"type":"bar","name":"SARATOGA","marker":{"color":"rgba(127,127,127,0.5)","line":{"color":"rgba(127,127,127,1)"}},"error_y":{"color":"rgba(127,127,127,0.5)"},"error_x":{"color":"rgba(127,127,127,0.5)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["ALLEGANY"],"y":[61.0573386559826],"type":"bar","name":"ALLEGANY","marker":{"color":"rgba(188,189,34,0.5)","line":{"color":"rgba(188,189,34,1)"}},"error_y":{"color":"rgba(188,189,34,0.5)"},"error_x":{"color":"rgba(188,189,34,0.5)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["MONTGOMERY"],"y":[63.2074929609837],"type":"bar","name":"MONTGOMERY","marker":{"color":"rgba(23,190,207,0.5)","line":{"color":"rgba(23,190,207,1)"}},"error_y":{"color":"rgba(23,190,207,0.5)"},"error_x":{"color":"rgba(23,190,207,0.5)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["CATTARAUGUS"],"y":[65.4950719383709],"type":"bar","name":"CATTARAUGUS","marker":{"color":"rgba(31,119,180,0.5)","line":{"color":"rgba(31,119,180,1)"}},"error_y":{"color":"rgba(31,119,180,0.5)"},"error_x":{"color":"rgba(31,119,180,0.5)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["QUEENS"],"y":[66.7664177199236],"type":"bar","name":"QUEENS","marker":{"color":"rgba(255,127,14,0.5)","line":{"color":"rgba(255,127,14,1)"}},"error_y":{"color":"rgba(255,127,14,0.5)"},"error_x":{"color":"rgba(255,127,14,0.5)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["FULTON"],"y":[72.2127801146636],"type":"bar","name":"FULTON","marker":{"color":"rgba(44,160,44,0.5)","line":{"color":"rgba(44,160,44,1)"}},"error_y":{"color":"rgba(44,160,44,0.5)"},"error_x":{"color":"rgba(44,160,44,0.5)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["ORLEANS"],"y":[76.2672803419427],"type":"bar","name":"ORLEANS","marker":{"color":"rgba(214,39,40,0.5)","line":{"color":"rgba(214,39,40,1)"}},"error_y":{"color":"rgba(214,39,40,0.5)"},"error_x":{"color":"rgba(214,39,40,0.5)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["SENECA"],"y":[77.1843161469589],"type":"bar","name":"SENECA","marker":{"color":"rgba(148,103,189,0.5)","line":{"color":"rgba(148,103,189,1)"}},"error_y":{"color":"rgba(148,103,189,0.5)"},"error_x":{"color":"rgba(148,103,189,0.5)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["STEUBEN"],"y":[79.8296580242595],"type":"bar","name":"STEUBEN","marker":{"color":"rgba(140,86,75,0.5)","line":{"color":"rgba(140,86,75,1)"}},"error_y":{"color":"rgba(140,86,75,0.5)"},"error_x":{"color":"rgba(140,86,75,0.5)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["ESSEX"],"y":[80.202109315475],"type":"bar","name":"ESSEX","marker":{"color":"rgba(227,119,194,0.5)","line":{"color":"rgba(227,119,194,1)"}},"error_y":{"color":"rgba(227,119,194,0.5)"},"error_x":{"color":"rgba(227,119,194,0.5)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["ROCKLAND"],"y":[81.223593528968],"type":"bar","name":"ROCKLAND","marker":{"color":"rgba(127,127,127,0.5)","line":{"color":"rgba(127,127,127,1)"}},"error_y":{"color":"rgba(127,127,127,0.5)"},"error_x":{"color":"rgba(127,127,127,0.5)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["NEW YORK"],"y":[83.3341265640639],"type":"bar","name":"NEW YORK","marker":{"color":"rgba(188,189,34,0.5)","line":{"color":"rgba(188,189,34,1)"}},"error_y":{"color":"rgba(188,189,34,0.5)"},"error_x":{"color":"rgba(188,189,34,0.5)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["KINGS"],"y":[84.0176320544393],"type":"bar","name":"KINGS","marker":{"color":"rgba(23,190,207,0.5)","line":{"color":"rgba(23,190,207,1)"}},"error_y":{"color":"rgba(23,190,207,0.5)"},"error_x":{"color":"rgba(23,190,207,0.5)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["RENSSELAER"],"y":[84.0294374093634],"type":"bar","name":"RENSSELAER","marker":{"color":"rgba(31,119,180,0.5)","line":{"color":"rgba(31,119,180,1)"}},"error_y":{"color":"rgba(31,119,180,0.5)"},"error_x":{"color":"rgba(31,119,180,0.5)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["ONTARIO"],"y":[84.9671527776841],"type":"bar","name":"ONTARIO","marker":{"color":"rgba(255,127,14,0.5)","line":{"color":"rgba(255,127,14,1)"}},"error_y":{"color":"rgba(255,127,14,0.5)"},"error_x":{"color":"rgba(255,127,14,0.5)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["HERKIMER"],"y":[86.9805698788517],"type":"bar","name":"HERKIMER","marker":{"color":"rgba(44,160,44,0.5)","line":{"color":"rgba(44,160,44,1)"}},"error_y":{"color":"rgba(44,160,44,0.5)"},"error_x":{"color":"rgba(44,160,44,0.5)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["WYOMING"],"y":[87.8464444151623],"type":"bar","name":"WYOMING","marker":{"color":"rgba(214,39,40,0.5)","line":{"color":"rgba(214,39,40,1)"}},"error_y":{"color":"rgba(214,39,40,0.5)"},"error_x":{"color":"rgba(214,39,40,0.5)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["CLINTON"],"y":[90.2843610124349],"type":"bar","name":"CLINTON","marker":{"color":"rgba(148,103,189,0.5)","line":{"color":"rgba(148,103,189,1)"}},"error_y":{"color":"rgba(148,103,189,0.5)"},"error_x":{"color":"rgba(148,103,189,0.5)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["WESTCHESTER"],"y":[90.5056944937763],"type":"bar","name":"WESTCHESTER","marker":{"color":"rgba(140,86,75,0.5)","line":{"color":"rgba(140,86,75,1)"}},"error_y":{"color":"rgba(140,86,75,0.5)"},"error_x":{"color":"rgba(140,86,75,0.5)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["OTSEGO"],"y":[91.3817839551864],"type":"bar","name":"OTSEGO","marker":{"color":"rgba(227,119,194,0.5)","line":{"color":"rgba(227,119,194,1)"}},"error_y":{"color":"rgba(227,119,194,0.5)"},"error_x":{"color":"rgba(227,119,194,0.5)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["ALBANY"],"y":[92.3467620916542],"type":"bar","name":"ALBANY","marker":{"color":"rgba(127,127,127,0.5)","line":{"color":"rgba(127,127,127,1)"}},"error_y":{"color":"rgba(127,127,127,0.5)"},"error_x":{"color":"rgba(127,127,127,0.5)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["SCHENECTADY"],"y":[93.4976148758445],"type":"bar","name":"SCHENECTADY","marker":{"color":"rgba(188,189,34,0.5)","line":{"color":"rgba(188,189,34,1)"}},"error_y":{"color":"rgba(188,189,34,0.5)"},"error_x":{"color":"rgba(188,189,34,0.5)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["CHENANGO"],"y":[95.11580349075],"type":"bar","name":"CHENANGO","marker":{"color":"rgba(23,190,207,0.5)","line":{"color":"rgba(23,190,207,1)"}},"error_y":{"color":"rgba(23,190,207,0.5)"},"error_x":{"color":"rgba(23,190,207,0.5)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["YATES"],"y":[96.5470240799637],"type":"bar","name":"YATES","marker":{"color":"rgba(31,119,180,0.5)","line":{"color":"rgba(31,119,180,1)"}},"error_y":{"color":"rgba(31,119,180,0.5)"},"error_x":{"color":"rgba(31,119,180,0.5)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["LIVINGSTON"],"y":[96.5634388874136],"type":"bar","name":"LIVINGSTON","marker":{"color":"rgba(255,127,14,0.5)","line":{"color":"rgba(255,127,14,1)"}},"error_y":{"color":"rgba(255,127,14,0.5)"},"error_x":{"color":"rgba(255,127,14,0.5)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["MADISON"],"y":[98.6749922046756],"type":"bar","name":"MADISON","marker":{"color":"rgba(44,160,44,0.5)","line":{"color":"rgba(44,160,44,1)"}},"error_y":{"color":"rgba(44,160,44,0.5)"},"error_x":{"color":"rgba(44,160,44,0.5)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["TIOGA"],"y":[100.363259241086],"type":"bar","name":"TIOGA","marker":{"color":"rgba(214,39,40,0.5)","line":{"color":"rgba(214,39,40,1)"}},"error_y":{"color":"rgba(214,39,40,0.5)"},"error_x":{"color":"rgba(214,39,40,0.5)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["DELAWARE"],"y":[101.363034690008],"type":"bar","name":"DELAWARE","marker":{"color":"rgba(148,103,189,0.5)","line":{"color":"rgba(148,103,189,1)"}},"error_y":{"color":"rgba(148,103,189,0.5)"},"error_x":{"color":"rgba(148,103,189,0.5)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["CHEMUNG"],"y":[109.633565928467],"type":"bar","name":"CHEMUNG","marker":{"color":"rgba(140,86,75,0.5)","line":{"color":"rgba(140,86,75,1)"}},"error_y":{"color":"rgba(140,86,75,0.5)"},"error_x":{"color":"rgba(140,86,75,0.5)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["JEFFERSON"],"y":[112.434793997218],"type":"bar","name":"JEFFERSON","marker":{"color":"rgba(227,119,194,0.5)","line":{"color":"rgba(227,119,194,1)"}},"error_y":{"color":"rgba(227,119,194,0.5)"},"error_x":{"color":"rgba(227,119,194,0.5)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["CORTLAND"],"y":[112.990094535046],"type":"bar","name":"CORTLAND","marker":{"color":"rgba(127,127,127,0.5)","line":{"color":"rgba(127,127,127,1)"}},"error_y":{"color":"rgba(127,127,127,0.5)"},"error_x":{"color":"rgba(127,127,127,0.5)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["TOMPKINS"],"y":[116.519974649801],"type":"bar","name":"TOMPKINS","marker":{"color":"rgba(188,189,34,0.5)","line":{"color":"rgba(188,189,34,1)"}},"error_y":{"color":"rgba(188,189,34,0.5)"},"error_x":{"color":"rgba(188,189,34,0.5)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["CHAUTAUQUA"],"y":[117.422046571065],"type":"bar","name":"CHAUTAUQUA","marker":{"color":"rgba(23,190,207,0.5)","line":{"color":"rgba(23,190,207,1)"}},"error_y":{"color":"rgba(23,190,207,0.5)"},"error_x":{"color":"rgba(23,190,207,0.5)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["NASSAU"],"y":[118.795342321966],"type":"bar","name":"NASSAU","marker":{"color":"rgba(31,119,180,0.5)","line":{"color":"rgba(31,119,180,1)"}},"error_y":{"color":"rgba(31,119,180,0.5)"},"error_x":{"color":"rgba(31,119,180,0.5)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["LEWIS"],"y":[122.154594606078],"type":"bar","name":"LEWIS","marker":{"color":"rgba(255,127,14,0.5)","line":{"color":"rgba(255,127,14,1)"}},"error_y":{"color":"rgba(255,127,14,0.5)"},"error_x":{"color":"rgba(255,127,14,0.5)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["GENESEE"],"y":[124.442997927545],"type":"bar","name":"GENESEE","marker":{"color":"rgba(44,160,44,0.5)","line":{"color":"rgba(44,160,44,1)"}},"error_y":{"color":"rgba(44,160,44,0.5)"},"error_x":{"color":"rgba(44,160,44,0.5)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["BRONX"],"y":[125.653872776655],"type":"bar","name":"BRONX","marker":{"color":"rgba(214,39,40,0.5)","line":{"color":"rgba(214,39,40,1)"}},"error_y":{"color":"rgba(214,39,40,0.5)"},"error_x":{"color":"rgba(214,39,40,0.5)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["ONEIDA"],"y":[132.50726958085],"type":"bar","name":"ONEIDA","marker":{"color":"rgba(148,103,189,0.5)","line":{"color":"rgba(148,103,189,1)"}},"error_y":{"color":"rgba(148,103,189,0.5)"},"error_x":{"color":"rgba(148,103,189,0.5)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["COLUMBIA"],"y":[138.164093643546],"type":"bar","name":"COLUMBIA","marker":{"color":"rgba(140,86,75,0.5)","line":{"color":"rgba(140,86,75,1)"}},"error_y":{"color":"rgba(140,86,75,0.5)"},"error_x":{"color":"rgba(140,86,75,0.5)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["PUTNAM"],"y":[140.730188635894],"type":"bar","name":"PUTNAM","marker":{"color":"rgba(227,119,194,0.5)","line":{"color":"rgba(227,119,194,1)"}},"error_y":{"color":"rgba(227,119,194,0.5)"},"error_x":{"color":"rgba(227,119,194,0.5)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["MONROE"],"y":[142.498001552417],"type":"bar","name":"MONROE","marker":{"color":"rgba(127,127,127,0.5)","line":{"color":"rgba(127,127,127,1)"}},"error_y":{"color":"rgba(127,127,127,0.5)"},"error_x":{"color":"rgba(127,127,127,0.5)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["OSWEGO"],"y":[142.689724702398],"type":"bar","name":"OSWEGO","marker":{"color":"rgba(188,189,34,0.5)","line":{"color":"rgba(188,189,34,1)"}},"error_y":{"color":"rgba(188,189,34,0.5)"},"error_x":{"color":"rgba(188,189,34,0.5)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["ONONDAGA"],"y":[147.789313039408],"type":"bar","name":"ONONDAGA","marker":{"color":"rgba(23,190,207,0.5)","line":{"color":"rgba(23,190,207,1)"}},"error_y":{"color":"rgba(23,190,207,0.5)"},"error_x":{"color":"rgba(23,190,207,0.5)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["CAYUGA"],"y":[151.076732761256],"type":"bar","name":"CAYUGA","marker":{"color":"rgba(31,119,180,0.5)","line":{"color":"rgba(31,119,180,1)"}},"error_y":{"color":"rgba(31,119,180,0.5)"},"error_x":{"color":"rgba(31,119,180,0.5)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["BROOME"],"y":[155.088622069754],"type":"bar","name":"BROOME","marker":{"color":"rgba(255,127,14,0.5)","line":{"color":"rgba(255,127,14,1)"}},"error_y":{"color":"rgba(255,127,14,0.5)"},"error_x":{"color":"rgba(255,127,14,0.5)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["NIAGARA"],"y":[158.245239069492],"type":"bar","name":"NIAGARA","marker":{"color":"rgba(44,160,44,0.5)","line":{"color":"rgba(44,160,44,1)"}},"error_y":{"color":"rgba(44,160,44,0.5)"},"error_x":{"color":"rgba(44,160,44,0.5)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["ORANGE"],"y":[161.718466631705],"type":"bar","name":"ORANGE","marker":{"color":"rgba(214,39,40,0.5)","line":{"color":"rgba(214,39,40,1)"}},"error_y":{"color":"rgba(214,39,40,0.5)"},"error_x":{"color":"rgba(214,39,40,0.5)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["ULSTER"],"y":[165.838127906567],"type":"bar","name":"ULSTER","marker":{"color":"rgba(148,103,189,0.5)","line":{"color":"rgba(148,103,189,1)"}},"error_y":{"color":"rgba(148,103,189,0.5)"},"error_x":{"color":"rgba(148,103,189,0.5)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["ERIE"],"y":[175.08241911751],"type":"bar","name":"ERIE","marker":{"color":"rgba(140,86,75,0.5)","line":{"color":"rgba(140,86,75,1)"}},"error_y":{"color":"rgba(140,86,75,0.5)"},"error_x":{"color":"rgba(140,86,75,0.5)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["RICHMOND"],"y":[180.260494808927],"type":"bar","name":"RICHMOND","marker":{"color":"rgba(227,119,194,0.5)","line":{"color":"rgba(227,119,194,1)"}},"error_y":{"color":"rgba(227,119,194,0.5)"},"error_x":{"color":"rgba(227,119,194,0.5)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["DUTCHESS"],"y":[180.300371718461],"type":"bar","name":"DUTCHESS","marker":{"color":"rgba(127,127,127,0.5)","line":{"color":"rgba(127,127,127,1)"}},"error_y":{"color":"rgba(127,127,127,0.5)"},"error_x":{"color":"rgba(127,127,127,0.5)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["SUFFOLK"],"y":[186.462944046123],"type":"bar","name":"SUFFOLK","marker":{"color":"rgba(188,189,34,0.5)","line":{"color":"rgba(188,189,34,1)"}},"error_y":{"color":"rgba(188,189,34,0.5)"},"error_x":{"color":"rgba(188,189,34,0.5)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["GREENE"],"y":[196.862931289047],"type":"bar","name":"GREENE","marker":{"color":"rgba(23,190,207,0.5)","line":{"color":"rgba(23,190,207,1)"}},"error_y":{"color":"rgba(23,190,207,0.5)"},"error_x":{"color":"rgba(23,190,207,0.5)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["SULLIVAN"],"y":[264.120764140158],"type":"bar","name":"SULLIVAN","marker":{"color":"rgba(31,119,180,0.5)","line":{"color":"rgba(31,119,180,1)"}},"error_y":{"color":"rgba(31,119,180,0.5)"},"error_x":{"color":"rgba(31,119,180,0.5)"},"xaxis":"x","yaxis":"y","frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+<p><img src="opioid_inf.gif" /></p>
+<p><img src="pills_prescribed_inf.gif" /></p>
+</div>
+<div id="additional-analysis" class="section level1">
+<h1>Additional Analysis</h1>
+<p>We conducted additional analysis on our data using model building techniques for parameter inference. The process of model building included a stepwise regression on the multiple parameters including population size, region, ER visits, and area type (urban or rural). Parameters were assessed for multicollinearity and contribution to the model fit. Nested simple and complex models were assessed based on the fit of the regression, and the simple model was ultimately chosen. Further analysis including cross validation or bootstrapping could test the final model against future random samples to determine its predictive ability.</p>
+<p>Additionally, we used unsupervised learning to assess opioid related trends over time. In this project, we clustered counties by the intercepts and slopes collected from linear models of opioid-related data by county over time. The clusters indicate similar trends in various counties, including the increase or stabilization of opioid related treatment and deaths over time. This information might be helpful in determining which counties require the most immediate public health intervention.</p>
+<pre class="r"><code># Pills bought by Pharmacies in Each county per Year #
+
+pharma_df = left_join(prod_county, county_pop, by = c(&quot;buyer_county&quot;, &quot;year&quot;)) %&gt;% 
+  select(county_name, year, count, population) %&gt;% 
+  rename(county = county_name,
+         pills_bought = count)
+
+# Summarize the opioid injuries by county, year, and rural/urban gradient #
+
+sum_df &lt;- opioid_total_data %&gt;% 
+  group_by(county, year, rural_urban) %&gt;% 
+  summarize(er_opioid = sum(er_opioid),
+            inpatient_total_opioid = sum(inpatient_total_opioid),
+            er_inpatient_total_opioid = sum(er_inpatient_total_opioid),
+            outpatient_opioid = sum(outpatient_opioid),
+            overall_opioid = sum(overall_opioid),
+            opioid_poisoning_deaths = sum(opioid_poisoning_deaths)
+  )
+
+# Join the dataframes #
+
+join_df &lt;- inner_join(sum_df, pharma_df, by = c(&quot;county&quot;, &quot;year&quot;))
+
+# Clean the data #
+
+join_dat &lt;- join_df %&gt;%
+  ungroup() %&gt;% 
+  mutate(year = factor(year),
+         region = ifelse(county %in% c(&quot;New York&quot;, &quot;Kings&quot;, &quot;Bronx&quot;, &quot;Queens&quot;, &quot;Richmond&quot;), &quot;NYC&quot;, &quot;ROS&quot;)) %&gt;% 
+  select(-county)
+
+# Make the fits #
+
+fit1 &lt;- lm(opioid_poisoning_deaths ~ . -pills_bought -inpatient_total_opioid -er_inpatient_total_opioid -overall_opioid, data = join_dat)
+fit2 &lt;- glm(opioid_poisoning_deaths ~ region + pills_bought + rural_urban, data = join_dat)
+
+# Stepwise regression #
+
+model1 &lt;- step(fit1)
+model2 &lt;- step(fit2)
+
+# Check for multicollinearity #
+
+car::vif(model1)</code></pre>
+<p>Model building can be used to determine associations between our variables. This can be useful to validate our findings and uncover associations that we had not predicted.</p>
+<pre class="r"><code>anova(model1, model2)</code></pre>
+<pre><code>## Analysis of Variance Table
+## 
+## Model 1: opioid_poisoning_deaths ~ rural_urban + er_opioid + outpatient_opioid + 
+##     population + region
+## Model 2: opioid_poisoning_deaths ~ region + pills_bought
+##   Res.Df    RSS Df Sum of Sq      F    Pr(&gt;F)    
+## 1    168 434067                                  
+## 2    171 784877 -3   -350811 45.259 &lt; 2.2e-16 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+</div>
+<div id="discussion" class="section level1">
+<h1>Discussion</h1>
+<p>Opioid related injuries included in our data sets were measured by emergency room visits, deaths, and inpatient treatment. Through demographic and trend analysis, we discovered opioid overdose in New York City affects white people more than other ethnicities, and men more than women, on average. Opioid overdose also tends to affect young adults (ages 25-34) more than any other age group. Furthermore, we note the number of opioid related incidents in each county is strongly associated with the number of pills prescribed by doctors. This information was, on the whole, expected of our analysis.</p>
+<p>One finding that was not expected was that there was no apparent difference between rural and urban areas. This indicates that factors associated with the urban/rural gradient, such as population density, may not have much effect on the prevalence of opioid related injuries. Counties where there were a high number of opioid related treatments did not necessarily have a high number of deaths when adjusting for population size. These counties were further outside of the New York City area, which could be evidence that different interventions may be necessary to prevent opioid related injuries in counties outside the five boroughs. While there is an association between the pills bought per capita and the opioid deaths per 10,000 people, according to our statistical models it may not be safe to assume that reducing opioid prescriptions would decrease opioid injuries.</p>
+<p>As mentioned in the <em>Aditional Analysis</em> section, there are some public health implications that can be taken from our findings. The information for which populations have the most deaths could provide insight for different initiatives. For instance, programs may benefit from targeting men specifically as they are in a higher risk group. Additionally, there appears to be a slight linear relationship between pills bought per person and opioid-related deaths. This may suggest that prescribing fewer pills could help decrease the number of opioid-related deaths in NY.</p>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeCodeFolding("hide" === "show");
+});
+</script>
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
