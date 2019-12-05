@@ -186,4 +186,4 @@ total_death_pop %>%
     type = 'bar', alpha = 0.5
   )
 ```
-
+ 
