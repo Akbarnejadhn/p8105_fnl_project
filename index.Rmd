@@ -69,10 +69,13 @@ If you are interested in some statistical learning and clustering related to opi
 
 We have also provided a report of our study [here](index_report.html).
 
-There is an additional tab provided for finding the closest treatment facilities center to you using the [Find Treatment](<https://findtreatment.samhsa.gov/locator?sAddr=New%20York%2C%20United%20States&submit=Go>) tab, and you can also access our project [GitHub repository](https://github.com/Akbarnejadhn/p8105_fnl_project).
+You can go to [Find Treatment](<https://findtreatment.samhsa.gov/locator?sAddr=New%20York%2C%20United%20States&submit=Go>) tab to find the closest treatment facilities center to you.
 
 OR
 
 You can just take a look at our 2 minutes [project screencast](index_screencast.html) and not look any further!
+
+
+_Our Github repository for this project can be found here: [GitHub repository](https://github.com/Akbarnejadhn/p8105_fnl_project)._
 
 
