@@ -205,3 +205,4 @@ deaths_by_age %>%
 ```
 
 We can see that the majority of deaths occur in white males by far. Also it appears that the most affected age groups are....  
+ 
