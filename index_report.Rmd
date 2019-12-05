@@ -88,7 +88,7 @@ _Our final research questions were as follows:_
 
 # Exploratory Analysis
 
-We loaded and cleaned the data, filtering by relevant years and joining appropriate datasets. 
+We loaded and cleaned the data, filtering by relevant years and joining appropriate datasets. For code on how the animated graphics were generated, you can view the _animated_graphs.rmd_ file [here](<https://github.com/Akbarnejadhn/p8105_fnl_project/blob/master/animated_graphs.Rmd>) on our Github repository.
 
 ```{r, message = FALSE}
 
@@ -192,20 +192,59 @@ deaths_by_age %>%
     color = ~factor(age_group), alpha = 0.5)
 ```
   
- * Finally, between the years 2010 and 2015 we notice that the distribution of opioid related treatment is relatively even between commerical insurance and medicaid with medicare paying for far fewer cases on average. This seems to change in 2015 when medicaid outpaces commerical insurance in the distribution of the number of opioid treatments paid for by county.
+ * Finally, between the years 2010 and 2015 we notice that the distribution of opioid related treatment is relatively even between commerical insurance and medicaid with medicare paying for far fewer cases on average. This seems to change in 2015 when medicaid outpaces commerical insurance in the distribution of the number of opioid treatments paid for by county.  
+ 
+ ![](insurance_inf.gif)
 
 **[Trends](<https://akbarnejadhn.github.io/p8105_fnl_project/trends.html>)**  <br />
 
 Having looked at who the opioid crisis affects in New York state, we were interested in the areas where people were most affected. Therefore, we looked at the death, treatment and perscription trends by county. From our analysis we were able to glean the following information:<br />
 
-* Suffolk county has the third highest death rate related to opioid poisioning and has the highest number of opioid related treatments        and number of pills perscribed by doctors.
+* Suffolk county has the third highest death rate related to opioid poisioning and has the highest number of opioid related treatments and number of pills perscribed by doctors.
 
 
-* The counties with the greatest number of opioid related treatments also had a large amount of perscribed opioids, but deaths were not        so clearly correlated. 
+* The counties with the greatest number of opioid related treatments also had a large amount of perscribed opioids, but deaths were not so clearly correlated. 
 
 
 *  The counties with the highest death rates were also heavily urban counties, with the exception of Sullivan and Green county.
 
+```{r, message = FALSE}
+
+total_death = opioid_death_data %>% 
+  group_by(county) %>% 
+  summarize(
+    death_sum = sum(opioid_poisoning_deaths)
+  ) %>% 
+  mutate(
+    county = toupper(county)
+  )
+
+total_pop = county_pop %>% 
+  select (buyer_county, year, population) %>% 
+  rename(county = buyer_county) %>% 
+  group_by(county) %>% 
+  summarize(
+    
+    total_pop = sum(population)
+  )
+
+total_death_pop = left_join(total_death, total_pop) %>% 
+  mutate(
+    county = factor(county),
+    death_pop = death_sum/total_pop,
+    county = fct_reorder(county, death_pop)
+  )
+
+total_death_pop %>% 
+  plot_ly(
+    x = ~county, y = ~death_pop, split = ~county,
+    type = 'bar', alpha = 0.5
+  )
+```
+
+![](opioid_inf.gif)
+
+![](pills_prescribed_inf.gif)
 
 # Additional Analysis
 
