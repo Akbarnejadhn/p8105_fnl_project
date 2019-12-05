@@ -369,8 +369,6 @@ anova(model1, model2)
 
 Additionally, we used unsupervised learning to assess opioid related trends over time. In this project, we clustered counties by the intercepts and slopes collected from linear models of opioid-related data by county over time. The clusters indicate similar trends in various counties, including the increase or stabilization of opioid related treatment and deaths over time. This information might be helpful in determining which counties require the most immediate public health intervention.
 
-Model building can be used to determine associations between our variables. This can be useful to validate our findings and uncover associations that we had not predicted.
-
 ```{r clustering, message = FALSE}
 # Prepare data for linear modeling #
 
