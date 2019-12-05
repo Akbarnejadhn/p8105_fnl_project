@@ -24,8 +24,16 @@
 <link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
 <script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
 <link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<script src="site_libs/htmlwidgets-1.3/htmlwidgets.js"></script>
+<script src="site_libs/plotly-binding-4.9.0/plotly.js"></script>
+<script src="site_libs/typedarray-0.1/typedarray.min.js"></script>
+<link href="site_libs/crosstalk-1.0.0/css/crosstalk.css" rel="stylesheet" />
+<script src="site_libs/crosstalk-1.0.0/js/crosstalk.min.js"></script>
+<link href="site_libs/plotly-htmlwidgets-css-1.46.1/plotly-htmlwidgets.css" rel="stylesheet" />
+<script src="site_libs/plotly-main-1.46.1/plotly-latest.min.js"></script>
 <link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
 <link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
 
@@ -250,6 +258,9 @@ $(document).ready(function () {
 </style>
 
 <!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
 
 
 
@@ -386,6 +397,14 @@ div.tocify {
 
 <div class="fluid-row" id="header">
 
+<div class="btn-group pull-right">
+<button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+</ul>
+</div>
+
 
 
 <h1 class="title toc-ignore">Project Report</h1>
@@ -433,19 +452,121 @@ div.tocify {
 </div>
 <div id="exploratory-analysis" class="section level1">
 <h1>Exploratory Analysis</h1>
-<p>Visualizations, summaries, and exploratory statistical analyses. Justify the steps you took, and show any major changes to your ideas.</p>
+<p>We loaded and cleaned the data, filtering by relevant years and joining appropriate datasets.</p>
+<pre class="r"><code>opioid_death_data = janitor::clean_names(read_csv(&#39;./opioid_related_deaths.csv&#39;))
+
+opioid_treatment_distance = janitor::clean_names(read_csv(&#39;./distance_to_treatment.csv&#39;))
+
+opioid_demographics = janitor::clean_names(read_csv(&quot;./opioid_demographics.csv&quot;))
+
+opioid_er_data = read_csv(&#39;./opioid_related_visits.csv&#39;) %&gt;% 
+  janitor::clean_names()
+
+prod_county = arcos::summarized_county_annual(state = &quot;NY&quot;, key = &quot;WaPo&quot;) %&gt;% 
+  janitor::clean_names()
+
+county_pop = arcos::county_population(state = &quot;NY&quot;, key = &quot;WaPo&quot;) %&gt;% 
+  janitor::clean_names()
+
+# clean opioid death data #
+
+opioid_death_data = opioid_death_data %&gt;%
+  filter(year &gt;= 2010) %&gt;% 
+  mutate(county = recode(county, &quot;Kings (Brooklyn)&quot; = &quot;Kings&quot;,
+                         &quot;New York (Manhattan)&quot; = &quot;New York&quot;,
+                         &quot;St Lawrence&quot; = &quot;St. Lawrence&quot;))
+
+# clean opioid er data #
+
+opioid_er_data = opioid_er_data %&gt;% 
+  select(year, patient_county_name, rural_urban, payer, er_opioid, inpatient_total_opioid, er_inpatient_total_opioid, outpatient_opioid, overall_opioid) %&gt;%
+  rename(county = patient_county_name)
+
+# Combine Data Sets #
+
+opioid_total_data = left_join(opioid_er_data, opioid_death_data, by = c(&#39;county&#39;, &#39;year&#39;)) %&gt;% 
+  arrange(county, year)</code></pre>
+<p>In our analysis, we created a series of graphs and animations which detail how the opioid crisis is affecting New Yorkers in different areas of the state over time. The information below is synthesised from the results of our analysis. You can use the links to navigate to the appropriate page in our website, and view code by clicking <em>code</em> on the right side.</p>
+<p><strong><a href="https://akbarnejadhn.github.io/p8105_fnl_project/demographics.html">Demographics</a></strong> <br /> Initially, we were interested in how demographics altered opioid addicition over time. We broke down the death count by age, race and gender. The plots, which are included under the demographics tab in analysis, show the following trends related to opioid overdosing.<br />
+<br /></p>
+<ul>
+<li>There are signficiantly more men than women who die of opioid related deaths. In recent years that differential has only increased.</li>
+</ul>
+<pre class="r"><code>opioid_demographics %&gt;% 
+  filter(region == &quot;NYC&quot;) %&gt;% 
+  group_by(year, sex) %&gt;% 
+  summarize(
+    count = sum(opioid_poisoning_deaths)
+  ) %&gt;% 
+  plot_ly(x = ~year, y = ~count, type = &quot;bar&quot;,
+          color = ~sex, alpha = 0.5)</code></pre>
+<div id="htmlwidget-2e2b962b49c3ce140d7b" style="width:90%;height:576px;" class="plotly html-widget"></div>
+<script type="application/json" data-for="htmlwidget-2e2b962b49c3ce140d7b">{"x":{"visdat":{"5403ad23b86":["function () ","plotlyVisDat"]},"cur_data":"5403ad23b86","attrs":{"5403ad23b86":{"x":{},"y":{},"color":{},"alpha":0.5,"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"bar"}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"xaxis":{"domain":[0,1],"automargin":true,"title":"year"},"yaxis":{"domain":[0,1],"automargin":true,"title":"count"},"hovermode":"closest","showlegend":true},"source":"A","config":{"showSendToCloud":false},"data":[{"x":[2003,2004,2005,2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017],"y":[238,240,278,270,248,230,246,234,288,274,296,314,356,496,468],"type":"bar","name":"F","marker":{"color":"rgba(102,194,165,0.5)","line":{"color":"rgba(102,194,165,1)"}},"textfont":{"color":"rgba(102,194,165,0.5)"},"error_y":{"color":"rgba(102,194,165,0.5)"},"error_x":{"color":"rgba(102,194,165,0.5)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[2003,2004,2005,2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017],"y":[758,612,720,792,632,654,560,536,612,766,722,778,980,1570,1706],"type":"bar","name":"M","marker":{"color":"rgba(141,160,203,0.5)","line":{"color":"rgba(141,160,203,1)"}},"textfont":{"color":"rgba(141,160,203,0.5)"},"error_y":{"color":"rgba(141,160,203,0.5)"},"error_x":{"color":"rgba(141,160,203,0.5)"},"xaxis":"x","yaxis":"y","frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+<ul>
+<li>Non-hispanic white people are more likely to die of opioid poisioning. Though there has been an increase in opioid related deaths for all ethnicities, white non-hispanic people continually extend their lead in opioid poisionings.</li>
+</ul>
+<pre class="r"><code>deaths_age_grp = read_csv(&quot;./data/deaths_age_group.csv&quot;) %&gt;% 
+  janitor::clean_names() %&gt;% 
+  pivot_wider(
+    names_from = age_group,
+    values_from = opioid_poisoning_deaths
+  ) %&gt;% 
+  janitor::clean_names()
+
+
+deaths_by_year = deaths_age_grp %&gt;% 
+  select(year, region, race_or_ethnicity, sex, total) %&gt;% 
+  group_by(year, race_or_ethnicity) %&gt;% 
+  summarize(
+    count = sum(total)
+  ) %&gt;% 
+  mutate(
+    race_or_ethnicity = factor(race_or_ethnicity, levels = c(&quot;Not Stated&quot;, &quot;Other Non Hispanic&quot;, &quot;Black Non Hispanic&quot;, &quot;Hispanic&quot;, &quot;White Non Hispanic&quot;))
+  )
+
+deaths_by_year %&gt;% 
+  plot_ly(x = ~year, y = ~count, type = &quot;bar&quot;,
+    color = ~race_or_ethnicity, alpha = 0.5)</code></pre>
+<div id="htmlwidget-24b234802810d3d3d3fd" style="width:90%;height:576px;" class="plotly html-widget"></div>
+<script type="application/json" data-for="htmlwidget-24b234802810d3d3d3fd">{"x":{"visdat":{"54070dd45fa":["function () ","plotlyVisDat"]},"cur_data":"54070dd45fa","attrs":{"54070dd45fa":{"x":{},"y":{},"color":{},"alpha":0.5,"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"bar"}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"xaxis":{"domain":[0,1],"automargin":true,"title":"year"},"yaxis":{"domain":[0,1],"automargin":true,"title":"count"},"hovermode":"closest","showlegend":true},"source":"A","config":{"showSendToCloud":false},"data":[{"x":[2003,2004,2005,2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017],"y":[15,13,10,5,2,5,6,4,9,10,19,15,34,26,18],"type":"bar","name":"Not Stated","marker":{"color":"rgba(102,194,165,0.5)","line":{"color":"rgba(102,194,165,1)"}},"textfont":{"color":"rgba(102,194,165,0.5)"},"error_y":{"color":"rgba(102,194,165,0.5)"},"error_x":{"color":"rgba(102,194,165,0.5)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[2003,2004,2005,2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017],"y":[5,8,10,11,9,7,5,8,7,12,15,19,32,43,57],"type":"bar","name":"Other Non Hispanic","marker":{"color":"rgba(252,141,98,0.5)","line":{"color":"rgba(252,141,98,1)"}},"textfont":{"color":"rgba(252,141,98,0.5)"},"error_y":{"color":"rgba(252,141,98,0.5)"},"error_x":{"color":"rgba(252,141,98,0.5)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[2003,2004,2005,2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017],"y":[116,87,133,148,115,107,95,91,118,134,140,148,186,349,394],"type":"bar","name":"Black Non Hispanic","marker":{"color":"rgba(141,160,203,0.5)","line":{"color":"rgba(141,160,203,1)"}},"textfont":{"color":"rgba(141,160,203,0.5)"},"error_y":{"color":"rgba(141,160,203,0.5)"},"error_x":{"color":"rgba(141,160,203,0.5)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[2003,2004,2005,2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017],"y":[187,131,164,171,154,179,147,118,171,186,232,205,308,483,521],"type":"bar","name":"Hispanic","marker":{"color":"rgba(231,138,195,0.5)","line":{"color":"rgba(231,138,195,1)"}},"textfont":{"color":"rgba(231,138,195,0.5)"},"error_y":{"color":"rgba(231,138,195,0.5)"},"error_x":{"color":"rgba(231,138,195,0.5)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[2003,2004,2005,2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017],"y":[444,360,578,662,731,814,776,747,973,1032,1198,1312,1587,2167,2267],"type":"bar","name":"White Non Hispanic","marker":{"color":"rgba(166,216,84,0.5)","line":{"color":"rgba(166,216,84,1)"}},"textfont":{"color":"rgba(166,216,84,0.5)"},"error_y":{"color":"rgba(166,216,84,0.5)"},"error_x":{"color":"rgba(166,216,84,0.5)"},"xaxis":"x","yaxis":"y","frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+<ul>
+<li>We see an exponential increase of opioid poisoning deaths between the ages of 20 and 64 from 2004 and 2016. All other ages remained relatively stable at low levels of opioid related deaths between those years.</li>
+</ul>
+<pre class="r"><code>deaths_by_age = read_csv(&quot;./data/deaths_age_group.csv&quot;) %&gt;% 
+  janitor::clean_names() %&gt;% 
+  select(-region, -race_or_ethnicity, -sex) %&gt;% 
+  filter(age_group != &quot;Total&quot;) %&gt;% 
+  group_by(year, age_group) %&gt;% 
+  summarize(
+    count = sum(opioid_poisoning_deaths)
+  ) %&gt;% 
+  ungroup()
+
+deaths_by_age %&gt;% 
+  plot_ly(x = ~year, y = ~count, type = &quot;scatter&quot;, mode = &quot;lines+markers&quot;,
+    color = ~factor(age_group), alpha = 0.5)</code></pre>
+<div id="htmlwidget-d982d0bb156021244394" style="width:90%;height:576px;" class="plotly html-widget"></div>
+<script type="application/json" data-for="htmlwidget-d982d0bb156021244394">{"x":{"visdat":{"5406aee6e62":["function () ","plotlyVisDat"]},"cur_data":"5406aee6e62","attrs":{"5406aee6e62":{"x":{},"y":{},"mode":"lines+markers","color":{},"alpha":0.5,"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"scatter"}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"xaxis":{"domain":[0,1],"automargin":true,"title":"year"},"yaxis":{"domain":[0,1],"automargin":true,"title":"count"},"hovermode":"closest","showlegend":true},"source":"A","config":{"showSendToCloud":false},"data":[{"x":[2003,2004,2005,2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017],"y":[0,0,1,0,0,0,0,0,0,2,1,0,1,0,0],"mode":"lines+markers","type":"scatter","name":"<1","marker":{"color":"rgba(102,194,165,0.5)","line":{"color":"rgba(102,194,165,1)"}},"textfont":{"color":"rgba(102,194,165,0.5)"},"error_y":{"color":"rgba(102,194,165,0.5)"},"error_x":{"color":"rgba(102,194,165,0.5)"},"line":{"color":"rgba(102,194,165,0.5)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[2003,2004,2005,2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017],"y":[0,0,1,1,1,2,2,2,3,2,2,1,2,2,3],"mode":"lines+markers","type":"scatter","name":"1-9","marker":{"color":"rgba(219,161,118,0.5)","line":{"color":"rgba(219,161,118,1)"}},"textfont":{"color":"rgba(219,161,118,0.5)"},"error_y":{"color":"rgba(219,161,118,0.5)"},"error_x":{"color":"rgba(219,161,118,0.5)"},"line":{"color":"rgba(219,161,118,0.5)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[2003,2004,2005,2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017],"y":[21,12,27,25,16,41,28,25,23,19,30,26,40,43,35],"mode":"lines+markers","type":"scatter","name":"10-19","marker":{"color":"rgba(217,150,141,0.5)","line":{"color":"rgba(217,150,141,1)"}},"textfont":{"color":"rgba(217,150,141,0.5)"},"error_y":{"color":"rgba(217,150,141,0.5)"},"error_x":{"color":"rgba(217,150,141,0.5)"},"line":{"color":"rgba(217,150,141,0.5)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[2003,2004,2005,2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017],"y":[34,39,70,66,67,73,82,87,137,131,160,164,204,282,232],"mode":"lines+markers","type":"scatter","name":"20-24","marker":{"color":"rgba(152,158,202,0.5)","line":{"color":"rgba(152,158,202,1)"}},"textfont":{"color":"rgba(152,158,202,0.5)"},"error_y":{"color":"rgba(152,158,202,0.5)"},"error_x":{"color":"rgba(152,158,202,0.5)"},"line":{"color":"rgba(152,158,202,0.5)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[2003,2004,2005,2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017],"y":[133,80,145,163,207,189,193,175,303,328,379,432,588,873,924],"mode":"lines+markers","type":"scatter","name":"25-34","marker":{"color":"rgba(215,144,197,0.5)","line":{"color":"rgba(215,144,197,1)"}},"textfont":{"color":"rgba(215,144,197,0.5)"},"error_y":{"color":"rgba(215,144,197,0.5)"},"error_x":{"color":"rgba(215,144,197,0.5)"},"line":{"color":"rgba(215,144,197,0.5)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[2003,2004,2005,2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017],"y":[248,210,252,290,254,255,244,218,255,277,299,348,439,646,712],"mode":"lines+markers","type":"scatter","name":"35-44","marker":{"color":"rgba(205,181,144,0.5)","line":{"color":"rgba(205,181,144,1)"}},"textfont":{"color":"rgba(205,181,144,0.5)"},"error_y":{"color":"rgba(205,181,144,0.5)"},"error_x":{"color":"rgba(205,181,144,0.5)"},"line":{"color":"rgba(205,181,144,0.5)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[2003,2004,2005,2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017],"y":[264,194,292,332,321,377,325,303,367,370,409,420,508,674,741],"mode":"lines+markers","type":"scatter","name":"45-54","marker":{"color":"rgba(186,217,78,0.5)","line":{"color":"rgba(186,217,78,1)"}},"textfont":{"color":"rgba(186,217,78,0.5)"},"error_y":{"color":"rgba(186,217,78,0.5)"},"error_x":{"color":"rgba(186,217,78,0.5)"},"line":{"color":"rgba(186,217,78,0.5)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[2003,2004,2005,2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017],"y":[52,52,85,93,125,147,135,133,168,207,263,254,298,440,489],"mode":"lines+markers","type":"scatter","name":"55-64","marker":{"color":"rgba(247,217,52,0.5)","line":{"color":"rgba(247,217,52,1)"}},"textfont":{"color":"rgba(247,217,52,0.5)"},"error_y":{"color":"rgba(247,217,52,0.5)"},"error_x":{"color":"rgba(247,217,52,0.5)"},"line":{"color":"rgba(247,217,52,0.5)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[2003,2004,2005,2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017],"y":[10,7,15,16,9,21,15,19,17,27,48,43,57,87,108],"mode":"lines+markers","type":"scatter","name":"65-74","marker":{"color":"rgba(241,204,114,0.5)","line":{"color":"rgba(241,204,114,1)"}},"textfont":{"color":"rgba(241,204,114,0.5)"},"error_y":{"color":"rgba(241,204,114,0.5)"},"error_x":{"color":"rgba(241,204,114,0.5)"},"line":{"color":"rgba(241,204,114,0.5)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[2003,2004,2005,2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017],"y":[4,4,4,8,5,5,4,5,3,6,11,6,8,17,10],"mode":"lines+markers","type":"scatter","name":"75-84","marker":{"color":"rgba(215,191,158,0.5)","line":{"color":"rgba(215,191,158,1)"}},"textfont":{"color":"rgba(215,191,158,0.5)"},"error_y":{"color":"rgba(215,191,158,0.5)"},"error_x":{"color":"rgba(215,191,158,0.5)"},"line":{"color":"rgba(215,191,158,0.5)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[2003,2004,2005,2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017],"y":[1,1,3,3,6,2,1,1,2,5,2,5,2,4,3],"mode":"lines+markers","type":"scatter","name":"85+","marker":{"color":"rgba(179,179,179,0.5)","line":{"color":"rgba(179,179,179,1)"}},"textfont":{"color":"rgba(179,179,179,0.5)"},"error_y":{"color":"rgba(179,179,179,0.5)"},"error_x":{"color":"rgba(179,179,179,0.5)"},"line":{"color":"rgba(179,179,179,0.5)"},"xaxis":"x","yaxis":"y","frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+<ul>
+<li>Finally, between the years 2010 and 2015 we notice that the distribution of opioid related treatment is relatively even between commerical insurance and medicaid with medicare paying for far fewer cases on average. This seems to change in 2015 when medicaid outpaces commerical insurance in the distribution of the number of opioid treatments paid for by county.</li>
+</ul>
+<p><strong><a href="https://akbarnejadhn.github.io/p8105_fnl_project/trends.html">Trends</a></strong> <br /></p>
+<p>Having looked at who the opioid crisis affects in New York state, we were interested in the areas where people were most affected. Therefore, we looked at the death, treatment and perscription trends by county. From our analysis we were able to glean the following information:<br /></p>
+<ul>
+<li><p>Suffolk county has the third highest death rate related to opioid poisioning and has the highest number of opioid related treatments and number of pills perscribed by doctors.</p></li>
+<li><p>The counties with the greatest number of opioid related treatments also had a large amount of perscribed opioids, but deaths were not so clearly correlated.</p></li>
+<li><p>The counties with the highest death rates were also heavily urban counties, with the exception of Sullivan and Green county.</p></li>
+</ul>
 </div>
 <div id="additional-analysis" class="section level1">
 <h1>Additional Analysis</h1>
-<p>We conducted additional analysis on our data using model building techniques and clustering. The process of model building included a stepwise regression on the parameters included in our data. VIF scores were checked for multicollinearity in our variables. Finally, a simple model was proposed and then stepwise regression was conducted to check for significance of the variables. A simple model was compared to the complex model and determined to be preferable.</p>
-<p>Model building is a useful tool for prediction and inference. The types of models we used in this analysis can be used for inference. Further analysis including cross validation or bootstrapping could test the final model against future random samples to determine its predictive ability. Clustering is a statistical tool that groups observations by location. For the purposes of this project counties were grouped by the intercepts and slopes collected from linear models of various opioid-related data adjusted for county population over time. These graphs indicate which counties might have similar trends, for instance in order to apply available public health treatments in groups of populations. Basically, there were some counties that started low and didn’t change much, some that started high and didn’t change much, and some started in the middle and rose higher with time.</p>
+<p>We conducted additional analysis on our data using model building techniques for parameter inference. The process of model building included a stepwise regression on the multiple parameters including population size, region, er visits, and area type (urban v. rural). Parameters were assessed for multicollinearity and contribution to the model fit. Nested simple and complex models were assessed based on the fit of the regression, and the simple model was ultimately chosen. Further analysis including cross validation or bootstrapping could test the final model against future random samples to determine its predictive ability.</p>
+<p>Additionally, we used unsupervised learning to assess opioid related trends over time. In this project, we clustered counties by the intercepts and slopes collected from linear models of opioid-related data by county over time. The clusters indicate similar trends in various counties, including the increase or stablization of opioid related treatment and deaths over time. This information might be helpful in determining which counties require the most immediate public health intervention.</p>
 </div>
 <div id="discussion" class="section level1">
 <h1>Discussion</h1>
-<p>Opioid related injuries included in our data sets were measured by emergency room visits, deaths, and inpatient treatment. The number of opioids bought by pharmacies in each county was used as a proxy for the number of pills sold in each county. There were demographic data available for deaths by opioid overdose in New York City including the age group, race/ethnicity and gender of each subject. A rural/urban variable was included in one dataset. We drew on this information to make our findings. Opioid overdose in New York City affect white people more than people of other races/ethnicities, and more men as compared to women. Opioid overdose also tends to affect young adults (ages 25-34) more than any other age group.</p>
-<p>One finding that was not expected was that there was no apparent difference between rural and urban areas. This indicates that indicators associated with the urban/rural gradient, such as population density, may not have much effect on the prevalence of opioid related injuries. However, there was an association between the number of opioid related deaths in New York City as compared with the rest of New York State when adjusting for the number of pills bought in each county. So, this could be evidence that different interventions may be necessary to prevent opioid related injuries in counties outside the five boroughs. There were also statistical learning methods included. So, there was a search for trends in the data that were not known. While there is an association between the pills bought per capita and the opioid deaths per 10,000 people, it may not be safe to assume that reducing opioid prescriptions would decrease opioid injuries. Clustering counties by trends in the number of opioid related emergency room visits, opioid overdoses, and pills prescribed can reveal patterns that may be useful for deciding where and how to distribute public health resources.</p>
-<p>Additionally, as discussed in the <em>Exploratory Analysis</em> section, we looked at the relationship between gross number of deaths and distance to the nearest treatment facility. We see a decreasing relationship between number of deaths and distance to nearest treatment facility. In other words, the closer a county is to a treatment facility, the more deaths occur in that county. However, when we adjust for population and look at a rate of deaths, this relationship no longer holds. This makes sense, because places with a larger population probably have a shorter distance to treatment facility.</p>
-<p>As mentioned in the <em>Aditional Analysis</em> section, there are some public health implications that can be taken from our findings. The information for which populations have the most deaths could provide insight for different initiatives. For instance, programs may benefit from targeting men specifically as they are in a higher risk group. Additionally, there appears to be a slight linear relationship between pills bought per person and opioid-related deaths. This may suggest that prescribing fewer pills could help decrease the number of opioid-related deaths in NY.</p>
+<p>Opioid related injuries included in our data sets were measured by emergency room visits, deaths, and inpatient treatment. Through demographic and trend analysis, we discovered opioid overdose in New York City affects white people more than other ethnicities, and men more than women, on average. Opioid overdose also tends to affect young adults (ages 25-34) more than any other age group. Furthermore, we notie the number of opioid related incidents in each county is strongly associated with the number of pills prescribed by doctors. This information was, on the whole, expected of our analysis.</p>
+<p>One finding that was not expected was that there was no apparent difference between rural and urban areas. This indicates that factors associated with the urban/rural gradient, such as population density, may not have much affect on the prevalence of opioid related injuries. Counties where there were a high number of opioid related treatments did not necessarily have a high number of deaths when adjusting for population size. These counties were further outside of the New York City area, which could be evidence that different interventions may be necessary to prevent opioid related injuries in counties outside the five boroughs.While there is an association between the pills bought per capita and the opioid deaths per 10,000 people, according to our statistical models it may not be safe to assume that reducing opioid prescriptions would decrease opioid injuries.</p>
 </div>
 <div id="references" class="section level1">
 <h1>References</h1>
@@ -491,6 +612,11 @@ $(document).ready(function () {
 </script>
 
 <!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeCodeFolding("hide" === "show");
+});
+</script>
 
 <script>
 $(document).ready(function ()  {

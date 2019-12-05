@@ -4,11 +4,31 @@ output:
   html_document:
     toc: true
     toc_float: true
+    code_folding: hide
 ---
 
 ```{r include=FALSE}
 library("htmltools")
 library("vembedr")
+library(tidyverse)
+library(viridis)
+library(arcos)
+library(readxl)
+library(plotly)
+knitr::opts_chunk$set(
+	echo = TRUE,
+	warning = FALSE,
+	fig.width = 8, 
+  fig.height = 6,
+  out.width = "90%"
+)
+options(
+  ggplot2.continuous.colour = "viridis",
+  ggplot2.continuous.fill = "viridis"
+)
+scale_colour_discrete = scale_colour_viridis_d
+scale_fill_discrete = scale_fill_viridis_d
+theme_set(theme_minimal() + theme(legend.position = "bottom"))
 ```
 
 # Motivation
@@ -77,23 +97,140 @@ _Our final research questions were as follows:_
 
 
 # Exploratory Analysis
-Visualizations, summaries, and exploratory statistical analyses. Justify the steps you took, and show any major changes to your ideas.
+
+We loaded and cleaned the data, filtering by relevant years and joining appropriate datasets. 
+
+```{r, message = FALSE}
+
+opioid_death_data = janitor::clean_names(read_csv('./opioid_related_deaths.csv'))
+
+opioid_treatment_distance = janitor::clean_names(read_csv('./distance_to_treatment.csv'))
+
+opioid_demographics = janitor::clean_names(read_csv("./opioid_demographics.csv"))
+
+opioid_er_data = read_csv('./opioid_related_visits.csv') %>% 
+  janitor::clean_names()
+
+prod_county = arcos::summarized_county_annual(state = "NY", key = "WaPo") %>% 
+  janitor::clean_names()
+
+county_pop = arcos::county_population(state = "NY", key = "WaPo") %>% 
+  janitor::clean_names()
+
+# clean opioid death data #
+
+opioid_death_data = opioid_death_data %>%
+  filter(year >= 2010) %>% 
+  mutate(county = recode(county, "Kings (Brooklyn)" = "Kings",
+                         "New York (Manhattan)" = "New York",
+                         "St Lawrence" = "St. Lawrence"))
+
+# clean opioid er data #
+
+opioid_er_data = opioid_er_data %>% 
+  select(year, patient_county_name, rural_urban, payer, er_opioid, inpatient_total_opioid, er_inpatient_total_opioid, outpatient_opioid, overall_opioid) %>%
+  rename(county = patient_county_name)
+
+# Combine Data Sets #
+
+opioid_total_data = left_join(opioid_er_data, opioid_death_data, by = c('county', 'year')) %>% 
+  arrange(county, year)
+```
+
+In our analysis, we created a series of graphs and animations which detail how the opioid crisis is affecting New Yorkers in different areas of the state over time. The information below is synthesised from the results of our analysis. You can use the links to navigate to the appropriate page in our website, and view code by clicking _code_ on the right side.
+
+**[Demographics](<https://akbarnejadhn.github.io/p8105_fnl_project/demographics.html>)**  <br />
+    Initially, we were interested in how demographics altered opioid addicition over time. We broke down the death count by age, race and gender. The plots, which are included under the demographics tab in analysis, show the following trends related to opioid overdosing.   
+  <br />
+  
+  
+ * There are signficiantly more men than women who die of opioid related deaths. In recent years that differential has only increased.
+
+```{r death_sex, message = FALSE} 
+opioid_demographics %>% 
+  filter(region == "NYC") %>% 
+  group_by(year, sex) %>% 
+  summarize(
+    count = sum(opioid_poisoning_deaths)
+  ) %>% 
+  plot_ly(x = ~year, y = ~count, type = "bar",
+          color = ~sex, alpha = 0.5)
+```
+  
+ *  Non-hispanic white people are more likely to die of opioid poisioning. Though there has been an increase in opioid related deaths for all ethnicities, white non-hispanic people continually extend their lead in opioid poisionings.
+     
+```{r load2, message=FALSE}
+deaths_age_grp = read_csv("./data/deaths_age_group.csv") %>% 
+  janitor::clean_names() %>% 
+  pivot_wider(
+    names_from = age_group,
+    values_from = opioid_poisoning_deaths
+  ) %>% 
+  janitor::clean_names()
+
+
+deaths_by_year = deaths_age_grp %>% 
+  select(year, region, race_or_ethnicity, sex, total) %>% 
+  group_by(year, race_or_ethnicity) %>% 
+  summarize(
+    count = sum(total)
+  ) %>% 
+  mutate(
+    race_or_ethnicity = factor(race_or_ethnicity, levels = c("Not Stated", "Other Non Hispanic", "Black Non Hispanic", "Hispanic", "White Non Hispanic"))
+  )
+
+deaths_by_year %>% 
+  plot_ly(x = ~year, y = ~count, type = "bar",
+    color = ~race_or_ethnicity, alpha = 0.5)
+```
+
+ * We see an exponential increase of opioid poisoning deaths between the ages of 20 and 64 from 2004 and 2016. All other ages  remained relatively stable at low levels of opioid related deaths between those years.
+
+```{r, message = FALSE}
+deaths_by_age = read_csv("./data/deaths_age_group.csv") %>% 
+  janitor::clean_names() %>% 
+  select(-region, -race_or_ethnicity, -sex) %>% 
+  filter(age_group != "Total") %>% 
+  group_by(year, age_group) %>% 
+  summarize(
+    count = sum(opioid_poisoning_deaths)
+  ) %>% 
+  ungroup()
+
+deaths_by_age %>% 
+  plot_ly(x = ~year, y = ~count, type = "scatter", mode = "lines+markers",
+    color = ~factor(age_group), alpha = 0.5)
+```
+  
+ * Finally, between the years 2010 and 2015 we notice that the distribution of opioid related treatment is relatively even between commerical insurance and medicaid with medicare paying for far fewer cases on average. This seems to change in 2015 when medicaid outpaces commerical insurance in the distribution of the number of opioid treatments paid for by county.
+
+**[Trends](<https://akbarnejadhn.github.io/p8105_fnl_project/trends.html>)**  <br />
+
+Having looked at who the opioid crisis affects in New York state, we were interested in the areas where people were most affected. Therefore, we looked at the death, treatment and perscription trends by county. From our analysis we were able to glean the following information:<br />
+
+* Suffolk county has the third highest death rate related to opioid poisioning and has the highest number of opioid related treatments        and number of pills perscribed by doctors.
+
+
+* The counties with the greatest number of opioid related treatments also had a large amount of perscribed opioids, but deaths were not        so clearly correlated. 
+
+
+*  The counties with the highest death rates were also heavily urban counties, with the exception of Sullivan and Green county.
 
 
 # Additional Analysis
 
-We conducted additional analysis on our data using model building techniques and clustering. The process of model building included a stepwise regression on the parameters included in our data. VIF scores were checked for multicollinearity in our variables. Finally, a simple model was proposed and then stepwise regression was conducted to check for significance of the variables. A simple model was compared to the complex model and determined to be preferable. 
+  We conducted additional analysis on our data using model building techniques for parameter inference. The process of model building included a stepwise regression on the multiple parameters including population size, region, er visits, and area type (urban v. rural). Parameters were assessed for multicollinearity and contribution to the model fit. Nested simple and complex models were assessed based on the fit of the regression, and the simple model was ultimately chosen. Further analysis including cross validation or bootstrapping could test the final model against future random samples to determine its predictive ability.
 
-Model building is a useful tool for prediction and inference. The types of models we used in this analysis can be used for inference. Further analysis including cross validation or bootstrapping could test the final model against future random samples to determine its predictive ability. Clustering is a statistical tool that groups observations by location. For the purposes of this project counties were grouped by the intercepts and slopes collected from linear models of various opioid-related data adjusted for county population over time. These graphs indicate which counties might have similar trends, for instance in order to apply available public health treatments in groups of populations. Basically, there were some counties that started low and didn't change much, some that started high and didn't change much, and some started in the middle and rose higher with time.
+Additionally, we used unsupervised learning to assess opioid related trends over time. In this project, we clustered counties by the intercepts and slopes collected from linear models of opioid-related data by county over time. The clusters indicate similar trends in various counties, including the increase or stablization of opioid related treatment and deaths over time. This information might be helpful in determining which counties require the most immediate public health intervention.
 
 # Discussion
 
-Opioid related injuries included in our data sets were measured by emergency room visits, deaths, and inpatient treatment. The number of opioids bought by pharmacies in each county was used as a proxy for the number of pills sold in each county. There were demographic data available for deaths by opioid overdose in New York City including the age group, race/ethnicity and gender of each subject. A rural/urban variable was included in one dataset. We drew on this information to make our findings. Opioid overdose in New York City affect white people more than people of other races/ethnicities, and more men as compared to women. Opioid overdose also tends to affect young adults (ages 25-34) more than any other age group.
+Opioid related injuries included in our data sets were measured by emergency room visits, deaths, and inpatient treatment. Through demographic and trend analysis, we discovered opioid overdose in New York City affects white people more than other ethnicities, and men more than women, on average. Opioid overdose also tends to affect young adults (ages 25-34) more than any other age group. Furthermore, we notie the number of opioid related incidents in each county is strongly associated with the number of pills prescribed by doctors. This information was, on the whole, expected of our analysis. 
 
-One finding that was not expected was that there was no apparent difference between rural and urban areas. This indicates that indicators associated with the urban/rural gradient, such as population density, may not have much effect on the prevalence of opioid related injuries. However, there was an association between the number of opioid related deaths in New York City as compared with the rest of New York State when adjusting for the number of pills bought in each county. So, this could be evidence that different interventions may be necessary to prevent opioid related injuries in counties outside the five boroughs. There were also statistical learning methods included. So, there was a search for trends in the data that were not known. While there is an association between the pills bought per capita and the opioid deaths per 10,000 people, it may not be safe to assume that reducing opioid prescriptions would decrease opioid injuries. Clustering counties by trends in the number of opioid related emergency room visits, opioid overdoses, and pills prescribed can reveal patterns that may be useful for deciding where and how to distribute public health resources.
+One finding that was not expected was that there was no apparent difference between rural and urban areas. This indicates that factors associated with the urban/rural gradient, such as population density, may not have much affect on the prevalence of opioid related injuries. Counties where there were a high number of opioid related treatments did not necessarily have a high number of deaths when adjusting for population size. These counties were further outside of the New York City area, which could be evidence that different interventions may be necessary to prevent opioid related injuries in counties outside the five boroughs.While there is an association between the pills bought per capita and the opioid deaths per 10,000 people, according to our statistical models it may not be safe to assume that reducing opioid prescriptions would decrease opioid injuries. 
 
-Additionally, as discussed in the _Exploratory Analysis_ section, we looked at the relationship between gross number of deaths and distance to the nearest treatment facility. We see a decreasing relationship between number of deaths and distance to nearest treatment facility. In other words, the closer a county is to a treatment facility, the more deaths occur in that county. However, when we adjust for population and look at a rate of deaths, this relationship no longer holds. This makes sense, because places with a larger population probably have a shorter distance to treatment facility. 
 
+<<<<<<< HEAD
 As mentioned in the _Aditional Analysis_ section, there are some public health implications that can be taken from our findings. The information for which populations have the most deaths could provide insight for different initiatives. For instance, programs may benefit from targeting men specifically as they are in a higher risk group. Additionally, there appears to be a slight linear relationship between pills bought per person and opioid-related deaths. This may suggest that prescribing fewer pills could help decrease the number of opioid-related deaths in NY. 
 
 # References
@@ -103,3 +240,5 @@ facts and figures provided in the _Motivation_ are from...
 *  https://www.nbcnewyork.com/news/local/Americas-Deadly-Opioid-Epidemic-By-the-Numbers-458709663.html
 
 *  https://www.drugabuse.gov/opioid-summaries-by-state/new-york-opioid-summary
+=======
+>>>>>>> db336de51498a3d25ffa8675670a54a46ed44924
