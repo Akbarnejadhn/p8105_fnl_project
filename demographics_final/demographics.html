@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Demographics</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<script src="site_libs/htmlwidgets-1.3/htmlwidgets.js"></script>
+<script src="site_libs/plotly-binding-4.9.0/plotly.js"></script>
+<script src="site_libs/typedarray-0.1/typedarray.min.js"></script>
+<link href="site_libs/crosstalk-1.0.0/css/crosstalk.css" rel="stylesheet" />
+<script src="site_libs/crosstalk-1.0.0/js/crosstalk.min.js"></script>
+<link href="site_libs/plotly-htmlwidgets-css-1.46.1/plotly-htmlwidgets.css" rel="stylesheet" />
+<script src="site_libs/plotly-main-1.46.1/plotly-latest.min.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 60px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h2 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h3 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h4 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h5 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h6 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Home</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Analysis
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="demographics.html">Demographics</a>
+    </li>
+    <li>
+      <a href="trends.html">Trends</a>
+    </li>
+    <li>
+      <a href="stat_learning.html">Statistical Learning</a>
+    </li>
+  </ul>
+</li>
+<li>
+  <a href="index_report.html">Report</a>
+</li>
+<li>
+  <a href="index_screencast.html">Screencast</a>
+</li>
+<li>
+  <a href="https://findtreatment.samhsa.gov/locator?sAddr=New%20York%2C%20United%20States&amp;submit=Go">Find Treatment</a>
+</li>
+<li>
+  <a href="https://github.com/Akbarnejadhn/p8105_fnl_project">
+    <span class="fa fa-github fa-lg"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Demographics</h1>
+
+</div>
+
+
+<p>To better understand the opioid epidemic in New York, we investigate different demographic areas.</p>
+<div id="age-group" class="section level2">
+<h2>Age Group</h2>
+<p>The plot below shows death count by age group from 2003 to 2017. 45-54 year olds had the largest number of deaths from 2003 to 2013. However, from 2014 to 2017, 25-34 year olds surpass 45-54 year olds by a large margain. From about 2010 onward, 25-34 year olds death counts have increased dramatically. 35-44 and 55-64 year olds follow a smiliar trend to 25-34 year olds, increasing sharply around 2011. Prior to around 2010 or 2011, deaths were relatively constant among all age groups.</p>
+<div id="htmlwidget-d1bd699278bc207af0c4" style="width:90%;height:576px;" class="plotly html-widget"></div>
+<script type="application/json" data-for="htmlwidget-d1bd699278bc207af0c4">{"x":{"visdat":{"36844e5350b8":["function () ","plotlyVisDat"]},"cur_data":"36844e5350b8","attrs":{"36844e5350b8":{"x":{},"y":{},"mode":"lines+markers","color":{},"alpha":0.5,"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"scatter"}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"xaxis":{"domain":[0,1],"automargin":true,"title":"year"},"yaxis":{"domain":[0,1],"automargin":true,"title":"count"},"hovermode":"closest","showlegend":true},"source":"A","config":{"showSendToCloud":false},"data":[{"x":[2003,2004,2005,2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017],"y":[0,0,1,0,0,0,0,0,0,2,1,0,1,0,0],"mode":"lines+markers","type":"scatter","name":"<1","marker":{"color":"rgba(102,194,165,0.5)","line":{"color":"rgba(102,194,165,1)"}},"textfont":{"color":"rgba(102,194,165,0.5)"},"error_y":{"color":"rgba(102,194,165,0.5)"},"error_x":{"color":"rgba(102,194,165,0.5)"},"line":{"color":"rgba(102,194,165,0.5)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[2003,2004,2005,2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017],"y":[0,0,1,1,1,2,2,2,3,2,2,1,2,2,3],"mode":"lines+markers","type":"scatter","name":"1-9","marker":{"color":"rgba(219,161,118,0.5)","line":{"color":"rgba(219,161,118,1)"}},"textfont":{"color":"rgba(219,161,118,0.5)"},"error_y":{"color":"rgba(219,161,118,0.5)"},"error_x":{"color":"rgba(219,161,118,0.5)"},"line":{"color":"rgba(219,161,118,0.5)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[2003,2004,2005,2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017],"y":[21,12,27,25,16,41,28,25,23,19,30,26,40,43,35],"mode":"lines+markers","type":"scatter","name":"10-19","marker":{"color":"rgba(217,150,141,0.5)","line":{"color":"rgba(217,150,141,1)"}},"textfont":{"color":"rgba(217,150,141,0.5)"},"error_y":{"color":"rgba(217,150,141,0.5)"},"error_x":{"color":"rgba(217,150,141,0.5)"},"line":{"color":"rgba(217,150,141,0.5)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[2003,2004,2005,2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017],"y":[34,39,70,66,67,73,82,87,137,131,160,164,204,282,232],"mode":"lines+markers","type":"scatter","name":"20-24","marker":{"color":"rgba(152,158,202,0.5)","line":{"color":"rgba(152,158,202,1)"}},"textfont":{"color":"rgba(152,158,202,0.5)"},"error_y":{"color":"rgba(152,158,202,0.5)"},"error_x":{"color":"rgba(152,158,202,0.5)"},"line":{"color":"rgba(152,158,202,0.5)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[2003,2004,2005,2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017],"y":[133,80,145,163,207,189,193,175,303,328,379,432,588,873,924],"mode":"lines+markers","type":"scatter","name":"25-34","marker":{"color":"rgba(215,144,197,0.5)","line":{"color":"rgba(215,144,197,1)"}},"textfont":{"color":"rgba(215,144,197,0.5)"},"error_y":{"color":"rgba(215,144,197,0.5)"},"error_x":{"color":"rgba(215,144,197,0.5)"},"line":{"color":"rgba(215,144,197,0.5)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[2003,2004,2005,2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017],"y":[248,210,252,290,254,255,244,218,255,277,299,348,439,646,712],"mode":"lines+markers","type":"scatter","name":"35-44","marker":{"color":"rgba(205,181,144,0.5)","line":{"color":"rgba(205,181,144,1)"}},"textfont":{"color":"rgba(205,181,144,0.5)"},"error_y":{"color":"rgba(205,181,144,0.5)"},"error_x":{"color":"rgba(205,181,144,0.5)"},"line":{"color":"rgba(205,181,144,0.5)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[2003,2004,2005,2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017],"y":[264,194,292,332,321,377,325,303,367,370,409,420,508,674,741],"mode":"lines+markers","type":"scatter","name":"45-54","marker":{"color":"rgba(186,217,78,0.5)","line":{"color":"rgba(186,217,78,1)"}},"textfont":{"color":"rgba(186,217,78,0.5)"},"error_y":{"color":"rgba(186,217,78,0.5)"},"error_x":{"color":"rgba(186,217,78,0.5)"},"line":{"color":"rgba(186,217,78,0.5)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[2003,2004,2005,2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017],"y":[52,52,85,93,125,147,135,133,168,207,263,254,298,440,489],"mode":"lines+markers","type":"scatter","name":"55-64","marker":{"color":"rgba(247,217,52,0.5)","line":{"color":"rgba(247,217,52,1)"}},"textfont":{"color":"rgba(247,217,52,0.5)"},"error_y":{"color":"rgba(247,217,52,0.5)"},"error_x":{"color":"rgba(247,217,52,0.5)"},"line":{"color":"rgba(247,217,52,0.5)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[2003,2004,2005,2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017],"y":[10,7,15,16,9,21,15,19,17,27,48,43,57,87,108],"mode":"lines+markers","type":"scatter","name":"65-74","marker":{"color":"rgba(241,204,114,0.5)","line":{"color":"rgba(241,204,114,1)"}},"textfont":{"color":"rgba(241,204,114,0.5)"},"error_y":{"color":"rgba(241,204,114,0.5)"},"error_x":{"color":"rgba(241,204,114,0.5)"},"line":{"color":"rgba(241,204,114,0.5)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[2003,2004,2005,2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017],"y":[4,4,4,8,5,5,4,5,3,6,11,6,8,17,10],"mode":"lines+markers","type":"scatter","name":"75-84","marker":{"color":"rgba(215,191,158,0.5)","line":{"color":"rgba(215,191,158,1)"}},"textfont":{"color":"rgba(215,191,158,0.5)"},"error_y":{"color":"rgba(215,191,158,0.5)"},"error_x":{"color":"rgba(215,191,158,0.5)"},"line":{"color":"rgba(215,191,158,0.5)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[2003,2004,2005,2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017],"y":[1,1,3,3,6,2,1,1,2,5,2,5,2,4,3],"mode":"lines+markers","type":"scatter","name":"85+","marker":{"color":"rgba(179,179,179,0.5)","line":{"color":"rgba(179,179,179,1)"}},"textfont":{"color":"rgba(179,179,179,0.5)"},"error_y":{"color":"rgba(179,179,179,0.5)"},"error_x":{"color":"rgba(179,179,179,0.5)"},"line":{"color":"rgba(179,179,179,0.5)"},"xaxis":"x","yaxis":"y","frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+</div>
+<div id="raceethnicity" class="section level2">
+<h2>Race/Ethnicity</h2>
+<p>We now break down death counts by race. We find that death counts by race/ethnicity have maintained a very similar distribution from 2003 to 2013. Whites have by far the largest number of deaths, followed by Hispanic and Black populations. It is interesting to note that whites appear to be increasing the distance between the next highest race demographic.</p>
+<div id="htmlwidget-b284d9d0fa3b32e29d69" style="width:90%;height:576px;" class="plotly html-widget"></div>
+<script type="application/json" data-for="htmlwidget-b284d9d0fa3b32e29d69">{"x":{"visdat":{"368479ca24c9":["function () ","plotlyVisDat"]},"cur_data":"368479ca24c9","attrs":{"368479ca24c9":{"x":{},"y":{},"color":{},"alpha":0.5,"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"bar"}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"xaxis":{"domain":[0,1],"automargin":true,"title":"year"},"yaxis":{"domain":[0,1],"automargin":true,"title":"count"},"hovermode":"closest","showlegend":true},"source":"A","config":{"showSendToCloud":false},"data":[{"x":[2003,2004,2005,2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017],"y":[15,13,10,5,2,5,6,4,9,10,19,15,34,26,18],"type":"bar","name":"Not Stated","marker":{"color":"rgba(102,194,165,0.5)","line":{"color":"rgba(102,194,165,1)"}},"textfont":{"color":"rgba(102,194,165,0.5)"},"error_y":{"color":"rgba(102,194,165,0.5)"},"error_x":{"color":"rgba(102,194,165,0.5)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[2003,2004,2005,2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017],"y":[5,8,10,11,9,7,5,8,7,12,15,19,32,43,57],"type":"bar","name":"Other Non Hispanic","marker":{"color":"rgba(252,141,98,0.5)","line":{"color":"rgba(252,141,98,1)"}},"textfont":{"color":"rgba(252,141,98,0.5)"},"error_y":{"color":"rgba(252,141,98,0.5)"},"error_x":{"color":"rgba(252,141,98,0.5)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[2003,2004,2005,2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017],"y":[116,87,133,148,115,107,95,91,118,134,140,148,186,349,394],"type":"bar","name":"Black Non Hispanic","marker":{"color":"rgba(141,160,203,0.5)","line":{"color":"rgba(141,160,203,1)"}},"textfont":{"color":"rgba(141,160,203,0.5)"},"error_y":{"color":"rgba(141,160,203,0.5)"},"error_x":{"color":"rgba(141,160,203,0.5)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[2003,2004,2005,2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017],"y":[187,131,164,171,154,179,147,118,171,186,232,205,308,483,521],"type":"bar","name":"Hispanic","marker":{"color":"rgba(231,138,195,0.5)","line":{"color":"rgba(231,138,195,1)"}},"textfont":{"color":"rgba(231,138,195,0.5)"},"error_y":{"color":"rgba(231,138,195,0.5)"},"error_x":{"color":"rgba(231,138,195,0.5)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[2003,2004,2005,2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017],"y":[444,360,578,662,731,814,776,747,973,1032,1198,1312,1587,2167,2267],"type":"bar","name":"White Non Hispanic","marker":{"color":"rgba(166,216,84,0.5)","line":{"color":"rgba(166,216,84,1)"}},"textfont":{"color":"rgba(166,216,84,0.5)"},"error_y":{"color":"rgba(166,216,84,0.5)"},"error_x":{"color":"rgba(166,216,84,0.5)"},"xaxis":"x","yaxis":"y","frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+</div>
+<div id="gender" class="section level2">
+<h2>Gender</h2>
+<p>Looking at the count of deaths by gender, we see that males always have a much higher number of deaths than females. Death counts among men have grown exponentially since 2014, while female numbers have remained relatively similar.</p>
+<div id="htmlwidget-471cb8fc3b825d96781a" style="width:90%;height:576px;" class="plotly html-widget"></div>
+<script type="application/json" data-for="htmlwidget-471cb8fc3b825d96781a">{"x":{"visdat":{"368426eaa68":["function () ","plotlyVisDat"]},"cur_data":"368426eaa68","attrs":{"368426eaa68":{"x":{},"y":{},"color":{},"alpha":0.5,"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"bar"}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"xaxis":{"domain":[0,1],"automargin":true,"title":"year"},"yaxis":{"domain":[0,1],"automargin":true,"title":"count"},"hovermode":"closest","showlegend":true},"source":"A","config":{"showSendToCloud":false},"data":[{"x":[2003,2004,2005,2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017],"y":[238,240,278,270,248,230,246,234,288,274,296,314,356,496,468],"type":"bar","name":"F","marker":{"color":"rgba(102,194,165,0.5)","line":{"color":"rgba(102,194,165,1)"}},"textfont":{"color":"rgba(102,194,165,0.5)"},"error_y":{"color":"rgba(102,194,165,0.5)"},"error_x":{"color":"rgba(102,194,165,0.5)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[2003,2004,2005,2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017],"y":[758,612,720,792,632,654,560,536,612,766,722,778,980,1570,1706],"type":"bar","name":"M","marker":{"color":"rgba(141,160,203,0.5)","line":{"color":"rgba(141,160,203,1)"}},"textfont":{"color":"rgba(141,160,203,0.5)"},"error_y":{"color":"rgba(141,160,203,0.5)"},"error_x":{"color":"rgba(141,160,203,0.5)"},"xaxis":"x","yaxis":"y","frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+</div>
+<div id="rural-vs-urban" class="section level2">
+<h2>Rural vs Urban</h2>
+<p>The boxplots do not show a distinct difference between opioid death rate per 10,000 in rural vs urban communities. It is somewhat surprising that, when adjusting for population, there is not more of a difference in rural and urban areas. However, we do see a slight increasng trend in urban deaths between 2010 and 2012.</p>
+<p><img src="demographics_files/figure-html/unnamed-chunk-6-1.png" width="90%" /></p>
+</div>
+<div id="insurance-provider" class="section level2">
+<h2>Insurance Provider</h2>
+<p>We see that the number of opioid treatments paid for by commercial and medicaid insurance is larger and more spread than that of medicare. However, in 2015, noticably more opioid related treatments are paid by medicaid compared to medicare and commerical insurance.</p>
+<p><img src="insurance_inf.gif" /></p>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
