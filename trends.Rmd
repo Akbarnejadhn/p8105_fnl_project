@@ -116,8 +116,7 @@ total_death_pop %>%
     xaxis = list(
       title = "County"),
     yaxis = list(
-      title = "Death per 1 Million People"
-    )
+      title = "Death per 1 Million People")
   )
 ```
 
