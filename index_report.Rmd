@@ -31,7 +31,7 @@ scale_fill_discrete = scale_fill_viridis_d
 theme_set(theme_minimal() + theme(legend.position = "bottom"))
 ```
 
-**Julia Thomspson** (jt3175) | **Hana Akbarnejad** (ha2546) | **Olivia Wagner** (oew2106) | **Jared Garfinkle** (Jsg2145) | **Alison Elgass** (are2132)
+**Julia Thomspson** (jt3175) | **Hana Akbarnejad** (ha2546) | **Olivia Wagner** (oew2106) | **Jared Garfinkel** (jsg2145) | **Alison Elgass** (are2132)
 
 # Motivation
 
@@ -63,6 +63,9 @@ In October 2017, the U.S. government declared the opioid crisis a public health 
 
 embed_url("https://www.youtube.com/watch?v=ph0zvETOnmA")
 ```
+
+
+This Tweet from [The New York Times](https://www.nytimes.com/) depicts how opioid affects teenage life through a true story of high school yearbook:
 
 <blockquote class="twitter-tweet"><p lang="en" dir="ltr">Prom Queen, Most Likely to Succeed, Most Talkative: They were in high school when painkillers hit their small Ohio town two decades ago. Today, their yearbook reflects the devastating toll of the opioid crisis. <a href="https://t.co/OqSZ5gONMY">https://t.co/OqSZ5gONMY</a></p>&mdash; The New York Times (@nytimes) <a href="https://twitter.com/nytimes/status/1201488294250532864?ref_src=twsrc%5Etfw">December 2, 2019</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script> 
 
