@@ -3,7 +3,7 @@ title: "Demographics"
 output: html_document
 ---
 
-To better understand the opioid epidemic in New York, we investigate different demographic areas. 
+To better understand the opioid epidemic in New York, we investigate different demographic areas.  
 
 ## Age Group
 
