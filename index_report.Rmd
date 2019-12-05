@@ -31,12 +31,13 @@ scale_fill_discrete = scale_fill_viridis_d
 theme_set(theme_minimal() + theme(legend.position = "bottom"))
 ```
 
+**Julia Thomspson** (jt3175) | **Hana Akbarnejad** (ha2546) | **Olivia Wagner** (oew2106) | **Jared Garfinkle** (Jsg2145) | **Alison Elgass** (are2132)
+
 # Motivation
 
 _"Opioids kill more people each year than traffic accidents, than guns. Increasingly, they're killing children. New synthetic drugs are emerging -- cocktails so potent even touching them can lead to injury or death..."_
 
-The United States has been experiencing its most death-dealing drug overdose epidemic that had charged with prescription painkillers and an increased use of street drugs such as heroin and illicit fentanyl. This crisis has reached a point that it not only affecting adolescence, but also it is affecting the generation of babies that get born. According to the White House, _"The number of babies born drug-dependent increased by 500 percent between 2000 and 2014. Almost a third of all children placed in foster care are from families with parental drug abuse"_
-– spurring unprecedented bipartisan efforts throughout the nation to combat opioid abuse.
+The United States has been experiencing its most death-dealing drug overdose epidemic that had charged with prescription painkillers and an increased use of street drugs such as heroin and illicit fentanyl. This crisis has reached a point that it not only affecting adolescence, but also it is affecting the generation of babies that get born. According to the White House, _"The number of babies born drug-dependent increased by 500 percent between 2000 and 2014. Almost a third of all children placed in foster care are from families with parental drug abuse"_.
 
 
 Comparing data from New York City, we can see that in 2017, the rate of opioid-involving deaths was 16.1 deaths per 100,000 persons compared to the average national rate of 14.6 deaths per 100,000 persons. Someone dies of a drug overdose every 7 hours, and 82 percent of the 1,374 overdose deaths in 2016 were from an opioid. As an overview, the following maps show the number of drug related deaths, as well as the number of opioid prescriptions in different counties.
@@ -49,13 +50,27 @@ The aforementioned figures lead us to focus on the aspects of this crisis in NYC
 
 # Related Work
 
-Anything that inspired you, such as a paper, a web site, or something we discussed in class.
+In October 2017, the U.S. government declared the opioid crisis a public health emergency, and there have been actions taken to alleviate this epidemics, including $6 billion funding to stop the crisis. This highlights the importance of combating opioid abuse in every level, and inspired us to take a closer look at different aspects of this crisis. Inspiration was drawn from a variety of background sources including:
+
+*  https://www.nbcnewyork.com/news/local/Americas-Deadly-Opioid-Epidemic-By-the-Numbers-458709663.html
+
+*  https://www.drugabuse.gov/opioid-summaries-by-state/new-york-opioid-summary
+
+*  https://www.nytimes.com/2019/07/16/nyregion/nyc-port-authority-opioids.html
+
 
 ```{r echo=FALSE}
 
 embed_url("https://www.youtube.com/watch?v=ph0zvETOnmA")
 ```
 
+
+```{r echo=FALSE}
+
+# embed_url("https://twitter.com/nytimes/status/1201488294250532864")
+```
+
+<blockquote class="twitter-tweet"><p lang="en" dir="ltr">Prom Queen, Most Likely to Succeed, Most Talkative: They were in high school when painkillers hit their small Ohio town two decades ago. Today, their yearbook reflects the devastating toll of the opioid crisis. <a href="https://t.co/OqSZ5gONMY">https://t.co/OqSZ5gONMY</a></p>&mdash; The New York Times (@nytimes) <a href="https://twitter.com/nytimes/status/1201488294250532864?ref_src=twsrc%5Etfw">December 2, 2019</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script> 
 
 # Initial Questions
 
@@ -272,12 +287,3 @@ One finding that was not expected was that there was no apparent difference betw
 <<<<<<< HEAD
 As mentioned in the _Aditional Analysis_ section, there are some public health implications that can be taken from our findings. The information for which populations have the most deaths could provide insight for different initiatives. For instance, programs may benefit from targeting men specifically as they are in a higher risk group. Additionally, there appears to be a slight linear relationship between pills bought per person and opioid-related deaths. This may suggest that prescribing fewer pills could help decrease the number of opioid-related deaths in NY. 
 
-# References
-
-facts and figures provided in the _Motivation_ are from...
-
-*  https://www.nbcnewyork.com/news/local/Americas-Deadly-Opioid-Epidemic-By-the-Numbers-458709663.html
-
-*  https://www.drugabuse.gov/opioid-summaries-by-state/new-york-opioid-summary
-=======
->>>>>>> db336de51498a3d25ffa8675670a54a46ed44924
