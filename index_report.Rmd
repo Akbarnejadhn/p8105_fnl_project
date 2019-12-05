@@ -117,6 +117,8 @@ prod_county = arcos::summarized_county_annual(state = "NY", key = "WaPo") %>%
 county_pop = arcos::county_population(state = "NY", key = "WaPo") %>% 
   janitor::clean_names()
 
+county_population = janitor::clean_names(read_excel("./data/county_pop.xlsx"))
+
 # clean opioid death data #
 
 opioid_death_data = opioid_death_data %>%
@@ -216,7 +218,9 @@ Having looked at who the opioid crisis affects in New York state, we were intere
 * The counties with the greatest number of opioid related treatments also had a large amount of perscribed opioids, but deaths were not so clearly correlated. 
 
 
-*  The counties with the highest death rates were also heavily urban counties, with the exception of Sullivan and Green county.
+* The counties with the highest death rates were also heavily urban counties, with the exception of Sullivan and Green county.
+
+* There was no distinct relationship between number or rate of opioid deaths and distance to the nearest treatment facility. 
 
 ```{r, message = FALSE}
 
@@ -256,6 +260,52 @@ total_death_pop %>%
 
 ![](pills_prescribed_inf.gif)
 
+```{r, message=FALSE}
+
+opioid_death = opioid_death_data %>% 
+  filter(year == 2017) %>% 
+  select(-year)
+
+county_population = 
+  county_population %>% 
+  mutate(
+    county = str_replace(county, " County", "")
+  )
+
+opioid_treatment_dist = 
+  opioid_treatment_distance %>% 
+  rename(distance = value) %>% 
+  filter(state == 'New York') %>%
+  select(county, distance)
+
+# get rid of "county" in opioid_treatment_distance
+
+opioid_treatment_dist = 
+  opioid_treatment_dist %>% 
+  mutate(
+    county = str_replace(county, " County", "")
+  )
+
+treatment_death = 
+  left_join(opioid_treatment_dist, opioid_death, by = "county")
+
+treatment_death_final = 
+  left_join(treatment_death, county_population, by = "county") %>% 
+  select(-rank) %>% 
+  mutate(
+    deaths_rate = (opioid_poisoning_deaths / population)*100
+  )
+
+ggplot(treatment_death_final, 
+       aes(x = distance, y = opioid_poisoning_deaths)) +
+  geom_point() + xlab("Distance (miles)") + ylab("Gross # Deaths") +
+  ggtitle("Number of Opioid Deaths vs. Distance to Facility")
+
+ggplot(treatment_death_final, aes(x = distance, y = deaths_rate)) +
+  geom_point() + xlab("Distance (miles)") + ylab("Death Rate") +
+  ggtitle("Death Rate vs. Distance to Facility")
+```
+
 # Additional Analysis
 
   We conducted additional analysis on our data using model building techniques for parameter inference. The process of model building included a stepwise regression on the multiple parameters including population size, region, er visits, and area type (urban v. rural). Parameters were assessed for multicollinearity and contribution to the model fit. Nested simple and complex models were assessed based on the fit of the regression, and the simple model was ultimately chosen. Further analysis including cross validation or bootstrapping could test the final model against future random samples to determine its predictive ability.
@@ -268,8 +318,6 @@ Opioid related injuries included in our data sets were measured by emergency roo
 
 One finding that was not expected was that there was no apparent difference between rural and urban areas. This indicates that factors associated with the urban/rural gradient, such as population density, may not have much affect on the prevalence of opioid related injuries. Counties where there were a high number of opioid related treatments did not necessarily have a high number of deaths when adjusting for population size. These counties were further outside of the New York City area, which could be evidence that different interventions may be necessary to prevent opioid related injuries in counties outside the five boroughs.While there is an association between the pills bought per capita and the opioid deaths per 10,000 people, according to our statistical models it may not be safe to assume that reducing opioid prescriptions would decrease opioid injuries. 
 
-
-<<<<<<< HEAD
 As mentioned in the _Aditional Analysis_ section, there are some public health implications that can be taken from our findings. The information for which populations have the most deaths could provide insight for different initiatives. For instance, programs may benefit from targeting men specifically as they are in a higher risk group. Additionally, there appears to be a slight linear relationship between pills bought per person and opioid-related deaths. This may suggest that prescribing fewer pills could help decrease the number of opioid-related deaths in NY. 
 
 # References
@@ -279,5 +327,4 @@ facts and figures provided in the _Motivation_ are from...
 *  https://www.nbcnewyork.com/news/local/Americas-Deadly-Opioid-Epidemic-By-the-Numbers-458709663.html
 
 *  https://www.drugabuse.gov/opioid-summaries-by-state/new-york-opioid-summary
-=======
->>>>>>> db336de51498a3d25ffa8675670a54a46ed44924
+
