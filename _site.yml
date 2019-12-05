@@ -1,4 +1,4 @@
-name: "Yay internet!"
+name: "Yay internet!" 
 output_dir: "."
 navbar:
   title: "Home"
