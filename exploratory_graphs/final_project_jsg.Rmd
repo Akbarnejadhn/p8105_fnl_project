@@ -463,14 +463,17 @@ join_df %>%
 
 
 
-```{r}
+```{r, results = "hide"}
 join_dat <- join_df %>%
   ungroup() %>% 
   mutate(year = factor(year),
          region = ifelse(county %in% c("New York", "Kings", "Bronx", "Queens", "Richmond"), "NYC", "ROS")) %>% 
   select(-county)
-fit1 <- lm(opioid_poisoning_deaths ~ ., data = join_dat)
-fit2 <- lm(opioid_poisoning_deaths ~ region + pills_bought + rural_urban, data = join_dat)
+
+fit1 <- lm(opioid_poisoning_deaths ~ . -pills_bought -inpatient_total_opioid -er_inpatient_total_opioid -overall_opioid, data = join_dat)
+fit2 <- glm(opioid_poisoning_deaths ~ region + pills_bought + rural_urban, data = join_dat)
+
+car::vif(model1)
 
 model1 <- step(fit1)
 model2 <- step(fit2)

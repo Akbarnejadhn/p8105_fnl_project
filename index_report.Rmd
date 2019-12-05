@@ -278,6 +278,60 @@ We conducted additional analysis on our data using model building techniques for
 
 Additionally, we used unsupervised learning to assess opioid related trends over time. In this project, we clustered counties by the intercepts and slopes collected from linear models of opioid-related data by county over time. The clusters indicate similar trends in various counties, including the increase or stabilization of opioid related treatment and deaths over time. This information might be helpful in determining which counties require the most immediate public health intervention.
 
+```{r join pharma data with opioid injuries data, results = "hide"}
+
+# Pills bought by Pharmacies in Each county per Year #
+
+pharma_df = left_join(prod_county, county_pop, by = c("buyer_county", "year")) %>% 
+  select(county_name, year, count, population) %>% 
+  rename(county = county_name,
+         pills_bought = count)
+
+# Summarize the opioid injuries by county, year, and rural/urban gradient #
+
+sum_df <- opioid_total_data %>% 
+  group_by(county, year, rural_urban) %>% 
+  summarize(er_opioid = sum(er_opioid),
+            inpatient_total_opioid = sum(inpatient_total_opioid),
+            er_inpatient_total_opioid = sum(er_inpatient_total_opioid),
+            outpatient_opioid = sum(outpatient_opioid),
+            overall_opioid = sum(overall_opioid),
+            opioid_poisoning_deaths = sum(opioid_poisoning_deaths)
+  )
+
+# Join the dataframes #
+
+join_df <- inner_join(sum_df, pharma_df, by = c("county", "year"))
+
+# Clean the data #
+
+join_dat <- join_df %>%
+  ungroup() %>% 
+  mutate(year = factor(year),
+         region = ifelse(county %in% c("New York", "Kings", "Bronx", "Queens", "Richmond"), "NYC", "ROS")) %>% 
+  select(-county)
+
+# Make the fits #
+
+fit1 <- lm(opioid_poisoning_deaths ~ . -pills_bought -inpatient_total_opioid -er_inpatient_total_opioid -overall_opioid, data = join_dat)
+fit2 <- glm(opioid_poisoning_deaths ~ region + pills_bought + rural_urban, data = join_dat)
+
+# Stepwise regression #
+
+model1 <- step(fit1)
+model2 <- step(fit2)
+
+# Check for multicollinearity #
+
+car::vif(model1)
+```
+
+Model building can be used to determine associations between our variables. This can be useful to validate our findings and uncover associations that we had not predicted.
+
+```{r}
+anova(model1, model2)
+```
+
 # Discussion
 
 Opioid related injuries included in our data sets were measured by emergency room visits, deaths, and inpatient treatment. Through demographic and trend analysis, we discovered opioid overdose in New York City affects white people more than other ethnicities, and men more than women, on average. Opioid overdose also tends to affect young adults (ages 25-34) more than any other age group. Furthermore, we note the number of opioid related incidents in each county is strongly associated with the number of pills prescribed by doctors. This information was, on the whole, expected of our analysis. 
