@@ -36,7 +36,7 @@ initiatives might affect the trends of this disease.
     disease (Hepatitis C and HIV/AIDS) outbreaks linked to opioid usage?
     And any difference in these trends in states with SEP and those
     which have banned SEP.
-
+ 
   - Does the higher percent of drug treatment paid by medicare result in
     lower drug-related death?
 
