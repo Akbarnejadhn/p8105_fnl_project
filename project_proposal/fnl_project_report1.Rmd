@@ -19,6 +19,8 @@ knitr::opts_chunk$set(echo = TRUE)
 
 * Alison Elgass (are2132)
 
+* Olivia Wagner (oew2106)
+
 ##  Project Title
 **“Exploring Aspects of Opioid Crisis in the United States”**
 
