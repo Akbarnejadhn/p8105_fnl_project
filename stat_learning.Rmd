@@ -28,7 +28,9 @@ scale_fill_discrete = scale_fill_viridis_d
 theme_set(theme_minimal() + theme(legend.position = "bottom"))
 ```
 
-```{r load datasets}
+```{r load datasets and clean}
+
+# Read in the data #
 
 opioid_dem_df = read_csv('./data/deaths_age_group.csv') %>% 
   janitor::clean_names()
@@ -41,18 +43,12 @@ opioid_demographics = janitor::clean_names(read_csv("./data/opioid_demographics.
 
 opioid_er_data = read_csv('./data/opioid_related_visits.csv') %>% 
   janitor::clean_names()
-```
 
-```{r pharma data}
 prod_county = arcos::summarized_county_annual(state = "NY", key = "WaPo") %>% 
   janitor::clean_names()
 
 county_pop = arcos::county_population(state = "NY", key = "WaPo") %>% 
   janitor::clean_names()
-```
-
-
-```{r data cleaning}
 
 # clean opioid death data #
 
@@ -72,9 +68,6 @@ opioid_er_data = opioid_er_data %>%
 
 opioid_total_data = left_join(opioid_er_data, opioid_death_data, by = c('county', 'year')) %>% 
   arrange(county, year)
-```
-
-```{r pills per capita, results = "hide"}
 
 # Pills bought by Pharmacies in Each county per Year #
 
@@ -83,6 +76,34 @@ pharma_df = left_join(prod_county, county_pop, by = c("buyer_county", "year")) %
   rename(county = county_name,
          pills_bought = count) %>% 
   mutate(ppp = pills_bought/population)
+
+# Summarize opioid injuries by county and year including urban/rural gradient #
+
+sum_df <- opioid_total_data %>% 
+  group_by(county, year, rural_urban) %>% 
+  summarize(er_opioid = sum(er_opioid),
+            inpatient_total_opioid = sum(inpatient_total_opioid),
+            er_inpatient_total_opioid = sum(er_inpatient_total_opioid),
+            outpatient_opioid = sum(outpatient_opioid),
+            overall_opioid = sum(overall_opioid),
+            opioid_poisoning_deaths = sum(opioid_poisoning_deaths)
+  )
+
+join_df <- inner_join(sum_df, pharma_df, by = c("county", "year"))
+
+# Summarize opioid injuries by county and year #
+
+sum_total_df <- opioid_total_data %>% 
+  group_by(county, year) %>% 
+  summarize(er_opioid = sum(er_opioid),
+            inpatient_total_opioid = sum(inpatient_total_opioid),
+            er_inpatient_total_opioid = sum(er_inpatient_total_opioid),
+            outpatient_opioid = sum(outpatient_opioid),
+            overall_opioid = sum(overall_opioid),
+            opioid_poisoning_deaths = sum(opioid_poisoning_deaths)
+  )
+
+death_sales_df <- inner_join(sum_total_df, pharma_df, by = c("county", "year"))
 
 ```
 
@@ -94,40 +115,9 @@ This exploratory analysis clusters opioid related data adjusted for population i
 
 In this plot, we can see each line colored as teal, yellow or purple. These colors correspond to medium intercept and high slope, high intercept and low slope, and low intercept and low slope.    
 
-```{r opioid total by year}
-sum_df <- opioid_total_data %>% 
-  group_by(county, year, rural_urban) %>% 
-  summarize(er_opioid = sum(er_opioid),
-            inpatient_total_opioid = sum(inpatient_total_opioid),
-            er_inpatient_total_opioid = sum(er_inpatient_total_opioid),
-            outpatient_opioid = sum(outpatient_opioid),
-            overall_opioid = sum(overall_opioid),
-            opioid_poisoning_deaths = sum(opioid_poisoning_deaths)
-  )
-```
-
-```{r rural v urban}
-join_df <- inner_join(sum_df, pharma_df, by = c("county", "year"))
-```
-
 ```{r}
-sum_total_df <- opioid_total_data %>% 
-  group_by(county, year) %>% 
-  summarize(er_opioid = sum(er_opioid),
-            inpatient_total_opioid = sum(inpatient_total_opioid),
-            er_inpatient_total_opioid = sum(er_inpatient_total_opioid),
-            outpatient_opioid = sum(outpatient_opioid),
-            overall_opioid = sum(overall_opioid),
-            opioid_poisoning_deaths = sum(opioid_poisoning_deaths)
-  )
-```
+# Prepare data for linear modeling #
 
-```{r}
-death_sales_df <- inner_join(sum_total_df, pharma_df, by = c("county", "year"))
-```
-
-
-```{r}
 int_slope_dat <- pharma_df %>% 
   mutate(
     year = recode(year, 
@@ -141,9 +131,9 @@ int_slope_dat <- pharma_df %>%
   ) %>% 
   group_by(county, year) %>% 
   summarize(ppp = pills_bought/population)
-```
 
-```{r}
+# Conduct linear modeling #
+
 int_slope_df <- int_slope_dat %>% 
   nest(data = year:ppp) %>%
   mutate(
@@ -158,9 +148,9 @@ int_slope_df <- int_slope_dat %>%
     values_from = estimate
   ) %>% 
   rename(int = "(Intercept)", slope = year)
-```
 
-```{r}
+# Cluster data by intercept and slope #
+
 km_fit = 
   kmeans(
     int_slope_df[,c(2,3)]  %>% scale, 
@@ -168,9 +158,9 @@ km_fit =
 
 int_slope_df =
   broom::augment(km_fit, int_slope_df)
-```
 
-```{r}
+# Create a ggplot of the pills data #
+
 pills_plot <- left_join(int_slope_dat, int_slope_df) %>% 
   group_by(county) %>% 
   ggplot(aes(x = year, y = ppp, color = .cluster, text = county)) + 
@@ -180,28 +170,16 @@ pills_plot <- left_join(int_slope_dat, int_slope_df) %>%
   theme(legend.position = "none") +
   xlab("Year") +
   ylab("Pills Bought Per Person")
-```
 
-```{r, include = TRUE}
 ggplotly(pills_plot, tooltip = "text")
-```
-
-```{r}
-death_sales_dat <- death_sales_df %>%
-  ungroup() %>% 
-  mutate(
-    year = recode(year, 
-                  "2010" = 0,
-                  "2011" = 1,
-                  "2012" = 2)
-  )
 ```
 
 **Clustering with Opioid Deaths**
 
 In this spaghetti plot, we see that the number of opioid related deaths is once again stratified into three groups. One group is counties with a high initial death rate that increased between 2010 and 2012, another representing counties with a medium initial death rate but a decrease or plateau over the three year period. The last group represent counties with a lower initial death rate, and a plateau or increase over the three year period. 
 
-```{r}
+
+```{r clustering with opioid deaths}
 death_sales_dat <- death_sales_df %>% 
   select(county, year, opioid_poisoning_deaths, population) %>% 
   mutate(
@@ -210,9 +188,9 @@ death_sales_dat <- death_sales_df %>%
                   "2011" = 1,
                   "2012" = 2)
   )
-```
 
-```{r}
+# Create linear models #
+
 death_int_slope_df <- death_sales_dat %>% 
   nest(data = year:population) %>%
   mutate(
@@ -227,9 +205,9 @@ death_int_slope_df <- death_sales_dat %>%
     values_from = estimate
   ) %>% 
   rename(int = "(Intercept)", slope = year)
-```
 
-```{r}
+# Cluster by intercept and slope #
+
 death_km_fit = 
   kmeans(
     death_int_slope_df[,c(2,3)] %>% scale, 
@@ -237,9 +215,9 @@ death_km_fit =
 
 death_int_slope_df =
   broom::augment(death_km_fit, death_int_slope_df)
-```
 
-```{r}
+# Create ggplot of deaths data #
+
 deaths_plot <- left_join(death_sales_dat, death_int_slope_df) %>% 
   group_by(county) %>% 
   ggplot(aes(x = year, y = opioid_poisoning_deaths/population*10000, color = .cluster, text = county)) + 
@@ -249,9 +227,7 @@ deaths_plot <- left_join(death_sales_dat, death_int_slope_df) %>%
   theme(legend.position = "none") + 
   xlab("Year") +
   ylab("Opioid Related Deaths per 10000")
-```
 
-```{r, include = TRUE}
 ggplotly(deaths_plot, tooltip = "text")
 ```
 
@@ -260,7 +236,9 @@ ggplotly(deaths_plot, tooltip = "text")
 In this last plot, the clustering identifies three groups based on ER visits over time. Two groups have an average increase in opioid related ER visits between 2010 and 2012, however the one group experienced a higher initial ER visit rate than the other group. The last group experienced a relatively high initial rate of ER visits, but saw a plateau or a decrease in opioid related ER visits over the three year period. 
 
 
-```{r}
+```{r clustering with er visits data}
+# Prepare data for analysis #
+
 er_sales_dat <- death_sales_df %>% 
   select(county, year, er_opioid, population) %>% 
   mutate(
@@ -269,9 +247,9 @@ er_sales_dat <- death_sales_df %>%
                   "2011" = 1,
                   "2012" = 2)
   )
-```
 
-```{r}
+# Run linear models #
+
 er_int_slope_df <- er_sales_dat %>% 
   nest(data = year:population) %>%
   mutate(
@@ -286,9 +264,9 @@ er_int_slope_df <- er_sales_dat %>%
     values_from = estimate
   ) %>% 
   rename(int = "(Intercept)", slope = year)
-```
 
-```{r}
+# Cluster on intercepts and slopes #
+
 er_km_fit = 
   kmeans(
     er_int_slope_df[,c(2,3)] %>% scale, 
@@ -296,9 +274,9 @@ er_km_fit =
 
 er_int_slope_df =
   broom::augment(er_km_fit, er_int_slope_df)
-```
 
-```{r}
+# Create ggplot of er_visits data #
+
 er_plot <- left_join(er_sales_dat, er_int_slope_df) %>% 
   group_by(county) %>% 
   ggplot(aes(x = year, y = er_opioid/population*10000, color = .cluster, text = county)) + 
@@ -308,9 +286,7 @@ er_plot <- left_join(er_sales_dat, er_int_slope_df) %>%
   theme(legend.position = "none") +
   xlab("Year") +
   ylab("Opioid Related ER Visits per 10000")
-```
 
-```{r, include = TRUE}
 ggplotly(er_plot, tooltip = "text")
 ```
 

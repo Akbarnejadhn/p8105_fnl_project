@@ -277,10 +277,6 @@ total_death_pop %>%
 
 # Additional Analysis
 
-We conducted additional analysis on our data using model building techniques for parameter inference. The process of model building included a stepwise regression on the multiple parameters including population size, region, ER visits, and area type (urban or rural). Parameters were assessed for multicollinearity and contribution to the model fit. Nested simple and complex models were assessed based on the fit of the regression, and the simple model was ultimately chosen. Further analysis including cross validation or bootstrapping could test the final model against future random samples to determine its predictive ability.
-
-Additionally, we used unsupervised learning to assess opioid related trends over time. In this project, we clustered counties by the intercepts and slopes collected from linear models of opioid-related data by county over time. The clusters indicate similar trends in various counties, including the increase or stabilization of opioid related treatment and deaths over time. This information might be helpful in determining which counties require the most immediate public health intervention.
-
 ```{r join pharma data with opioid injuries data, results = "hide"}
 
 # Pills bought by Pharmacies in Each county per Year #
@@ -329,10 +325,209 @@ model2 <- step(fit2)
 car::vif(model1)
 ```
 
-Model building can be used to determine associations between our variables. This can be useful to validate our findings and uncover associations that we had not predicted.
+We conducted additional analysis on our data using model building techniques for parameter inference. The process of model building included a stepwise regression on the multiple parameters including population size, region, ER visits, and area type (urban or rural). Parameters were assessed for multicollinearity and contribution to the model fit. Nested simple and complex models were assessed based on the fit of the regression, and the simple model was ultimately chosen. Further analysis including cross validation or bootstrapping could test the final model against future random samples to determine its predictive ability.
 
 ```{r}
+# Pills bought by Pharmacies in Each county per Year #
+
+pharma_df = left_join(prod_county, county_pop, by = c("buyer_county", "year")) %>% 
+  select(county_name, year, count, population) %>% 
+  rename(county = county_name,
+         pills_bought = count) %>% 
+  mutate(ppp = pills_bought/population)
+
+# Summarize opioid injuries by county and year including urban/rural gradient #
+
+sum_df <- opioid_total_data %>% 
+  group_by(county, year, rural_urban) %>% 
+  summarize(er_opioid = sum(er_opioid),
+            inpatient_total_opioid = sum(inpatient_total_opioid),
+            er_inpatient_total_opioid = sum(er_inpatient_total_opioid),
+            outpatient_opioid = sum(outpatient_opioid),
+            overall_opioid = sum(overall_opioid),
+            opioid_poisoning_deaths = sum(opioid_poisoning_deaths)
+  )
+
+join_df <- inner_join(sum_df, pharma_df, by = c("county", "year"))
+
+# Summarize opioid injuries by county and year #
+
+sum_total_df <- opioid_total_data %>% 
+  group_by(county, year) %>% 
+  summarize(er_opioid = sum(er_opioid),
+            inpatient_total_opioid = sum(inpatient_total_opioid),
+            er_inpatient_total_opioid = sum(er_inpatient_total_opioid),
+            outpatient_opioid = sum(outpatient_opioid),
+            overall_opioid = sum(overall_opioid),
+            opioid_poisoning_deaths = sum(opioid_poisoning_deaths)
+  )
+
+death_sales_df <- inner_join(sum_total_df, pharma_df, by = c("county", "year"))
+
 anova(model1, model2)
+```
+
+Additionally, we used unsupervised learning to assess opioid related trends over time. In this project, we clustered counties by the intercepts and slopes collected from linear models of opioid-related data by county over time. The clusters indicate similar trends in various counties, including the increase or stabilization of opioid related treatment and deaths over time. This information might be helpful in determining which counties require the most immediate public health intervention.
+
+```{r clustering, message = FALSE}
+# Prepare data for linear modeling #
+
+int_slope_dat <- pharma_df %>% 
+  mutate(
+    year = recode(year, 
+                  "2006" = 0,
+                  "2007" = 1,
+                  "2008" = 2,
+                  "2009" = 3,
+                  "2010" = 4,
+                  "2011" = 5,
+                  "2012" = 6)
+  ) %>% 
+  group_by(county, year) %>% 
+  summarize(ppp = pills_bought/population)
+
+# Conduct linear modeling #
+
+int_slope_df <- int_slope_dat %>% 
+  nest(data = year:ppp) %>%
+  mutate(
+    models = map(data, ~lm(ppp ~ year, data = .x)),
+    result = map(models, broom::tidy)
+  ) %>% 
+  select(county, result) %>% 
+  unnest(result) %>% 
+  select(county, term, estimate) %>% 
+  pivot_wider(
+    names_from = term,
+    values_from = estimate
+  ) %>% 
+  rename(int = "(Intercept)", slope = year)
+
+# Cluster data by intercept and slope #
+
+km_fit = 
+  kmeans(
+    int_slope_df[,c(2,3)]  %>% scale, 
+    centers = 3)
+
+int_slope_df =
+  broom::augment(km_fit, int_slope_df)
+
+# Create a ggplot of the pills data #
+
+pills_plot <- left_join(int_slope_dat, int_slope_df) %>% 
+  group_by(county) %>% 
+  ggplot(aes(x = year, y = ppp, color = .cluster, text = county)) + 
+  geom_point() + 
+  geom_path() +
+  scale_x_continuous(breaks = c(0, 1, 2, 3, 4, 5, 6), labels = c("2006", "2007", "2008", "2009", "2010", "2011", "2012")) +
+  theme(legend.position = "none") +
+  xlab("Year") +
+  ylab("Pills Bought Per Person")
+
+ggplotly(pills_plot, tooltip = "text")
+
+death_sales_dat <- death_sales_df %>% 
+  select(county, year, opioid_poisoning_deaths, population) %>% 
+  mutate(
+    year = recode(year,
+                  "2010" = 0,
+                  "2011" = 1,
+                  "2012" = 2)
+  )
+
+# Create linear models #
+
+death_int_slope_df <- death_sales_dat %>% 
+  nest(data = year:population) %>%
+  mutate(
+    models = map(data, ~lm(opioid_poisoning_deaths/population*10000 ~ year, data = .x)),
+    result = map(models, broom::tidy)
+  ) %>% 
+  select(county, result) %>% 
+  unnest(result) %>% 
+  select(county, term, estimate) %>% 
+  pivot_wider(
+    names_from = term,
+    values_from = estimate
+  ) %>% 
+  rename(int = "(Intercept)", slope = year)
+
+# Cluster by intercept and slope #
+
+death_km_fit = 
+  kmeans(
+    death_int_slope_df[,c(2,3)] %>% scale, 
+    centers = 3)
+
+death_int_slope_df =
+  broom::augment(death_km_fit, death_int_slope_df)
+
+# Create ggplot of deaths data #
+
+deaths_plot <- left_join(death_sales_dat, death_int_slope_df) %>% 
+  group_by(county) %>% 
+  ggplot(aes(x = year, y = opioid_poisoning_deaths/population*10000, color = .cluster, text = county)) + 
+  geom_point() + 
+  geom_path() +
+  scale_x_continuous(breaks = c(0, 1, 2), labels = c("2010", "2011", "2012")) +
+  theme(legend.position = "none") + 
+  xlab("Year") +
+  ylab("Opioid Related Deaths per 10000")
+
+ggplotly(deaths_plot, tooltip = "text")
+
+# Prepare data for analysis #
+
+er_sales_dat <- death_sales_df %>% 
+  select(county, year, er_opioid, population) %>% 
+  mutate(
+    year = recode(year,
+                  "2010" = 0,
+                  "2011" = 1,
+                  "2012" = 2)
+  )
+
+# Run linear models #
+
+er_int_slope_df <- er_sales_dat %>% 
+  nest(data = year:population) %>%
+  mutate(
+    models = map(data, ~lm(er_opioid/population*10000 ~ year, data = .x)),
+    result = map(models, broom::tidy)
+  ) %>% 
+  select(county, result) %>% 
+  unnest(result) %>% 
+  select(county, term, estimate) %>% 
+  pivot_wider(
+    names_from = term,
+    values_from = estimate
+  ) %>% 
+  rename(int = "(Intercept)", slope = year)
+
+# Cluster on intercepts and slopes #
+
+er_km_fit = 
+  kmeans(
+    er_int_slope_df[,c(2,3)] %>% scale, 
+    centers = 3)
+
+er_int_slope_df =
+  broom::augment(er_km_fit, er_int_slope_df)
+
+# Create ggplot of er_visits data #
+
+er_plot <- left_join(er_sales_dat, er_int_slope_df) %>% 
+  group_by(county) %>% 
+  ggplot(aes(x = year, y = er_opioid/population*10000, color = .cluster, text = county)) + 
+  geom_point() +
+  geom_path() +
+  scale_x_continuous(breaks = c(0, 1, 2), labels = c("2010", "2011", "2012")) +
+  theme(legend.position = "none") +
+  xlab("Year") +
+  ylab("Opioid Related ER Visits per 10000")
+
+ggplotly(er_plot, tooltip = "text")
 ```
 
 # Discussion
