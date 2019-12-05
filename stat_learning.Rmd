@@ -29,16 +29,17 @@ theme_set(theme_minimal() + theme(legend.position = "bottom"))
 ```
 
 ```{r load datasets}
-opioid_death_data = read_csv('./opioid_related_deaths.csv') %>% 
-  janitor::clean_names()
-
-opioid_er_data = read_csv('./opioid_related_visits.csv') %>% 
-  janitor::clean_names()
-                                        
-opioid_treatment_distance = read_csv('./distance_to_treatment.csv') %>% 
-  janitor::clean_names()
 
 opioid_dem_df = read_csv('./data/deaths_age_group.csv') %>% 
+  janitor::clean_names()
+
+opioid_death_data = janitor::clean_names(read_csv('./data/opioid_related_deaths_2.csv'))
+
+opioid_treatment_distance = janitor::clean_names(read_csv('./data/distance_to_treatment.csv'))
+
+opioid_demographics = janitor::clean_names(read_csv("./data/opioid_demographics.csv"))
+
+opioid_er_data = read_csv('./data/opioid_related_visits.csv') %>% 
   janitor::clean_names()
 ```
 
