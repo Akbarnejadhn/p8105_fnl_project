@@ -14,9 +14,9 @@ library(gifski)
 ```
 
 ```{r load datasets}
-opioid_death_data = janitor::clean_names(read_csv('./opioid_related_deaths.csv'))
+opioid_death_data = janitor::clean_names(read_csv('./opioid_related_deaths.csv')) 
 
-opioid_er_data = janitor::clean_names(read_csv('./opioid_related_visits.csv'))
+opioid_er_data = janitor::clean_names(read_csv('./opioid_related_visits.csv')) 
 
 opioid_treatment_distance = janitor::clean_names(read_csv('./distance_to_treatment.csv'))
 ```
@@ -59,8 +59,9 @@ opioid_treatment_distance %>%
 # Combine Data Sets #
 
 opioid_total_data = left_join(opioid_er_data, opioid_death_data, by = c('county', 'year')) %>% 
-  arrange(county, year) 
+  arrange(county, year) %>% print() 
 
+view(opioid_total_data)
 ```
 
 ```{r number of pills}

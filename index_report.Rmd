@@ -15,7 +15,9 @@ library("vembedr")
 
 Given this, our goal in this project was to find out whether there is any meaningful information about demographics of people who were affected by opioid overdose. For instance, if certain age groups, gender, racial groups, or living condition accompanies with higher rates of opioid-related death in New York City. Also, we were interested in learning more about how these trends change over the years. We also look for any significant and meaningful information about the number of Emergency Room visits, the number of opioid-related death, and the number of pills prescribed to see if there is any meaningful and significant relationship between the different counties of New York City.
 
-# Related work
+![](maps.png)
+
+# Related Work
 
 Anything that inspired you, such as a paper, a web site, or something we discussed in class.
 
@@ -25,7 +27,7 @@ embed_url("https://www.youtube.com/watch?v=ph0zvETOnmA")
 ```
 
 
-# Initial questions
+# Initial Questions
 
 When investigating our datasets described below, we were primarily interested in urban vs rural communities as they related to opioid deaths. We were also interested in the county-level differences within New York, particularly because the state has such variety. Manhattan is very different from somewhere upstate, like Albany. We thought it would be interesting to consider the trends in pill prescription of different counties. Additionally, we wanted to look into opioid-related treatment visits in the counties in New York.
 
@@ -64,11 +66,11 @@ _Our final research questions were as follows:_
     Finally, we used govenment data which provided the location of medication take-back facilities. This data was limited to counties in New York state, and the distance was mapped against opioid related deaths and treatments. The medication take-back facility data was collected in 2017.  
 
 
-# Exploratory analysis  
+# Exploratory Analysis
 
 In our analysis, we created a series of graphs and animations which detail how the opioid crisis is affecting New Yorkers in different areas of the state over time. The information below is synthesised from the results of our analysis. To view these charts use the links to navigate to the appropriate page.
 
-  **[Demographics](<https://akbarnejadhn.github.io/p8105_fnl_project/demographics.html>)**  <br />
+**[Demographics](<https://akbarnejadhn.github.io/p8105_fnl_project/demographics.html>)**  <br />
     Initially, we were interested in how demographics altered opioid addicition over time. We broke down the death count by age, race and gender. The plots, which are included under the demographics tab in analysis, show the following trends related to opioid overdosing.   
   <br />
   
@@ -97,23 +99,16 @@ Having looked at who the opioid crisis affects in New York state, we were intere
 *  The counties with the highest death rates were also heavily urban counties, with the exception of Sullivan and Green county.
 
 
-# Additional analysis
+# Additional Analysis
 
-  We conducted additional analysis on our data using model building techniques and clustering. The process of model building included a stepwise regression on the parameters included in our data. VIF scores were checked for multicollinearity in our variables. Finally, a simple model was proposed and then stepwise regression was conducted to check for significance of the variables. A simple model was compared to the
-complex model and determined to be preferable. 
+  We conducted additional analysis on our data using model building techniques for parameter inference. The process of model building included a stepwise regression on the multiple parameters including population size, region, er visits, and area type (urban v. rural). Parameters were assessed for multicollinearity and contribution to the model fit. Nested simple and complex models were assessed based on the fit of the regression, and the simple model was ultimately chosen. Further analysis including cross validation or bootstrapping could test the final model against future random samples to determine its predictive ability.
 
-  Model building is a useful tool for prediction and inference. The types of models we used in this analysis can be used for inference. Further analysis including cross validation or bootstrapping could test the final model against future random samples to determine its predictive ability.
-
-Clustering is a statistical tool that groups observations by location. For the purposes of this project counties were grouped by the intercepts and slopes collected from linear models of various opioid-related data adjusted for county population over time. These graphs indicate which counties might have similar trends, for instance in order to apply available public health treatments in groups of populations. Basically, there were some counties that started low and didn't change much, some that started high and didn't change much, and some started in the middle and rose higher with time.
+Additionally, we used unsupervised learning to assess opioid related trends over time. In this project, we clustered counties by the intercepts and slopes collected from linear models of opioid-related data by county over time. The clusters indicate similar trends in various counties, including the increase or stablization of opioid related treatment and deaths over time. This information might be helpful in determining which counties require the most immediate public health intervention.
 
 # Discussion
 
-Opioid related injuries included in our data sets were measured by emergency room visits, deaths, and inpatient treatment. The number of opioids bought by pharmacies in each county was used as a proxy for the number of pills sold in each county. There were demographic data available for deaths by opioid overdose in New York City including the age group, race/ethnicity and gender of each subject.A rural/urban variable was included in one dataset. We drew on this information to make our findings. Opioid overdose in New York City affect white people more than people of other races/ethnicities, and more men as compared to women. Opioid overdose also tends to affect young adults (ages 25-34) more than any other age group.
+Opioid related injuries included in our data sets were measured by emergency room visits, deaths, and inpatient treatment. Through demographic and trend analysis, we discovered opioid overdose in New York City affects white people more than other ethnicities, and men more than women, on average. Opioid overdose also tends to affect young adults (ages 25-34) more than any other age group. Furthermore, we notie the number of opioid related incidents in each county is strongly associated with the number of pills prescribed by doctors. This information was, on the whole, expected of our analysis. 
 
-One finding that was not expected was that there was no apparent difference between rural and urban areas. This indicates that indicators associated with the urban/rural gradient, such as population density, may not have much effect on the prevalence of opioid related injuries. However, there was an association between the number of opioid related deaths in New York City as compared with the rest of New York State when adjusting for the number of pills bought in each county. So, this could be evidence that different interventions may be necessary to prevent opioid related injuries in counties outside the five boroughs. 
-
-There were also statistical learning methods included. So, there was a search for trends in the data that were not known. While there is an association between the pills bought per capita and the opioid deaths per 10,000 people, it may not be safe to assume that reducing opioid prescriptions would decrease opioid injuries. Clustering counties by trends in the number of opioid related emergency room visits, opioid overdoses, and pills prescribed can reveal patterns that may be useful for deciding where and how to distribute public health resources.
-
-Additionally, as discussed in the _Exploratory Analysis_ section, we looked at the relationship between gross number of deaths and distance to the nearest treatment facility. We see a decreasing relationship between number of deaths and distance to nearest treatment facility. In other words, the closer a county is to a treatment facility, the more deaths occur in that county. However, when we adjust for population and look at a rate of deaths, this relationship no longer holds. This makes sense, because places with a larger population probably have a shorter distance to treatment facility. 
+One finding that was not expected was that there was no apparent difference between rural and urban areas. This indicates that factors associated with the urban/rural gradient, such as population density, may not have much affect on the prevalence of opioid related injuries. Counties where there were a high number of opioid related treatments did not necessarily have a high number of deaths when adjusting for population size. These counties were further outside of the New York City area, which could be evidence that different interventions may be necessary to prevent opioid related injuries in counties outside the five boroughs.While there is an association between the pills bought per capita and the opioid deaths per 10,000 people, according to our statistical models it may not be safe to assume that reducing opioid prescriptions would decrease opioid injuries. 
 
 
