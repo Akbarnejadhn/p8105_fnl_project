@@ -111,6 +111,12 @@ total_death_pop %>%
   plot_ly(
     x = ~county, y = ~death_pop, split = ~county,
     type = 'bar', alpha = 0.5
+  ) %>% 
+    layout(
+    xaxis = list(
+      title = "County"),
+    yaxis = list(
+      title = "Death per 1 Million People")
   )
 ```
 
